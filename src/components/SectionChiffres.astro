@@ -13,14 +13,29 @@ const chiffres = [
     {chiffres.map((c) => (
       <div class="border-t-2 border-asil-red pt-5">
         <p class="font-display text-4xl font-black text-white sm:text-5xl">
-          <CountUp value={c.valeur} suffix={c.suffixe} enhance={true} duration={1800} />
+          <CountUp
+            value={c.valeur}
+            suffix={c.suffixe}
+            enhance={true}
+            duration={1800}
+            textColor="#ffffff"
+            fontSize="1em"
+            fontFamily="Montserrat, 'Segoe UI', system-ui, sans-serif"
+          />
         </p>
-        <p class="mt-1 text-sm font-bold uppercase tracking-wide text-white/60">{c.label}</p>
+        <p class="mt-1 text-sm font-bold uppercase tracking-wide text-white">{c.label}</p>
       </div>
     ))}
     <div class="border-t-2 border-asil-red pt-5">
       <p class="font-display text-4xl font-black text-white sm:text-5xl">∞</p>
-      <p class="mt-1 text-sm font-bold uppercase tracking-wide text-white/60">éclats de rire</p>
+      <p class="mt-1 text-sm font-bold uppercase tracking-wide text-white">éclats de rire</p>
     </div>
   </div>
 </section>
+
+<style>
+  /* CountUp force font-weight: 700 ; on aligne sur le font-black (900) des titres */
+  section :global(.count-up) {
+    font-weight: 900;
+  }
+</style>
