@@ -69,4 +69,3 @@ Variables d'environnement (voir `.env.example`) :
 - `output: 'static'` remplace l'ancien mode `hybrid` (fusionné dans `static` depuis Astro 5) : les routes Keystatic et `/api/contact` sont en SSR via `prerender = false`, tout le reste est pré-rendu.
 - **Vite est pinné en 7.x** dans `devDependencies` : Astro 6 utilise Vite 7, et sans ce pin npm résout Vite 8 (rolldown) pour `@tailwindcss/vite`, ce qui casse le build (`Missing field tsconfigPaths`). Ne pas retirer ce pin sans passer à Astro 7.
 - Les images éditoriales sont dans `src/assets/` (optimisées par `<Image />` d'Astro : WebP + srcset). Les images uploadées via Keystatic vont dans `public/images/`.
-- Le site actuel (clone statique de référence) est dans le dossier parent `../`.
