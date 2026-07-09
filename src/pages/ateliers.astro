@@ -1,0 +1,123 @@
+---
+import { Image } from 'astro:assets';
+import FadeInText from '@astroanimate/core/FadeInText';
+import AnimatedButton from '@astroanimate/core/AnimatedButton';
+import Layout from '../layouts/Layout.astro';
+import AtelierCard from '../components/AtelierCard.astro';
+import { getAteliers, type Atelier } from '../lib/keystatic';
+import atelierPhoto from '../assets/atelier-portrait.jpg';
+
+const ateliers = await getAteliers();
+
+const categories: { cle: NonNullable<Atelier['categorie']>; titre: string; intro: string }[] = [
+  {
+    cle: 'enfants',
+    titre: 'Enfants (5-11 ans)',
+    intro: "Éveil à l'imaginaire, écoute et confiance en soi : l'impro comme un grand terrain de jeu.",
+  },
+  {
+    cle: 'ados',
+    titre: 'Ados (12-18 ans)',
+    intro: "S'exprimer, oser, construire des histoires ensemble et monter sur scène pour de vrai.",
+  },
+  {
+    cle: 'adultes',
+    titre: 'Adultes',
+    intro: "Débutants ou improvisateurs expérimentés, de 18 à 108 ans : tous les profils sont bienvenus.",
+  },
+];
+
+const parCategorie = new Map(
+  categories.map((c) => [c.cle, ateliers.filter((a) => a.categorie === c.cle)]),
+);
+---
+
+<Layout
+  title="Ateliers d'improvisation — ASIL Impro"
+  description="Cours d'improvisation théâtrale à Saint-Étienne pour enfants, ados et adultes : créneaux, lieux, tarifs et infos pratiques des ateliers de l'ASIL."
+>
+  <section class="container-site grid items-center gap-10 py-14 sm:py-20 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] lg:gap-16">
+    <div>
+      <FadeInText duration={0.7}>
+        <h1 class="section-title text-4xl sm:text-5xl">Les ateliers</h1>
+      </FadeInText>
+      <blockquote class="mt-7 border-l-4 border-asil-red pl-5 font-display text-xl font-extrabold">
+        Qui vit sans folie n'est pas aussi sage qu'il le croit.
+      </blockquote>
+      <p class="mt-5 leading-relaxed text-white/80">
+        2h par semaine pour développer tous les aspects du théâtre
+        d'improvisation : l'écoute, la construction d'histoires, les
+        personnages… et le plaisir de jouer sans texte.
+      </p>
+      <p class="mt-4 leading-relaxed text-white/80">
+        Les ateliers ont lieu à l'<strong class="text-white">Amicale Laïque Michelet</strong>,
+        26 rue Coraly-Royet, 42100 Saint-Étienne.
+      </p>
+      <div class="mt-8">
+        <AnimatedButton variant="shimmer" href="/contact" class="btn-red px-8">
+          Demander une inscription
+        </AnimatedButton>
+      </div>
+    </div>
+    <Image
+      src={atelierPhoto}
+      alt="Atelier d'improvisation de l'ASIL"
+      class="w-full rounded-lg object-cover shadow-2xl shadow-black/50"
+      widths={[480, 800, 1000]}
+      sizes="(min-width: 1024px) 26rem, 100vw"
+      loading="eager"
+    />
+  </section>
+
+  {categories.map((cat) => {
+    const liste = parCategorie.get(cat.cle) ?? [];
+    return (
+      <section class="container-site pb-16" aria-labelledby={`cat-${cat.cle}`}>
+        <div class="mb-6 flex items-center gap-5">
+          <h2 id={`cat-${cat.cle}`} class="shrink-0 text-2xl text-asil-red sm:text-3xl">{cat.titre}</h2>
+          <div class="h-0.5 grow rounded bg-white/10" aria-hidden="true"></div>
+        </div>
+        <p class="mb-8 max-w-2xl text-white/70">{cat.intro}</p>
+        {liste.length === 0 ? (
+          <div class="rounded-lg border border-dashed border-white/20 bg-asil-gray-dark/60 p-8">
+            <p class="text-white/75">
+              Les créneaux {cat.titre.toLowerCase()} ouvrent prochainement.
+              <a href="/contact" class="font-semibold text-asil-red hover:underline"> Contactez-nous</a>
+              pour être informé·e dès l'ouverture des inscriptions.
+            </p>
+          </div>
+        ) : (
+          <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {liste.map((atelier, i) => (
+              <AtelierCard atelier={atelier} index={i} />
+            ))}
+          </div>
+        )}
+      </section>
+    );
+  })}
+
+  <section class="bg-asil-gray-light py-16 text-asil-black sm:py-20" aria-labelledby="intervenantes">
+    <div class="container-site">
+      <h2 id="intervenantes" class="section-title text-3xl sm:text-4xl">Les intervenantes</h2>
+      <div class="mt-10 grid gap-6 md:grid-cols-2">
+        <article class="card-hover rounded-lg bg-white p-8 shadow-sm">
+          <h3 class="text-xl">Katar</h3>
+          <p class="mt-3 text-sm leading-relaxed text-asil-gray">
+            Improvisatrice depuis 1996, co-fondatrice de la LISA en 2000 et
+            comédienne professionnelle depuis 2002, Katarzyna Perdek explore
+            sans cesse les différentes facettes de l'impro.
+          </p>
+        </article>
+        <article class="card-hover rounded-lg bg-white p-8 shadow-sm">
+          <h3 class="text-xl">Marie-Eve</h3>
+          <p class="mt-3 text-sm leading-relaxed text-asil-gray">
+            Membre fondatrice de la LISA et de l'ASIL, elle aime former les gens
+            en laissant une grande part au ludique et accompagne vers un jeu
+            généreux et heureux.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+</Layout>

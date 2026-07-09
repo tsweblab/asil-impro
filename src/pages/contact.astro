@@ -1,0 +1,75 @@
+---
+import { Image } from 'astro:assets';
+import FadeInText from '@astroanimate/core/FadeInText';
+import Layout from '../layouts/Layout.astro';
+import ContactForm from '../components/ContactForm.astro';
+import SocialLinks from '../components/SocialLinks.astro';
+import { getSettings } from '../lib/keystatic';
+import scenePhoto from '../assets/scene-impro.jpg';
+
+const settings = await getSettings();
+---
+
+<Layout
+  title="Contact — ASIL Impro"
+  description="Contactez l'ASIL Impro à Saint-Étienne : inscriptions aux ateliers et stages, réservations de spectacles, propositions de lieux. Formulaire, email et réseaux sociaux."
+>
+  <section class="container-site py-14 sm:py-20">
+    <FadeInText duration={0.7}>
+      <h1 class="section-title text-4xl sm:text-5xl">Contact</h1>
+    </FadeInText>
+    <p class="mt-5 max-w-2xl leading-relaxed text-white/75">
+      Une question sur les ateliers, une réservation, une scène à nous proposer ?
+      Écrivez-nous, on improvise une réponse rapidement.
+    </p>
+  </section>
+
+  <section class="container-site grid gap-12 pb-20 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-16">
+    <div>
+      <h2 class="mb-7 text-2xl">Envoyez-nous un message</h2>
+      <ContactForm />
+    </div>
+
+    <aside class="flex flex-col gap-8">
+      <Image
+        src={scenePhoto}
+        alt="Spectacle d'improvisation de l'ASIL"
+        class="w-full rounded-lg object-cover shadow-2xl shadow-black/50"
+        widths={[480, 800, 1200]}
+        sizes="(min-width: 1024px) 26rem, 100vw"
+        loading="lazy"
+      />
+
+      <div class="rounded-lg border border-white/10 bg-asil-gray-dark p-7">
+        <h2 class="text-xl">Nos coordonnées</h2>
+        <ul class="mt-5 grid gap-4 text-sm">
+          <li>
+            <span class="block font-display text-xs font-bold uppercase tracking-wide text-white/50">Email</span>
+            <a href={`mailto:${settings.email}`} class="font-semibold text-white transition-colors hover:text-asil-red">
+              {settings.email}
+            </a>
+          </li>
+          {settings.telephone && (
+            <li>
+              <span class="block font-display text-xs font-bold uppercase tracking-wide text-white/50">Téléphone</span>
+              <a href={`tel:${settings.telephone.replace(/\s/g, '')}`} class="font-semibold text-white transition-colors hover:text-asil-red">
+                {settings.telephone}
+              </a>
+            </li>
+          )}
+          <li>
+            <span class="block font-display text-xs font-bold uppercase tracking-wide text-white/50">Ateliers</span>
+            <p class="text-white/80">
+              Amicale Laïque Michelet<br />
+              26 rue Coraly-Royet, 42100 Saint-Étienne
+            </p>
+          </li>
+          <li>
+            <span class="mb-2 block font-display text-xs font-bold uppercase tracking-wide text-white/50">Réseaux sociaux</span>
+            <SocialLinks facebook={settings.facebook} instagram={settings.instagram} />
+          </li>
+        </ul>
+      </div>
+    </aside>
+  </section>
+</Layout>

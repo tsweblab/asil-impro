@@ -1,0 +1,134 @@
+---
+import SocialLinks from './SocialLinks.astro';
+
+interface Props {
+  facebook: string;
+  instagram: string;
+}
+
+const { facebook, instagram } = Astro.props;
+
+const liens = [
+  { href: '/', label: 'Accueil' },
+  { href: '/programme', label: 'Programme' },
+  { href: '/stages', label: 'Stages' },
+  { href: '/ateliers', label: 'Ateliers' },
+];
+---
+
+<header class="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-black/85 backdrop-blur-md">
+  <div class="container-site flex items-center justify-between gap-6 py-3">
+    <a href="/" aria-label="ASIL Impro — accueil" class="shrink-0">
+      <img
+        src="/images/logo-asil-blanc.png"
+        alt="ASIL Impro"
+        width="120"
+        height="53"
+        class="h-11 w-auto"
+      />
+    </a>
+
+    <!-- Nav desktop -->
+    <nav aria-label="Navigation principale" class="hidden items-center gap-7 lg:flex" data-nav-links>
+      {liens.map((lien) => (
+        <a
+          href={lien.href}
+          class="font-display text-sm font-bold uppercase tracking-wide text-white/90 transition-colors duration-300 hover:text-asil-red aria-[current=page]:text-asil-red"
+        >
+          {lien.label}
+        </a>
+      ))}
+    </nav>
+
+    <div class="hidden items-center gap-4 lg:flex">
+      <SocialLinks facebook={facebook} instagram={instagram} />
+      <a href="/contact" class="btn-red min-h-10 px-5 text-xs">Contact</a>
+    </div>
+
+    <!-- Bouton hamburger mobile -->
+    <button
+      type="button"
+      data-menu-toggle
+      aria-expanded="false"
+      aria-controls="menu-mobile"
+      aria-label="Ouvrir le menu"
+      class="grid size-11 place-items-center rounded border border-white/30 text-white lg:hidden"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" class="size-6" aria-hidden="true">
+        <path data-line="top" d="M4 7h16" />
+        <path data-line="mid" d="M4 12h16" />
+        <path data-line="bot" d="M4 17h16" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Menu mobile (slide) -->
+  <nav
+    id="menu-mobile"
+    aria-label="Navigation mobile"
+    class="grid max-h-0 overflow-hidden bg-asil-gray-dark transition-[max-height] duration-300 ease-out lg:hidden"
+    data-menu-mobile
+  >
+    <div class="container-site flex flex-col gap-1 py-4">
+      {liens.map((lien) => (
+        <a
+          href={lien.href}
+          class="rounded px-3 py-3 font-display font-bold uppercase tracking-wide text-white/90 transition-colors hover:bg-white/5 hover:text-asil-red aria-[current=page]:text-asil-red"
+        >
+          {lien.label}
+        </a>
+      ))}
+      <a href="/contact" class="btn-red mt-2">Contact</a>
+      <SocialLinks facebook={facebook} instagram={instagram} class="mt-4 px-3 pb-2" />
+    </div>
+  </nav>
+</header>
+
+<!-- Cale sous la navbar fixe -->
+<div aria-hidden="true" class="h-[68px]"></div>
+
+<script>
+  function initNavbar() {
+    const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+    const menu = document.querySelector<HTMLElement>('[data-menu-mobile]');
+    if (!toggle || !menu) return;
+
+    const fermer = () => {
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Ouvrir le menu');
+      menu.style.maxHeight = '0';
+    };
+
+    if (!toggle.dataset.bound) {
+      toggle.dataset.bound = 'true';
+      toggle.addEventListener('click', () => {
+        const ouvert = toggle.getAttribute('aria-expanded') === 'true';
+        if (ouvert) {
+          fermer();
+        } else {
+          toggle.setAttribute('aria-expanded', 'true');
+          toggle.setAttribute('aria-label', 'Fermer le menu');
+          menu.style.maxHeight = menu.scrollHeight + 'px';
+        }
+      });
+      menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', fermer));
+    }
+
+    // Lien actif : mis à jour à chaque navigation (la navbar persiste
+    // entre les pages grâce à transition:persist).
+    const chemin = location.pathname.replace(/\/$/, '') || '/';
+    document.querySelectorAll<HTMLAnchorElement>('header nav a').forEach((a) => {
+      const cible = a.getAttribute('href')?.replace(/\/$/, '') || '/';
+      if (cible === chemin) {
+        a.setAttribute('aria-current', 'page');
+      } else {
+        a.removeAttribute('aria-current');
+      }
+    });
+
+    fermer();
+  }
+
+  initNavbar();
+  document.addEventListener('astro:page-load', initNavbar);
+</script>

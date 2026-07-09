@@ -1,0 +1,96 @@
+---
+const inputClass =
+  'w-full rounded border border-white/20 bg-asil-gray-dark px-4 py-3 text-white placeholder:text-white/35 transition-colors duration-300 focus:border-asil-red focus:outline-none focus:ring-2 focus:ring-asil-red/40';
+---
+
+<form data-contact-form class="grid gap-5" novalidate>
+  <div class="grid gap-5 sm:grid-cols-2">
+    <div>
+      <label for="nom" class="mb-2 block font-display text-sm font-bold uppercase tracking-wide">Nom</label>
+      <input id="nom" name="nom" type="text" required autocomplete="name" placeholder="Votre nom" class={inputClass} />
+    </div>
+    <div>
+      <label for="email" class="mb-2 block font-display text-sm font-bold uppercase tracking-wide">Email</label>
+      <input id="email" name="email" type="email" required autocomplete="email" placeholder="votre@email.fr" class={inputClass} />
+    </div>
+  </div>
+
+  <div>
+    <label for="sujet" class="mb-2 block font-display text-sm font-bold uppercase tracking-wide">Sujet</label>
+    <input id="sujet" name="sujet" type="text" required placeholder="Inscription, réservation, question…" class={inputClass} />
+  </div>
+
+  <div>
+    <label for="message" class="mb-2 block font-display text-sm font-bold uppercase tracking-wide">Message</label>
+    <textarea id="message" name="message" required rows="6" placeholder="Votre message…" class={inputClass}></textarea>
+  </div>
+
+  <!-- Honeypot anti-spam : invisible pour les humains, rempli par les bots -->
+  <div class="absolute -left-[9999px] size-px overflow-hidden" aria-hidden="true">
+    <label for="website">Ne pas remplir ce champ</label>
+    <input id="website" name="website" type="text" tabindex="-1" autocomplete="off" />
+  </div>
+
+  <button type="submit" class="btn-red justify-self-start px-9" data-submit>
+    Envoyer le message
+  </button>
+
+  <p data-feedback role="status" aria-live="polite" class="hidden rounded border px-4 py-3 text-sm font-semibold"></p>
+</form>
+
+<script>
+  function initContactForm() {
+    const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+    if (!form || form.dataset.bound) return;
+    form.dataset.bound = 'true';
+
+    const feedback = form.querySelector<HTMLElement>('[data-feedback]')!;
+    const bouton = form.querySelector<HTMLButtonElement>('[data-submit]')!;
+
+    const afficher = (message: string, ok: boolean) => {
+      feedback.textContent = message;
+      feedback.classList.remove('hidden');
+      feedback.classList.toggle('border-green-500/50', ok);
+      feedback.classList.toggle('bg-green-500/10', ok);
+      feedback.classList.toggle('text-green-400', ok);
+      feedback.classList.toggle('border-asil-red/60', !ok);
+      feedback.classList.toggle('bg-asil-red/10', !ok);
+      feedback.classList.toggle('text-asil-red', !ok);
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      bouton.disabled = true;
+      bouton.textContent = 'Envoi en cours…';
+
+      try {
+        const reponse = await fetch('/api/contact', {
+          method: 'POST',
+          body: new FormData(form),
+        });
+        const data = await reponse.json();
+
+        if (reponse.ok && data.ok) {
+          afficher('Merci ! Votre message a bien été envoyé. Nous vous répondrons au plus vite.', true);
+          form.reset();
+        } else {
+          afficher(data.error ?? "Une erreur est survenue. Réessayez ou écrivez-nous directement par email.", false);
+        }
+      } catch {
+        afficher("Impossible d'envoyer le message. Vérifiez votre connexion ou écrivez-nous par email.", false);
+      } finally {
+        bouton.disabled = false;
+        bouton.textContent = 'Envoyer le message';
+      }
+    });
+  }
+
+  initContactForm();
+  document.addEventListener('astro:page-load', initContactForm);
+</script>

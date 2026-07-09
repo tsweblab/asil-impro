@@ -1,0 +1,41 @@
+---
+import { formatDateLongue, formatHeure, type Evenement } from '../lib/keystatic';
+
+interface Props {
+  evenement: Evenement;
+  /** Variante compacte pour le carrousel de l'accueil. */
+  compact?: boolean;
+}
+
+const { evenement, compact = false } = Astro.props;
+const heure = formatHeure(evenement.date!);
+---
+
+<article
+  class:list={[
+    'card-hover flex h-full flex-col gap-3 rounded-lg border border-white/10 bg-asil-gray-dark p-6',
+    compact ? '' : 'sm:p-7',
+  ]}
+>
+  <p class="font-display text-sm font-bold uppercase tracking-wide text-asil-red">
+    {formatDateLongue(evenement.date!)}{heure && ` — ${heure}`}
+  </p>
+  <h3 class="text-xl text-white">{evenement.titre}</h3>
+  <p class="text-sm font-semibold text-white/80">
+    {evenement.lieu}
+    {evenement.adresse && <span class="block font-normal text-white/50">{evenement.adresse}</span>}
+  </p>
+  {!compact && evenement.description && (
+    <p class="text-sm leading-relaxed text-white/70">{evenement.description}</p>
+  )}
+  {evenement.lienReservation && (
+    <a
+      href={evenement.lienReservation}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="btn-red mt-auto self-start min-h-10 px-5 text-xs"
+    >
+      Réserver
+    </a>
+  )}
+</article>

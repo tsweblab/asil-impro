@@ -1,0 +1,61 @@
+---
+import { Image } from 'astro:assets';
+import FadeInText from '@astroanimate/core/FadeInText';
+import AnimatedButton from '@astroanimate/core/AnimatedButton';
+import heroDefaut from '../assets/hero-bg.jpg';
+
+interface Props {
+  titre: string;
+  sousTitre: string;
+  /** Image uploadée via Keystatic (chemin public), sinon l'image par défaut. */
+  imagePublique?: string | null;
+}
+
+const { titre, sousTitre, imagePublique = null } = Astro.props;
+---
+
+<section class="relative grid min-h-[calc(100svh-68px)] items-center overflow-hidden bg-asil-black">
+  <!-- Image de fond -->
+  {imagePublique ? (
+    <img
+      src={imagePublique}
+      alt=""
+      class="absolute inset-0 size-full object-cover"
+      fetchpriority="high"
+    />
+  ) : (
+    <Image
+      src={heroDefaut}
+      alt=""
+      class="absolute inset-0 size-full object-cover"
+      widths={[768, 1280, 1920]}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+    />
+  )}
+  <!-- Voiles théâtraux : spotlight + fondu vers le noir -->
+  <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/35 to-black/20" aria-hidden="true"></div>
+  <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-asil-black" aria-hidden="true"></div>
+
+  <div class="container-site relative py-24">
+    <FadeInText duration={0.8}>
+      <p class="mb-4 font-display text-base font-bold uppercase tracking-[0.2em] text-asil-red sm:text-lg">
+        {sousTitre}
+      </p>
+    </FadeInText>
+    <FadeInText duration={0.8} delay={0.15}>
+      <h1 class="max-w-4xl text-[clamp(2.4rem,6.5vw,4.8rem)] leading-[1.02] text-white">
+        {titre}
+      </h1>
+    </FadeInText>
+    <FadeInText duration={0.8} delay={0.35}>
+      <div class="mt-9 flex flex-wrap gap-4">
+        <AnimatedButton variant="shimmer" href="/ateliers" class="btn-red min-h-13 px-8">
+          Découvrir nos ateliers
+        </AnimatedButton>
+        <a href="/programme" class="btn-outline min-h-13 px-8">Voir le programme</a>
+      </div>
+    </FadeInText>
+  </div>
+</section>

@@ -1,0 +1,26 @@
+---
+import CountUp from '@astroanimate/core/CountUp';
+
+const chiffres = [
+  { valeur: 22, suffixe: ' ans', label: "d'impro loufoque" },
+  { valeur: 100, suffixe: '+', label: 'adhérents' },
+  { valeur: 30, suffixe: '+', label: 'spectacles par saison' },
+];
+---
+
+<section class="border-y border-white/10 bg-asil-gray-dark" aria-label="Chiffres clés">
+  <div class="container-site grid grid-cols-2 gap-8 py-14 sm:grid-cols-4">
+    {chiffres.map((c) => (
+      <div class="border-t-2 border-asil-red pt-5">
+        <p class="font-display text-4xl font-black text-white sm:text-5xl">
+          <CountUp value={c.valeur} suffix={c.suffixe} enhance={true} duration={1800} />
+        </p>
+        <p class="mt-1 text-sm font-bold uppercase tracking-wide text-white/60">{c.label}</p>
+      </div>
+    ))}
+    <div class="border-t-2 border-asil-red pt-5">
+      <p class="font-display text-4xl font-black text-white sm:text-5xl">∞</p>
+      <p class="mt-1 text-sm font-bold uppercase tracking-wide text-white/60">éclats de rire</p>
+    </div>
+  </div>
+</section>

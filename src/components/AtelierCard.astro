@@ -1,0 +1,27 @@
+---
+import ScaleIn from '@astroanimate/core/ScaleIn';
+import type { Atelier } from '../lib/keystatic';
+
+interface Props {
+  atelier: Atelier;
+  index?: number;
+}
+
+const { atelier, index = 0 } = Astro.props;
+---
+
+<ScaleIn enhance={true} delay={index * 120} class="h-full">
+  <article class="card-hover flex h-full flex-col gap-4 rounded-lg border border-white/10 bg-asil-gray-dark p-7">
+    <h3 class="text-xl text-white">{atelier.titre}</h3>
+    {atelier.creneaux && (
+      <div class="border-l-4 border-asil-red pl-4 text-sm leading-relaxed text-white/85 whitespace-pre-line">{atelier.creneaux}</div>
+    )}
+    <ul class="grid gap-1.5 text-sm text-white/75">
+      {atelier.lieu && <li><strong class="text-white">Lieu :</strong> {atelier.lieu}</li>}
+      {atelier.tarif && <li><strong class="text-white">Tarif annuel :</strong> {atelier.tarif}</li>}
+    </ul>
+    {atelier.description && (
+      <p class="text-sm leading-relaxed text-white/70">{atelier.description}</p>
+    )}
+  </article>
+</ScaleIn>
