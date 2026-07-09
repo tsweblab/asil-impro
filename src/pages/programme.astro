@@ -2,9 +2,11 @@
 import FadeInText from '@astroanimate/core/FadeInText';
 import Layout from '../layouts/Layout.astro';
 import EventCard from '../components/EventCard.astro';
-import { getEvenementsAVenir, grouperParMois } from '../lib/keystatic';
+import { getEvenements, grouperParMois } from '../lib/keystatic';
 
-const evenements = await getEvenementsAVenir();
+// Toute la saison est affichée (comme sur le site historique) ; seul le
+// carrousel de l'accueil se limite aux événements à venir.
+const evenements = await getEvenements();
 const parMois = grouperParMois(evenements);
 
 // Ancre URL-safe pour un mois : "Février 2027" -> "fevrier-2027"
