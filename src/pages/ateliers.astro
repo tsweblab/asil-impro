@@ -1,13 +1,14 @@
 ---
-import { Image } from 'astro:assets';
 import FadeInText from '@astroanimate/core/FadeInText';
 import AnimatedButton from '@astroanimate/core/AnimatedButton';
 import Layout from '../layouts/Layout.astro';
 import AtelierCard from '../components/AtelierCard.astro';
-import { getAteliers, type Atelier } from '../lib/keystatic';
+import SitePhoto from '../components/SitePhoto.astro';
+import { getAteliers, getSettings, type Atelier } from '../lib/keystatic';
 import atelierPhoto from '../assets/atelier-portrait.jpg';
 
 const ateliers = await getAteliers();
+const settings = await getSettings();
 
 const categories: { cle: NonNullable<Atelier['categorie']>; titre: string; intro: string }[] = [
   {
@@ -59,8 +60,9 @@ const parCategorie = new Map(
         </AnimatedButton>
       </div>
     </div>
-    <Image
-      src={atelierPhoto}
+    <SitePhoto
+      publique={settings.photoAteliers}
+      fallback={atelierPhoto}
       alt="Atelier d'improvisation de l'ASIL"
       class="w-full rounded-lg object-cover shadow-2xl shadow-black/50"
       widths={[480, 800, 1000]}

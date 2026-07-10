@@ -1,8 +1,8 @@
 ---
-import { Image } from 'astro:assets';
 import FadeInText from '@astroanimate/core/FadeInText';
 import Layout from '../layouts/Layout.astro';
 import ContactForm from '../components/ContactForm.astro';
+import SitePhoto from '../components/SitePhoto.astro';
 import SocialLinks from '../components/SocialLinks.astro';
 import { getSettings } from '../lib/keystatic';
 import scenePhoto from '../assets/scene-impro.jpg';
@@ -31,8 +31,9 @@ const settings = await getSettings();
     </div>
 
     <aside class="flex flex-col gap-8">
-      <Image
-        src={scenePhoto}
+      <SitePhoto
+        publique={settings.photoContact}
+        fallback={scenePhoto}
         alt="Spectacle d'improvisation de l'ASIL"
         class="w-full rounded-lg object-cover shadow-2xl shadow-black/50"
         widths={[480, 800, 1200]}
@@ -49,12 +50,19 @@ const settings = await getSettings();
               {settings.email}
             </a>
           </li>
-          {settings.telephone && (
+          {settings.telephones.length > 0 && (
             <li>
               <span class="block font-display text-xs font-bold uppercase tracking-wide text-white/50">Téléphone</span>
-              <a href={`tel:${settings.telephone.replace(/\s/g, '')}`} class="font-semibold text-white transition-colors hover:text-asil-red">
-                {settings.telephone}
-              </a>
+              <ul class="grid gap-1">
+                {settings.telephones.map((t) => (
+                  <li>
+                    <a href={`tel:${t.numero.replace(/[\s.]/g, '')}`} class="font-semibold text-white transition-colors hover:text-asil-red">
+                      {t.numero}
+                    </a>
+                    {t.libelle && <span class="text-white/60"> — {t.libelle}</span>}
+                  </li>
+                ))}
+              </ul>
             </li>
           )}
           <li>

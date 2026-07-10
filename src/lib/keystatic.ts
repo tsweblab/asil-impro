@@ -20,15 +20,22 @@ export type Atelier = NonNullable<
 export async function getSettings() {
   const settings = await reader.singletons.siteSettings.read();
   return {
-    telephone: settings?.telephone ?? '',
+    telephones: (settings?.telephones ?? []).filter((t) => t.numero),
     email: settings?.email ?? 'admin@asil-impro.fr',
     facebook: settings?.facebook ?? 'https://www.facebook.com/profile.php?id=100063601480001',
     instagram: settings?.instagram ?? 'https://www.instagram.com/asil_impro/',
     heroTitre: settings?.heroTitre ?? "L'asso stéphanoise qui improvise depuis 22 ans !",
     heroSousTitre: settings?.heroSousTitre ?? "Ateliers stéphanois d'improvisation loufoque",
     heroImage: settings?.heroImage ?? null,
+    photoRejoindre: settings?.photoRejoindre ?? null,
+    photoAsil: settings?.photoAsil ?? null,
+    photoAteliers: settings?.photoAteliers ?? null,
+    photoStages: settings?.photoStages ?? null,
+    photoContact: settings?.photoContact ?? null,
   };
 }
+
+export type Telephone = Awaited<ReturnType<typeof getSettings>>['telephones'][number];
 
 export async function getEvenements(): Promise<Evenement[]> {
   const all = await reader.collections.evenements.all();

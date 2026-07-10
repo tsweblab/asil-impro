@@ -182,10 +182,25 @@ export default config({
       label: 'Paramètres du site',
       path: 'src/content/settings/site',
       schema: {
-        telephone: fields.text({
-          label: 'Numéro de téléphone',
-          description: 'Affiché sur la page Contact et dans le pied de page. Laissez vide pour ne rien afficher.',
-        }),
+        telephones: fields.array(
+          fields.object({
+            libelle: fields.text({
+              label: 'Libellé',
+              description: 'Ex : Présidente, Inscriptions, Bureau…',
+            }),
+            numero: fields.text({
+              label: 'Numéro',
+              description: 'Ex : 06 12 34 56 78',
+            }),
+          }),
+          {
+            label: 'Numéros de téléphone',
+            description: 'Affichés sur la page Contact et dans le pied de page (cliquables sur mobile). Ajoutez-en autant que nécessaire.',
+            itemLabel: (props) =>
+              [props.fields.libelle.value, props.fields.numero.value].filter(Boolean).join(' — ') ||
+              'Nouveau numéro',
+          },
+        ),
         email: fields.text({
           label: 'Email de contact',
           description: 'Affiché sur le site (lien cliquable) — page Contact et pied de page.',
@@ -212,6 +227,36 @@ export default config({
           description: 'Grande photo de spectacle, format paysage (idéalement 1920px de large). Sans photo, l\'image par défaut est utilisée.',
           directory: 'public/images',
           publicPath: '/images/',
+        }),
+        photoRejoindre: fields.image({
+          label: 'Photo — Accueil, section « Devenez improvisateur·rice »',
+          description: 'Format portrait ou carré conseillé. Sans photo, l\'image par défaut est utilisée.',
+          directory: 'public/images/site',
+          publicPath: '/images/site/',
+        }),
+        photoAsil: fields.image({
+          label: 'Photo — Accueil, section « L\'ASIL, c\'est quoi ? »',
+          description: 'Format paysage conseillé. Sans photo, l\'image par défaut est utilisée.',
+          directory: 'public/images/site',
+          publicPath: '/images/site/',
+        }),
+        photoAteliers: fields.image({
+          label: 'Photo — Page Ateliers',
+          description: 'Format portrait conseillé. Sans photo, l\'image par défaut est utilisée.',
+          directory: 'public/images/site',
+          publicPath: '/images/site/',
+        }),
+        photoStages: fields.image({
+          label: 'Photo — Page Stages',
+          description: 'Format portrait conseillé. Sans photo, l\'image par défaut est utilisée.',
+          directory: 'public/images/site',
+          publicPath: '/images/site/',
+        }),
+        photoContact: fields.image({
+          label: 'Photo — Page Contact',
+          description: 'Format paysage conseillé. Sans photo, l\'image par défaut est utilisée.',
+          directory: 'public/images/site',
+          publicPath: '/images/site/',
         }),
       },
     }),

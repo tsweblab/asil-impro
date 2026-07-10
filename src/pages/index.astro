@@ -1,5 +1,4 @@
 ---
-import { Image } from 'astro:assets';
 import FadeInText from '@astroanimate/core/FadeInText';
 import ScaleIn from '@astroanimate/core/ScaleIn';
 import AnimatedButton from '@astroanimate/core/AnimatedButton';
@@ -7,6 +6,7 @@ import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import EventCarousel from '../components/EventCarousel.astro';
 import SectionChiffres from '../components/SectionChiffres.astro';
+import SitePhoto from '../components/SitePhoto.astro';
 import { getSettings, getEvenementsAVenir } from '../lib/keystatic';
 import maud from '../assets/maud.jpg';
 import comediens from '../assets/comediens.jpg';
@@ -111,8 +111,9 @@ const raisons = [
       </div>
     </div>
     <ScaleIn enhance={true}>
-      <Image
-        src={maud}
+      <SitePhoto
+        publique={settings.photoRejoindre}
+        fallback={maud}
         alt="Improvisatrice de l'ASIL sur scène"
         class="w-full rounded-lg object-cover shadow-2xl shadow-black/50"
         widths={[480, 800, 1200]}
@@ -126,8 +127,9 @@ const raisons = [
 
   <section class="container-site grid items-center gap-10 py-16 sm:py-24 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-16" aria-labelledby="asil-quoi">
     <ScaleIn enhance={true} class="order-2 lg:order-1">
-      <Image
-        src={comediens}
+      <SitePhoto
+        publique={settings.photoAsil}
+        fallback={comediens}
         alt="Comédiens de l'ASIL en spectacle d'improvisation"
         class="w-full rounded-lg object-cover shadow-2xl shadow-black/50"
         widths={[480, 800, 1365]}

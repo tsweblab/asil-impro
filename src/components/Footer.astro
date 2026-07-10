@@ -1,14 +1,15 @@
 ---
 import SocialLinks from './SocialLinks.astro';
+import type { Telephone } from '../lib/keystatic';
 
 interface Props {
   facebook: string;
   instagram: string;
   email: string;
-  telephone: string;
+  telephones: Telephone[];
 }
 
-const { facebook, instagram, email, telephone } = Astro.props;
+const { facebook, instagram, email, telephones } = Astro.props;
 const annee = new Date().getFullYear();
 ---
 
@@ -47,11 +48,12 @@ const annee = new Date().getFullYear();
         <li>
           <a href={`mailto:${email}`} class="font-semibold text-white transition-colors hover:text-asil-red">{email}</a>
         </li>
-        {telephone && (
+        {telephones.map((t) => (
           <li>
-            <a href={`tel:${telephone.replace(/\s/g, '')}`} class="transition-colors hover:text-asil-red">{telephone}</a>
+            <a href={`tel:${t.numero.replace(/[\s.]/g, '')}`} class="transition-colors hover:text-asil-red">{t.numero}</a>
+            {t.libelle && <span class="text-white/45"> — {t.libelle}</span>}
           </li>
-        )}
+        ))}
       </ul>
       <SocialLinks facebook={facebook} instagram={instagram} class="mt-5" />
     </div>

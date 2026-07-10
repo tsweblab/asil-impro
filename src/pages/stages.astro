@@ -1,12 +1,13 @@
 ---
-import { Image } from 'astro:assets';
 import FadeInText from '@astroanimate/core/FadeInText';
 import Layout from '../layouts/Layout.astro';
 import StageCard from '../components/StageCard.astro';
-import { getStages } from '../lib/keystatic';
+import SitePhoto from '../components/SitePhoto.astro';
+import { getStages, getSettings } from '../lib/keystatic';
 import stagePhoto from '../assets/stage-nb.jpg';
 
 const stages = await getStages();
+const settings = await getSettings();
 const today = new Date().toISOString().slice(0, 10);
 const aVenir = stages.filter((s) => (s.dateFin ?? s.dateDebut ?? '') >= today);
 ---
@@ -32,8 +33,9 @@ const aVenir = stages.filter((s) => (s.dateFin ?? s.dateDebut ?? '') >= today);
         Prévoyez votre pique-nique et une tenue confortable !
       </p>
     </div>
-    <Image
-      src={stagePhoto}
+    <SitePhoto
+      publique={settings.photoStages}
+      fallback={stagePhoto}
       alt="Participants d'un stage d'improvisation de l'ASIL"
       class="w-full rounded-lg object-cover shadow-2xl shadow-black/50"
       widths={[480, 800, 1200]}
