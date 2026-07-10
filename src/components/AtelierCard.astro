@@ -11,8 +11,8 @@ const { atelier, index = 0 } = Astro.props;
 ---
 
 <ScaleIn enhance={true} delay={index * 120} class="h-full">
-  <article class="card-hover flex h-full flex-col gap-4 rounded-lg border border-white/10 bg-asil-gray-dark p-7">
-    <h3 class="text-xl text-white">{atelier.titre}</h3>
+  <article class="card-scene card-hover flex h-full flex-col gap-4 p-7">
+    <h3 class="text-2xl text-white">{atelier.titre}</h3>
     {atelier.creneaux && (
       <div class="border-l-4 border-asil-red pl-4 text-sm leading-relaxed text-white/85 whitespace-pre-line">{atelier.creneaux}</div>
     )}

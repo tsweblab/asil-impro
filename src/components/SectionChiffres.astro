@@ -8,11 +8,12 @@ const chiffres = [
 ];
 ---
 
-<section class="border-y border-white/10 bg-asil-gray-dark" aria-label="Chiffres clés">
-  <div class="container-site grid grid-cols-2 gap-8 py-14 sm:grid-cols-4">
+<section class="relative overflow-hidden border-y border-white/8 bg-asil-gray-dark" aria-label="Chiffres clés">
+  <div class="pointer-events-none absolute inset-0 [background:radial-gradient(40rem_20rem_at_50%_120%,rgba(227,6,19,0.10),transparent_65%)]" aria-hidden="true"></div>
+  <div class="container-site relative grid grid-cols-2 gap-8 py-16 sm:grid-cols-4">
     {chiffres.map((c) => (
-      <div class="border-t-2 border-asil-red pt-5">
-        <p class="font-display text-4xl font-black text-white sm:text-5xl">
+      <div class="border-t border-asil-red/60 pt-6">
+        <p class="font-display text-5xl text-white sm:text-6xl">
           <CountUp
             value={c.valeur}
             suffix={c.suffixe}
@@ -20,22 +21,22 @@ const chiffres = [
             duration={1800}
             textColor="#ffffff"
             fontSize="1em"
-            fontFamily="Montserrat, 'Segoe UI', system-ui, sans-serif"
+            fontFamily="'Playfair Display', Georgia, serif"
           />
         </p>
-        <p class="mt-1 text-sm font-bold uppercase tracking-wide text-white">{c.label}</p>
+        <p class="mt-2 font-sans text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/70">{c.label}</p>
       </div>
     ))}
-    <div class="border-t-2 border-asil-red pt-5">
-      <p class="font-display text-4xl font-black text-white sm:text-5xl">∞</p>
-      <p class="mt-1 text-sm font-bold uppercase tracking-wide text-white">éclats de rire</p>
+    <div class="border-t border-asil-red/60 pt-6">
+      <p class="font-display text-5xl text-white sm:text-6xl">∞</p>
+      <p class="mt-2 font-sans text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/70">éclats de rire</p>
     </div>
   </div>
 </section>
 
 <style>
-  /* CountUp force font-weight: 700 ; on aligne sur le font-black (900) des titres */
+  /* CountUp force font-weight: 700 ; aligné sur les titres serif */
   section :global(.count-up) {
-    font-weight: 900;
+    font-weight: 600;
   }
 </style>

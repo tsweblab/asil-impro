@@ -1,15 +1,17 @@
 @import "tailwindcss";
 
 @theme {
-  /* Charte ASIL Impro */
+  /* Charte ASIL Impro — noir / blanc / rouge */
   --color-asil-red: #e30613;
   --color-asil-red-dark: #b8050f;
   --color-asil-black: #000000;
-  --color-asil-gray-dark: #1a1a1a;
+  --color-asil-night: #0b0a0a;
+  --color-asil-gray-dark: #161414;
   --color-asil-gray: #333333;
-  --color-asil-gray-light: #f5f5f5;
+  --color-asil-gray-light: #f7f6f4;
 
-  --font-display: "Montserrat", "Segoe UI", system-ui, sans-serif;
+  /* Duo typographique « éditorial luxe » : serif théâtral + sans discret */
+  --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
   --font-sans: "Inter", "Segoe UI", system-ui, sans-serif;
 }
 
@@ -19,18 +21,27 @@
   }
 
   body {
-    @apply bg-asil-black font-sans text-white antialiased;
+    @apply bg-asil-night font-sans text-white antialiased;
+    background-image:
+      radial-gradient(1200px 600px at 85% -10%, rgba(227, 6, 19, 0.07), transparent 60%),
+      radial-gradient(900px 500px at -10% 30%, rgba(255, 255, 255, 0.03), transparent 55%);
   }
 
   h1,
   h2,
   h3,
   h4 {
-    @apply font-display font-extrabold uppercase leading-tight tracking-tight;
+    @apply font-display font-semibold tracking-tight;
+    text-wrap: balance;
   }
 
   ::selection {
     @apply bg-asil-red text-white;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-asil-red);
+    outline-offset: 3px;
   }
 }
 
@@ -40,22 +51,37 @@
 }
 
 @layer components {
+  /* Étiquette « petites capitales » au-dessus des titres */
+  .eyebrow {
+    @apply inline-flex items-center gap-3 font-sans text-[0.7rem] font-semibold uppercase tracking-[0.35em] text-asil-red;
+  }
+
+  .eyebrow::before {
+    content: "";
+    @apply h-px w-8 bg-asil-red/80;
+  }
+
   .btn,
   .btn-red,
   .btn-outline {
-    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded px-6 font-display text-sm font-extrabold uppercase tracking-wide transition-all duration-300;
+    @apply inline-flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-full px-8 font-sans text-xs font-semibold uppercase tracking-[0.18em] transition-all duration-300;
   }
 
   .btn-red {
-    @apply bg-asil-red text-white hover:-translate-y-0.5 hover:bg-asil-red-dark hover:shadow-lg hover:shadow-asil-red/30;
+    @apply bg-asil-red text-white hover:-translate-y-0.5 hover:bg-asil-red-dark hover:shadow-[0_12px_40px_-8px_rgba(227,6,19,0.55)];
   }
 
   .btn-outline {
-    @apply border-2 border-white/70 text-white hover:border-asil-red hover:bg-asil-red;
+    @apply border border-white/40 text-white backdrop-blur-sm hover:-translate-y-0.5 hover:border-asil-red hover:bg-asil-red/90 hover:shadow-[0_12px_40px_-8px_rgba(227,6,19,0.45)];
+  }
+
+  /* Carte sombre « scène » : fond profond, filet fin, halo rouge au survol */
+  .card-scene {
+    @apply rounded-2xl border border-white/8 bg-asil-gray-dark/90 transition-all duration-300;
   }
 
   .card-hover {
-    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/40;
+    @apply transition-all duration-300 hover:-translate-y-1 hover:border-asil-red/40 hover:shadow-[0_20px_60px_-20px_rgba(227,6,19,0.35)];
   }
 }
 
@@ -80,19 +106,31 @@
   flex: 0 0 min(100%, 22rem);
 }
 
-/* Rideau rouge : liseré théâtral sous les titres de section */
+/* Filet théâtral sous les titres de section */
 .section-title::after {
   content: "";
   display: block;
-  width: 4.5rem;
-  height: 0.3rem;
-  margin-top: 0.85rem;
-  background: var(--color-asil-red);
+  width: 4rem;
+  height: 2px;
+  margin-top: 1rem;
+  background: linear-gradient(90deg, var(--color-asil-red), transparent);
   border-radius: 999px;
 }
 
 .section-title.centered::after {
   margin-inline: auto;
+  background: linear-gradient(90deg, transparent, var(--color-asil-red), transparent);
+}
+
+/* Grain photographique discret sur tout le site (ambiance argentique) */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
 }
 
 /* Respect de prefers-reduced-motion */

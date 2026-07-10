@@ -52,34 +52,40 @@ const raisons = [
 
   {prochains.length > 0 && (
     <section class="container-site py-16 sm:py-20" aria-labelledby="prochainement">
-      <div class="mb-8 flex flex-wrap items-end justify-between gap-4">
-        <h2 id="prochainement" class="section-title text-3xl sm:text-4xl">Prochainement</h2>
-        <a href="/programme" class="font-display text-sm font-bold uppercase tracking-wide text-asil-red transition-colors hover:text-white">
-          Tout le programme →
+      <div class="mb-10 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p class="eyebrow mb-4">L'agenda</p>
+          <h2 id="prochainement" class="section-title text-4xl sm:text-5xl">Prochainement</h2>
+        </div>
+        <a href="/programme" class="group font-sans text-xs font-semibold uppercase tracking-[0.2em] text-asil-red transition-colors hover:text-white">
+          Tout le programme <span class="inline-block transition-transform duration-300 group-hover:translate-x-1">→</span>
         </a>
       </div>
       <EventCarousel evenements={prochains} />
     </section>
   )}
 
-  <section class="bg-asil-gray-light py-16 text-asil-black sm:py-24" aria-labelledby="pourquoi">
+  <section class="bg-asil-gray-light py-20 text-asil-black sm:py-28" aria-labelledby="pourquoi">
     <div class="container-site">
       <FadeInText enhance={true} duration={0.7}>
-        <h2 id="pourquoi" class="section-title centered mx-auto max-w-2xl text-center text-3xl sm:text-4xl">
-          Pourquoi rejoindre l'ASIL ?
-        </h2>
+        <div class="mx-auto max-w-2xl text-center">
+          <p class="eyebrow mb-4 justify-center before:hidden">La troupe</p>
+          <h2 id="pourquoi" class="section-title centered text-4xl sm:text-5xl">
+            Pourquoi rejoindre l'ASIL ?
+          </h2>
+        </div>
       </FadeInText>
-      <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {raisons.map((r, i) => (
           <ScaleIn enhance={true} delay={i * 120} class="h-full">
-            <article class="card-hover h-full rounded-lg bg-white p-7 shadow-sm">
+            <article class="h-full rounded-2xl border border-black/5 bg-white p-8 transition-all duration-300 hover:-translate-y-1 hover:border-asil-red/30 hover:shadow-[0_20px_50px_-20px_rgba(0,0,0,0.25)]">
               <span class="grid size-13 place-items-center rounded-full bg-asil-red/10 text-asil-red">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-6" aria-hidden="true">
                   <path d={r.icone} />
                 </svg>
               </span>
-              <h3 class="mt-5 text-lg text-asil-black">{r.titre}</h3>
-              <p class="mt-2 text-sm leading-relaxed text-asil-gray">{r.texte}</p>
+              <h3 class="mt-6 text-xl text-asil-black">{r.titre}</h3>
+              <p class="mt-3 text-sm leading-relaxed text-asil-gray">{r.texte}</p>
             </article>
           </ScaleIn>
         ))}
@@ -90,7 +96,8 @@ const raisons = [
   <section class="container-site grid items-center gap-10 py-16 sm:py-24 lg:grid-cols-2 lg:gap-16" aria-labelledby="rejoindre">
     <div>
       <FadeInText enhance={true} duration={0.7}>
-        <h2 id="rejoindre" class="section-title text-3xl sm:text-4xl">
+        <p class="eyebrow mb-4">Les ateliers</p>
+        <h2 id="rejoindre" class="section-title text-4xl sm:text-5xl">
           Devenez improvisateur·rice
         </h2>
       </FadeInText>
@@ -115,7 +122,7 @@ const raisons = [
         publique={settings.photoRejoindre}
         fallback={maud}
         alt="Improvisatrice de l'ASIL sur scène"
-        class="w-full rounded-lg object-cover shadow-2xl shadow-black/50"
+        class="w-full rounded-2xl object-cover shadow-2xl shadow-black/60"
         widths={[480, 800, 1200]}
         sizes="(min-width: 1024px) 34rem, 100vw"
         loading="lazy"
@@ -131,7 +138,7 @@ const raisons = [
         publique={settings.photoAsil}
         fallback={comediens}
         alt="Comédiens de l'ASIL en spectacle d'improvisation"
-        class="w-full rounded-lg object-cover shadow-2xl shadow-black/50"
+        class="w-full rounded-2xl object-cover shadow-2xl shadow-black/60"
         widths={[480, 800, 1365]}
         sizes="(min-width: 1024px) 30rem, 100vw"
         loading="lazy"
@@ -139,7 +146,8 @@ const raisons = [
     </ScaleIn>
     <div class="order-1 lg:order-2">
       <FadeInText enhance={true} duration={0.7}>
-        <h2 id="asil-quoi" class="section-title text-3xl sm:text-4xl">L'ASIL, c'est quoi ?</h2>
+        <p class="eyebrow mb-4">Depuis 2002</p>
+        <h2 id="asil-quoi" class="section-title text-4xl sm:text-5xl">L'ASIL, c'est quoi ?</h2>
       </FadeInText>
       <p class="mt-6 leading-relaxed text-white/80">
         Les <strong class="text-white">Ateliers stéphanois d'improvisation loufoque</strong>,
@@ -147,22 +155,26 @@ const raisons = [
         tous niveaux et propose des spectacles de ses élèves toute l'année dans
         les bars, café-théâtres et lieux culturels de Saint-Étienne et sa région.
       </p>
-      <blockquote class="mt-6 border-l-4 border-asil-red pl-5 font-display text-xl font-extrabold text-white">
-        Qui vit sans folie n'est pas aussi sage qu'il le croit.
+      <blockquote class="mt-7 border-l-2 border-asil-red pl-6 font-display text-2xl italic leading-snug text-white/90">
+        « Qui vit sans folie n'est pas aussi sage qu'il le croit. »
       </blockquote>
     </div>
   </section>
 
   <section class="relative overflow-hidden bg-asil-red">
-    <div class="container-site flex flex-col items-center gap-6 py-16 text-center sm:py-20">
+    <div class="pointer-events-none absolute inset-0 [background:radial-gradient(45rem_25rem_at_50%_-30%,rgba(255,255,255,0.18),transparent_60%)]" aria-hidden="true"></div>
+    <div class="pointer-events-none absolute inset-0 [background:radial-gradient(40rem_20rem_at_50%_130%,rgba(0,0,0,0.35),transparent_65%)]" aria-hidden="true"></div>
+    <div class="container-site relative flex flex-col items-center gap-6 py-20 text-center sm:py-28">
       <FadeInText enhance={true} duration={0.7}>
-        <h2 class="max-w-3xl text-3xl text-white sm:text-5xl">Rejoignez l'aventure !</h2>
+        <h2 class="max-w-3xl text-4xl text-white sm:text-6xl">
+          Rejoignez <em class="italic">l'aventure</em>
+        </h2>
       </FadeInText>
-      <p class="max-w-xl text-white/90">
+      <p class="max-w-xl leading-relaxed text-white/90">
         Une question, une envie de monter sur scène, un lieu à nous proposer ?
         Écrivez-nous, on ne mord pas (sauf en impro).
       </p>
-      <a href="/contact" class="btn bg-white text-asil-red hover:-translate-y-0.5 hover:bg-asil-black hover:text-white hover:shadow-xl min-h-13 px-9">
+      <a href="/contact" class="btn mt-2 bg-white text-asil-red hover:-translate-y-0.5 hover:bg-asil-black hover:text-white hover:shadow-2xl min-h-13 px-10">
         Contactez-nous
       </a>
     </div>

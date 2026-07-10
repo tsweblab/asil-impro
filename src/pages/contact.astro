@@ -16,7 +16,8 @@ const settings = await getSettings();
 >
   <section class="container-site py-14 sm:py-20">
     <FadeInText duration={0.7}>
-      <h1 class="section-title text-4xl sm:text-5xl">Contact</h1>
+      <p class="eyebrow mb-4">On vous répond vite</p>
+      <h1 class="section-title text-5xl sm:text-6xl">Contact</h1>
     </FadeInText>
     <p class="mt-5 max-w-2xl leading-relaxed text-white/75">
       Une question sur les ateliers, une réservation, une scène à nous proposer ?
@@ -35,24 +36,24 @@ const settings = await getSettings();
         publique={settings.photoContact}
         fallback={scenePhoto}
         alt="Spectacle d'improvisation de l'ASIL"
-        class="w-full rounded-lg object-cover shadow-2xl shadow-black/50"
+        class="w-full rounded-2xl object-cover shadow-2xl shadow-black/60"
         widths={[480, 800, 1200]}
         sizes="(min-width: 1024px) 26rem, 100vw"
         loading="lazy"
       />
 
-      <div class="rounded-lg border border-white/10 bg-asil-gray-dark p-7">
-        <h2 class="text-xl">Nos coordonnées</h2>
+      <div class="card-scene p-8">
+        <h2 class="text-2xl">Nos coordonnées</h2>
         <ul class="mt-5 grid gap-4 text-sm">
           <li>
-            <span class="block font-display text-xs font-bold uppercase tracking-wide text-white/50">Email</span>
+            <span class="block font-sans text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-white/50">Email</span>
             <a href={`mailto:${settings.email}`} class="font-semibold text-white transition-colors hover:text-asil-red">
               {settings.email}
             </a>
           </li>
           {settings.telephones.length > 0 && (
             <li>
-              <span class="block font-display text-xs font-bold uppercase tracking-wide text-white/50">Téléphone</span>
+              <span class="block font-sans text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-white/50">Téléphone</span>
               <ul class="grid gap-1">
                 {settings.telephones.map((t) => (
                   <li>
@@ -66,14 +67,14 @@ const settings = await getSettings();
             </li>
           )}
           <li>
-            <span class="block font-display text-xs font-bold uppercase tracking-wide text-white/50">Ateliers</span>
+            <span class="block font-sans text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-white/50">Ateliers</span>
             <p class="text-white/80">
               Amicale Laïque Michelet<br />
               26 rue Coraly-Royet, 42100 Saint-Étienne
             </p>
           </li>
           <li>
-            <span class="mb-2 block font-display text-xs font-bold uppercase tracking-wide text-white/50">Réseaux sociaux</span>
+            <span class="mb-2 block font-sans text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-white/50">Réseaux sociaux</span>
             <SocialLinks facebook={settings.facebook} instagram={settings.instagram} />
           </li>
         </ul>

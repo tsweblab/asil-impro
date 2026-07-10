@@ -13,7 +13,8 @@ const { facebook, instagram, email, telephones } = Astro.props;
 const annee = new Date().getFullYear();
 ---
 
-<footer class="border-t border-white/10 bg-asil-gray-dark">
+<footer class="relative overflow-hidden border-t border-white/8 bg-asil-black">
+  <div class="pointer-events-none absolute inset-0 [background:radial-gradient(45rem_22rem_at_50%_-40%,rgba(227,6,19,0.08),transparent_60%)]" aria-hidden="true"></div>
   <div class="container-site grid gap-10 py-14 md:grid-cols-3">
     <div>
       <img
@@ -31,7 +32,7 @@ const annee = new Date().getFullYear();
     </div>
 
     <nav aria-label="Liens rapides" class="text-sm">
-      <h2 class="mb-4 text-base normal-case tracking-normal text-white">Liens rapides</h2>
+      <h2 class="mb-5 font-sans text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-white/55">Liens rapides</h2>
       <ul class="grid gap-2 text-white/70">
         <li><a href="/" class="transition-colors hover:text-asil-red">Accueil</a></li>
         <li><a href="/programme" class="transition-colors hover:text-asil-red">Programme</a></li>
@@ -43,7 +44,7 @@ const annee = new Date().getFullYear();
     </nav>
 
     <div class="text-sm">
-      <h2 class="mb-4 text-base normal-case tracking-normal text-white">Gardons le contact !</h2>
+      <h2 class="mb-5 font-sans text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-white/55">Gardons le contact !</h2>
       <ul class="grid gap-2 text-white/70">
         <li>
           <a href={`mailto:${email}`} class="font-semibold text-white transition-colors hover:text-asil-red">{email}</a>

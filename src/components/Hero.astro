@@ -34,28 +34,39 @@ const { titre, sousTitre, imagePublique = null } = Astro.props;
       fetchpriority="high"
     />
   )}
-  <!-- Voiles théâtraux : spotlight + fondu vers le noir -->
-  <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/35 to-black/20" aria-hidden="true"></div>
-  <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-asil-black" aria-hidden="true"></div>
 
-  <div class="container-site relative py-24">
+  <!-- Voiles théâtraux : pénombre, spotlight rouge, fondu vers le noir -->
+  <div class="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/85 via-black/45 to-black/25" aria-hidden="true"></div>
+  <div class="pointer-events-none absolute inset-0 [background:radial-gradient(60rem_32rem_at_18%_38%,rgba(255,255,255,0.10),transparent_60%)]" aria-hidden="true"></div>
+  <div class="pointer-events-none absolute inset-0 [background:radial-gradient(50rem_30rem_at_85%_110%,rgba(227,6,19,0.22),transparent_65%)]" aria-hidden="true"></div>
+  <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-asil-night" aria-hidden="true"></div>
+
+  <div class="container-site relative py-28">
     <FadeInText duration={0.8}>
-      <p class="mb-4 font-display text-base font-bold uppercase tracking-[0.2em] text-asil-red sm:text-lg">
-        {sousTitre}
-      </p>
+      <p class="eyebrow mb-7 max-w-full !text-white/75">{sousTitre}</p>
     </FadeInText>
-    <FadeInText duration={0.8} delay={0.15}>
-      <h1 class="max-w-4xl text-[clamp(2.4rem,6.5vw,4.8rem)] leading-[1.02] text-white">
+    <FadeInText duration={0.9} delay={0.15}>
+      <h1 class="max-w-4xl text-[clamp(2.8rem,7vw,5.6rem)] leading-[1.04] text-white">
         {titre}
       </h1>
     </FadeInText>
-    <FadeInText duration={0.8} delay={0.35}>
-      <div class="mt-9 flex flex-wrap gap-4">
-        <AnimatedButton variant="shimmer" href="/ateliers" class="btn-red min-h-13 px-8">
+    <FadeInText duration={0.9} delay={0.35}>
+      <p class="mt-6 max-w-xl font-display text-lg italic text-white/70 sm:text-xl">
+        Théâtre d'improvisation à Saint-Étienne — sans texte, sans décor, sans filet.
+      </p>
+    </FadeInText>
+    <FadeInText duration={0.9} delay={0.5}>
+      <div class="mt-10 flex flex-wrap gap-4">
+        <AnimatedButton variant="shimmer" href="/ateliers" class="btn-red min-h-13 px-9">
           Découvrir nos ateliers
         </AnimatedButton>
-        <a href="/programme" class="btn-outline min-h-13 px-8">Voir le programme</a>
+        <a href="/programme" class="btn-outline min-h-13 px-9">Voir le programme</a>
       </div>
     </FadeInText>
+  </div>
+
+  <!-- Indice de scroll -->
+  <div class="absolute inset-x-0 bottom-6 hidden justify-center sm:flex" aria-hidden="true">
+    <div class="h-12 w-px animate-pulse bg-gradient-to-b from-transparent via-white/60 to-asil-red"></div>
   </div>
 </section>

@@ -19,10 +19,11 @@ const aVenir = stages.filter((s) => (s.dateFin ?? s.dateDebut ?? '') >= today);
   <section class="container-site grid items-center gap-10 py-14 sm:py-20 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] lg:gap-16">
     <div>
       <FadeInText duration={0.7}>
-        <h1 class="section-title text-4xl sm:text-5xl">Les stages</h1>
+        <p class="eyebrow mb-4">Une journée pour jouer</p>
+        <h1 class="section-title text-5xl sm:text-6xl">Les stages</h1>
       </FadeInText>
-      <blockquote class="mt-7 border-l-4 border-asil-red pl-5 font-display text-xl font-extrabold">
-        Toi-même tu sais…
+      <blockquote class="mt-7 border-l-2 border-asil-red pl-6 font-display text-2xl italic text-white/90">
+        « Toi-même tu sais… »
       </blockquote>
       <p class="mt-5 leading-relaxed text-white/80">
         L'ASIL propose des stages d'une journée <strong class="text-white">ouverts à toutes et à tous</strong>,
@@ -37,7 +38,7 @@ const aVenir = stages.filter((s) => (s.dateFin ?? s.dateDebut ?? '') >= today);
       publique={settings.photoStages}
       fallback={stagePhoto}
       alt="Participants d'un stage d'improvisation de l'ASIL"
-      class="w-full rounded-lg object-cover shadow-2xl shadow-black/50"
+      class="w-full rounded-2xl object-cover shadow-2xl shadow-black/60"
       widths={[480, 800, 1200]}
       sizes="(min-width: 1024px) 26rem, 100vw"
       loading="eager"
@@ -45,10 +46,10 @@ const aVenir = stages.filter((s) => (s.dateFin ?? s.dateDebut ?? '') >= today);
   </section>
 
   <section class="container-site pb-20" aria-labelledby="stages-a-venir">
-    <h2 id="stages-a-venir" class="section-title mb-10 text-3xl sm:text-4xl">Prochains stages</h2>
+    <h2 id="stages-a-venir" class="section-title mb-12 text-4xl sm:text-5xl">Prochains stages</h2>
 
     {aVenir.length === 0 ? (
-      <div class="rounded-lg border border-white/10 bg-asil-gray-dark p-10 text-center">
+      <div class="card-scene p-10 text-center">
         <h3 class="text-2xl">Les prochaines dates arrivent bientôt</h3>
         <p class="mt-3 text-white/70">
           Le calendrier des stages de la saison est en préparation.
