@@ -1,11 +1,14 @@
 import { config, fields, collection, singleton } from '@keystatic/core';
 
 export default config({
-  // Mode GitHub : l'admin /keystatic est accessible en ligne (connexion GitHub
-  // requise) et chaque modification crée un commit → redéploiement Vercel.
+  // Mode Keystatic Cloud : les éditeurs se connectent avec un compte
+  // keystatic.cloud (pas besoin de compte GitHub). Chaque modification crée
+  // un commit sur le repo → redéploiement Vercel automatique.
   storage: {
-    kind: 'github',
-    repo: 'tsweblab/asil-impro',
+    kind: 'cloud',
+  },
+  cloud: {
+    project: 'tsweb/asil-impro',
   },
   ui: {
     brand: { name: 'ASIL Impro' },
