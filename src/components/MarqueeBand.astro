@@ -1,0 +1,33 @@
+---
+import InfiniteMarquee from '@astroanimate/core/InfiniteMarquee';
+
+/**
+ * Bandeau typographique défilant (tendance « kinetic type ») :
+ * les formats de spectacles de l'ASIL en serif italique, ponctués de rouge.
+ * Purement décoratif — masqué aux lecteurs d'écran.
+ */
+const mots = [
+  "Catch d'impro",
+  'Cabaret',
+  'Match',
+  'Formes longues',
+  'Baptêmes de scène',
+  'Gala',
+  'Improvisation loufoque',
+];
+---
+
+<div class="overflow-hidden border-y border-white/8 bg-asil-black py-5" aria-hidden="true">
+  <InfiniteMarquee speed="45s" gap="0rem" fade={true} pauseOnHover={false}>
+    <div class="flex items-center whitespace-nowrap">
+      {mots.map((mot) => (
+        <span class="flex items-center">
+          <span class="font-display text-2xl italic text-white/65 sm:text-3xl">{mot}</span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="mx-8 size-3.5 shrink-0 text-asil-red">
+            <path d="M12 0l2.6 9.4L24 12l-9.4 2.6L12 24l-2.6-9.4L0 12l9.4-2.6L12 0Z" />
+          </svg>
+        </span>
+      ))}
+    </div>
+  </InfiniteMarquee>
+</div>

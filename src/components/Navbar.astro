@@ -33,7 +33,7 @@ const liens = [
       {liens.map((lien) => (
         <a
           href={lien.href}
-          class="font-sans text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-white/75 transition-colors duration-300 hover:text-white aria-[current=page]:text-asil-red"
+          class="relative font-sans text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-white/75 transition-colors duration-300 after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-asil-red after:transition-transform after:duration-300 hover:text-white hover:after:scale-x-100 aria-[current=page]:text-white aria-[current=page]:after:scale-x-100"
         >
           {lien.label}
         </a>

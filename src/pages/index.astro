@@ -7,6 +7,7 @@ import Hero from '../components/Hero.astro';
 import EventCarousel from '../components/EventCarousel.astro';
 import SectionChiffres from '../components/SectionChiffres.astro';
 import SitePhoto from '../components/SitePhoto.astro';
+import MarqueeBand from '../components/MarqueeBand.astro';
 import { getSettings, getEvenementsAVenir } from '../lib/keystatic';
 import maud from '../assets/maud.jpg';
 import comediens from '../assets/comediens.jpg';
@@ -49,6 +50,8 @@ const raisons = [
     sousTitre={settings.heroSousTitre}
     imagePublique={settings.heroImage}
   />
+
+  <MarqueeBand />
 
   {prochains.length > 0 && (
     <section class="container-site py-16 sm:py-20" aria-labelledby="prochainement">
