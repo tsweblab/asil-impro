@@ -2,7 +2,11 @@ seoTitre: ASIL Impro — L'asso stéphanoise d'improvisation théâtrale
 seoDescription: >-
   Ateliers stéphanois d'improvisation loufoque : cours d'impro, spectacles,
   stages et catch d'impro à Saint-Étienne. Rejoignez l'aventure !
+heroSousTitre: Ateliers stéphanois d'improvisation loufoque
+heroTitre: L'asso stéphanoise qui improvise depuis 24 ans !
 heroDescription: Théâtre d'improvisation à Saint-Étienne — sans texte, sans décor, sans filet.
+heroImage: /images/site/accueil-fond.jpg
+heroImageAlt: ''
 heroBoutonPrincipal: Découvrir nos ateliers
 heroBoutonPrincipalLien: /ateliers
 heroBoutonSecondaire: Voir le programme
@@ -68,6 +72,8 @@ rejoindreTexte: |-
   Débutants ou improvisateurs expérimentés, les ateliers accueillent tous les profils. Match, catch, cabaret, formes longues : tous les formats sont abordés à l'ASIL.
 rejoindreBouton: Inscrivez-vous
 rejoindreBoutonLien: /ateliers
+photoRejoindre: /images/site/accueil-ateliers.jpg
+photoRejoindreAlt: Improvisatrice de l'ASIL sur scène
 chiffres:
   - valeur: 24 ans
     libelle: d'impro loufoque
@@ -85,6 +91,8 @@ presentationTexte: >-
   spectacles de ses élèves toute l'année dans les bars, café-théâtres et lieux
   culturels de Saint-Étienne et sa région.
 presentationCitation: « Qui vit sans folie n'est pas aussi sage qu'il le croit. »
+photoAsil: /images/site/accueil-presentation.jpg
+photoAsilAlt: Comédiens de l'ASIL en spectacle d'improvisation
 ctaTitre: Rejoignez l'aventure
 ctaTexte: >-
   Une question, une envie de monter sur scène, un lieu à nous proposer ?

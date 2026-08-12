@@ -6,12 +6,11 @@ import AtelierCard from '../components/AtelierCard.astro';
 import SitePhoto from '../components/SitePhoto.astro';
 import IntervenantCard from '../components/IntervenantCard.astro';
 import FlexibleBlocks from '../components/FlexibleBlocks.astro';
-import { getAteliers, getSettings, getAteliersPage, getIntervenants, type BlocLibre } from '../lib/keystatic';
+import { getAteliers, getAteliersPage, getIntervenants, type BlocLibre } from '../lib/keystatic';
 import atelierPhoto from '../assets/atelier-portrait.jpg';
 
 const ateliers = (await getAteliers()).filter((atelier) => atelier.categorie === 'adultes');
 const intervenants = await getIntervenants();
-const settings = await getSettings();
 const contenu = await getAteliersPage();
 const page = {
   seoTitre: contenu?.seoTitre ?? "Ateliers d'improvisation — ASIL Impro",
@@ -20,11 +19,15 @@ const page = {
   titre: contenu?.titre ?? 'Les ateliers',
   citation: contenu?.citation ?? "« Qui vit sans folie n'est pas aussi sage qu'il le croit. »",
   introduction: contenu?.introduction ?? '',
+  photoAteliers: contenu?.photoAteliers ?? null,
+  photoAteliersAlt: contenu?.photoAteliersAlt ?? "Atelier d'improvisation de l'ASIL",
   lieuTexte: contenu?.lieuTexte ?? '',
   boutonTexte: contenu?.boutonTexte ?? 'Demander une inscription',
   boutonLien: contenu?.boutonLien ?? '/contact',
   adultesTitre: contenu?.adultesTitre ?? 'Adultes',
   adultesIntroduction: contenu?.adultesIntroduction ?? '',
+  atelierLieuLabel: contenu?.atelierLieuLabel ?? 'Lieu :',
+  atelierTarifLabel: contenu?.atelierTarifLabel ?? 'Tarif annuel :',
   aucunAtelierTexte: contenu?.aucunAtelierTexte ?? 'Les prochains créneaux seront bientôt annoncés.',
   intervenantsSurtitre: contenu?.intervenantsSurtitre ?? 'Ils et elles vous accompagnent',
   intervenantsTitre: contenu?.intervenantsTitre ?? 'Les intervenant·es',
@@ -44,7 +47,7 @@ const page = {
       {page.lieuTexte && <p class="mt-4 whitespace-pre-line leading-relaxed text-white/80">{page.lieuTexte}</p>}
       <AnimatedButton variant="shimmer" href={page.boutonLien} class="btn-red mt-8 px-8">{page.boutonTexte}</AnimatedButton>
     </div>
-    <SitePhoto publique={settings.photoAteliers} fallback={atelierPhoto} alt={settings.photoAteliersAlt} class="w-full rounded-2xl object-cover shadow-2xl shadow-black/60" widths={[480, 800, 1000]} sizes="(min-width: 1024px) 26rem, 100vw" loading="eager" />
+    <SitePhoto publique={page.photoAteliers} fallback={atelierPhoto} alt={page.photoAteliersAlt} class="w-full rounded-2xl object-cover shadow-2xl shadow-black/60" widths={[480, 800, 1000]} sizes="(min-width: 1024px) 26rem, 100vw" loading="eager" />
   </section>
 
   <section class="container-site pb-16" aria-labelledby="ateliers-adultes">
@@ -56,7 +59,7 @@ const page = {
     {ateliers.length === 0 ? (
       <div class="rounded-2xl border border-dashed border-white/20 bg-asil-gray-dark/60 p-8"><p class="whitespace-pre-line text-white/75">{page.aucunAtelierTexte}</p></div>
     ) : (
-      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">{ateliers.map((atelier, i) => <AtelierCard atelier={atelier} index={i} labels={{ lieu: settings.atelierLieuLabel, tarif: settings.atelierTarifLabel }} />)}</div>
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">{ateliers.map((atelier, i) => <AtelierCard atelier={atelier} index={i} labels={{ lieu: page.atelierLieuLabel, tarif: page.atelierTarifLabel }} />)}</div>
     )}
   </section>
 

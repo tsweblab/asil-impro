@@ -7,6 +7,8 @@ titre: Contact
 introduction: >-
   Une question sur les ateliers, une réservation, une scène à nous proposer ?
   Écrivez-nous, on improvise une réponse rapidement.
+photoContact: /images/site/page-contact.jpg
+photoContactAlt: Spectacle d'improvisation de l'ASIL
 formulaireTitre: Envoyez-nous un message
 nomLabel: Nom
 nomPlaceholder: Votre nom

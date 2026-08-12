@@ -4,11 +4,10 @@ import Layout from '../layouts/Layout.astro';
 import StageCard from '../components/StageCard.astro';
 import SitePhoto from '../components/SitePhoto.astro';
 import FlexibleBlocks from '../components/FlexibleBlocks.astro';
-import { getStages, getSettings, getStagesPage, type BlocLibre } from '../lib/keystatic';
+import { getStages, getStagesPage, type BlocLibre } from '../lib/keystatic';
 import stagePhoto from '../assets/stage-nb.jpg';
 
 const stages = await getStages();
-const settings = await getSettings();
 const contenu = await getStagesPage();
 const today = new Date().toISOString().slice(0, 10);
 const aVenir = stages.filter((s) => (s.dateFin ?? s.dateDebut ?? '') >= today);
@@ -17,7 +16,17 @@ const page = {
   seoDescription: contenu?.seoDescription ?? "Stages d'improvisation théâtrale à Saint-Étienne.",
   surtitre: contenu?.surtitre ?? 'Une journée pour jouer', titre: contenu?.titre ?? 'Les stages',
   citation: contenu?.citation ?? '« Toi-même tu sais… »', introduction: contenu?.introduction ?? '',
+  photoStages: contenu?.photoStages ?? null,
+  photoStagesAlt: contenu?.photoStagesAlt ?? "Participants d'un stage d'improvisation de l'ASIL",
   conseil: contenu?.conseil ?? '', listeTitre: contenu?.listeTitre ?? 'Prochains stages',
+  stageHorairesLabel: contenu?.stageHorairesLabel ?? 'Horaires :',
+  stageLieuLabel: contenu?.stageLieuLabel ?? 'Lieu :',
+  stageIntervenantLabel: contenu?.stageIntervenantLabel ?? 'Intervenant·e :',
+  stageTarifLabel: contenu?.stageTarifLabel ?? 'Tarif :',
+  stageBouton: contenu?.stageBouton ?? "S'inscrire",
+  stageDuLabel: contenu?.stageDuLabel ?? 'Du',
+  stageAuLabel: contenu?.stageAuLabel ?? 'au',
+  stageImageFallback: contenu?.stageImageFallback ?? 'ASIL',
   videTitre: contenu?.videTitre ?? 'Les prochaines dates arrivent bientôt',
   videTexte: contenu?.videTexte ?? 'Le calendrier des stages de la saison est en préparation.',
   blocsLibres: (contenu?.blocsLibres ?? []).filter((bloc) => bloc.actif !== false) as BlocLibre[],
@@ -32,13 +41,13 @@ const page = {
       <p class="mt-5 whitespace-pre-line leading-relaxed text-white/80">{page.introduction}</p>
       {page.conseil && <p class="mt-4 whitespace-pre-line leading-relaxed text-white/80">{page.conseil}</p>}
     </div>
-    <SitePhoto publique={settings.photoStages} fallback={stagePhoto} alt={settings.photoStagesAlt} class="w-full rounded-2xl object-cover shadow-2xl shadow-black/60" widths={[480, 800, 1200]} sizes="(min-width: 1024px) 26rem, 100vw" loading="eager" />
+    <SitePhoto publique={page.photoStages} fallback={stagePhoto} alt={page.photoStagesAlt} class="w-full rounded-2xl object-cover shadow-2xl shadow-black/60" widths={[480, 800, 1200]} sizes="(min-width: 1024px) 26rem, 100vw" loading="eager" />
   </section>
   <section class="container-site pb-20" aria-labelledby="stages-a-venir">
     <h2 id="stages-a-venir" class="section-title mb-12 text-4xl sm:text-5xl">{page.listeTitre}</h2>
     {aVenir.length === 0 ? (
       <div class="card-scene p-10 text-center"><h3 class="text-2xl">{page.videTitre}</h3><p class="mt-3 whitespace-pre-line text-white/70">{page.videTexte}</p></div>
-    ) : <div class="grid gap-8">{aVenir.map((stage, i) => <StageCard stage={stage} index={i} labels={{ horaires: settings.stageHorairesLabel, lieu: settings.stageLieuLabel, intervenant: settings.stageIntervenantLabel, tarif: settings.stageTarifLabel, bouton: settings.stageBouton, du: settings.stageDuLabel, au: settings.stageAuLabel, imageFallback: settings.stageImageFallback }} />)}</div>}
+    ) : <div class="grid gap-8">{aVenir.map((stage, i) => <StageCard stage={stage} index={i} labels={{ horaires: page.stageHorairesLabel, lieu: page.stageLieuLabel, intervenant: page.stageIntervenantLabel, tarif: page.stageTarifLabel, bouton: page.stageBouton, du: page.stageDuLabel, au: page.stageAuLabel, imageFallback: page.stageImageFallback }} />)}</div>}
   </section>
   <FlexibleBlocks blocs={page.blocsLibres} />
 </Layout>

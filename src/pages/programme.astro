@@ -3,11 +3,10 @@ import FadeInText from '@astroanimate/core/FadeInText';
 import Layout from '../layouts/Layout.astro';
 import EventCard from '../components/EventCard.astro';
 import FlexibleBlocks from '../components/FlexibleBlocks.astro';
-import { getEvenements, getProgrammePage, getSettings } from '../lib/keystatic';
+import { getEvenements, getProgrammePage } from '../lib/keystatic';
 
 const evenements = await getEvenements();
 const page = await getProgrammePage();
-const settings = await getSettings();
 const nomsMois = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
 const cleDate = (annee: number, mois: number) => `${annee}-${String(mois).padStart(2, '0')}`;
 const ancre = (cle: string) => `mois-${cle}`;
@@ -73,7 +72,7 @@ const sections = moisAffiches.map((m) => ({
           </div>
           {section.evenements.length > 0 ? (
             <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {section.evenements.map((e) => <div class="scroll-reveal h-full"><EventCard evenement={e} boutonTexte={settings.evenementBouton} /></div>)}
+              {section.evenements.map((e) => <div class="scroll-reveal h-full"><EventCard evenement={e} boutonTexte={page.evenementBouton} /></div>)}
             </div>
           ) : (
             <div class="card-scene p-8">

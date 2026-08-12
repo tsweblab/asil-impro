@@ -13,17 +13,6 @@ navStages: Stages
 navAteliers: Ateliers
 navContact: Contact
 navMentions: Mentions légales
-evenementBouton: Réserver
-atelierLieuLabel: 'Lieu :'
-atelierTarifLabel: 'Tarif annuel :'
-stageHorairesLabel: 'Horaires :'
-stageLieuLabel: 'Lieu :'
-stageIntervenantLabel: 'Intervenant·e :'
-stageTarifLabel: 'Tarif :'
-stageBouton: S'inscrire
-stageDuLabel: Du
-stageAuLabel: au
-stageImageFallback: ASIL
 footerDescription: Ateliers stéphanois d'improvisation loufoque — l'asso qui improvise à Saint-Étienne depuis 2002.
 footerLiensTitre: Liens rapides
 footerContactTitre: Gardons le contact !
@@ -31,17 +20,3 @@ footerCopyright: ASIL Impro — Tous droits réservés.
 footerCredit: Site réalisé par
 footerCreditNom: TS WEB Lab
 footerCreditLien: https://tsweb.fr
-heroTitre: L'asso stéphanoise qui improvise depuis 24 ans !
-heroSousTitre: Ateliers stéphanois d'improvisation loufoque
-heroImage: /images/site/accueil-fond.jpg
-heroImageAlt: ''
-photoRejoindre: /images/site/accueil-ateliers.jpg
-photoRejoindreAlt: Improvisatrice de l'ASIL sur scène
-photoAsil: /images/site/accueil-presentation.jpg
-photoAsilAlt: Comédiens de l'ASIL en spectacle d'improvisation
-photoAteliers: /images/site/page-ateliers.jpg
-photoAteliersAlt: Atelier d'improvisation de l'ASIL
-photoStages: /images/site/page-stages.jpg
-photoStagesAlt: Participants d'un stage d'improvisation de l'ASIL
-photoContact: /images/site/page-contact.jpg
-photoContactAlt: Spectacle d'improvisation de l'ASIL
