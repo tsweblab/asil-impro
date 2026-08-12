@@ -1,0 +1,101 @@
+---
+interface Props {
+  url: string;
+  titre: string;
+}
+
+const { url, titre } = Astro.props;
+
+type Provider = 'instagram' | 'facebook' | 'tiktok' | 'youtube' | 'autre';
+let provider: Provider = 'autre';
+let embedUrl: string | null = null;
+
+try {
+  const parsed = new URL(url);
+  const host = parsed.hostname.replace(/^www\./, '').toLowerCase();
+  const segments = parsed.pathname.split('/').filter(Boolean);
+
+  if (host === 'instagram.com' && ['p', 'reel', 'tv'].includes(segments[0]) && segments[1]) {
+    provider = 'instagram';
+    embedUrl = `https://www.instagram.com/${segments[0]}/${segments[1]}/embed/`;
+  } else if (host === 'facebook.com' || host === 'fb.watch' || host === 'm.facebook.com') {
+    provider = 'facebook';
+    const video = parsed.pathname.includes('/videos/') || parsed.pathname.includes('/reel/') || host === 'fb.watch';
+    embedUrl = `https://www.facebook.com/plugins/${video ? 'video' : 'post'}.php?href=${encodeURIComponent(url)}&show_text=true&width=500`;
+  } else if (host === 'tiktok.com' || host === 'vm.tiktok.com') {
+    provider = 'tiktok';
+    const id = parsed.pathname.match(/\/video\/(\d+)/)?.[1];
+    if (id) embedUrl = `https://www.tiktok.com/player/v1/${id}?description=1&music_info=1&autoplay=0&rel=0`;
+  } else if (host === 'youtube.com' || host === 'youtu.be') {
+    provider = 'youtube';
+    const id = host === 'youtu.be' ? segments[0] : parsed.searchParams.get('v') ?? (segments[0] === 'shorts' ? segments[1] : null);
+    if (id) embedUrl = `https://www.youtube-nocookie.com/embed/${id}`;
+  }
+} catch {
+  embedUrl = null;
+}
+
+const noms: Record<Provider, string> = {
+  instagram: 'Instagram', facebook: 'Facebook', tiktok: 'TikTok', youtube: 'YouTube', autre: 'la publication',
+};
+---
+
+<div class:list={['social-post-preview', `social-post-preview--${provider}`]}>
+  {embedUrl ? (
+    <iframe
+      src={embedUrl}
+      title={`${titre} — aperçu ${noms[provider]}`}
+      loading="lazy"
+      allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; fullscreen"
+      allowfullscreen
+      data-social-preview-frame
+      referrerpolicy="strict-origin-when-cross-origin"
+    ></iframe>
+  ) : (
+    <a href={url} target="_blank" rel="noopener noreferrer" class="grid h-full place-items-center px-8 text-center">
+      <span>
+        <span class="mx-auto grid size-16 place-items-center rounded-full border border-asil-red/60 bg-asil-red/10 text-2xl text-asil-red" aria-hidden="true">↗</span>
+        <strong class="mt-5 block font-display text-xl text-white">Voir sur {noms[provider]}</strong>
+        <span class="mt-2 block text-sm text-white/55">L’aperçu n’est pas disponible, mais la publication reste accessible.</span>
+      </span>
+    </a>
+  )}
+</div>
+
+<style>
+  .social-post-preview {
+    height: 100%;
+    overflow: hidden;
+    background: #0b0a0a;
+  }
+
+  iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: white;
+  }
+
+  .social-post-preview--youtube {
+    display: grid;
+    place-items: center;
+    background: #000;
+  }
+
+  .social-post-preview--youtube iframe {
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+</style>
+
+<script>
+  function masquerDefilementApercus() {
+    document.querySelectorAll<HTMLIFrameElement>('[data-social-preview-frame]').forEach((frame) => {
+      frame.setAttribute('scrolling', 'no');
+    });
+  }
+
+  masquerDefilementApercus();
+  document.addEventListener('astro:page-load', masquerDefilementApercus);
+</script>

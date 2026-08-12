@@ -7,9 +7,13 @@ interface Props {
   instagram: string;
   email: string;
   telephones: Telephone[];
+  labels: {
+    accueil: string; programme: string; stages: string; ateliers: string; contact: string; mentions: string;
+    description: string; liensTitre: string; contactTitre: string; copyright: string; credit: string;
+  };
 }
 
-const { facebook, instagram, email, telephones } = Astro.props;
+const { facebook, instagram, email, telephones, labels } = Astro.props;
 const annee = new Date().getFullYear();
 ---
 
@@ -33,25 +37,24 @@ const annee = new Date().getFullYear();
         loading="lazy"
       />
       <p class="mt-4 max-w-xs text-sm leading-relaxed text-white/60">
-        Ateliers stéphanois d'improvisation loufoque — l'asso qui improvise à
-        Saint-Étienne depuis 2002.
+        {labels.description}
       </p>
     </div>
 
     <nav aria-label="Liens rapides" class="text-sm">
-      <h2 class="mb-5 font-sans text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-white/55">Liens rapides</h2>
+      <h2 class="mb-5 font-sans text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-white/55">{labels.liensTitre}</h2>
       <ul class="grid gap-2 text-white/70">
-        <li><a href="/" class="transition-colors hover:text-asil-red">Accueil</a></li>
-        <li><a href="/programme" class="transition-colors hover:text-asil-red">Programme</a></li>
-        <li><a href="/stages" class="transition-colors hover:text-asil-red">Stages</a></li>
-        <li><a href="/ateliers" class="transition-colors hover:text-asil-red">Ateliers</a></li>
-        <li><a href="/contact" class="transition-colors hover:text-asil-red">Contact</a></li>
-        <li><a href="/mentions-legales" class="transition-colors hover:text-asil-red">Mentions légales</a></li>
+        <li><a href="/" class="transition-colors hover:text-asil-red">{labels.accueil}</a></li>
+        <li><a href="/programme" class="transition-colors hover:text-asil-red">{labels.programme}</a></li>
+        <li><a href="/stages" class="transition-colors hover:text-asil-red">{labels.stages}</a></li>
+        <li><a href="/ateliers" class="transition-colors hover:text-asil-red">{labels.ateliers}</a></li>
+        <li><a href="/contact" class="transition-colors hover:text-asil-red">{labels.contact}</a></li>
+        <li><a href="/mentions-legales" class="transition-colors hover:text-asil-red">{labels.mentions}</a></li>
       </ul>
     </nav>
 
     <div class="text-sm">
-      <h2 class="mb-5 font-sans text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-white/55">Gardons le contact !</h2>
+      <h2 class="mb-5 font-sans text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-white/55">{labels.contactTitre}</h2>
       <ul class="grid gap-2 text-white/70">
         <li>
           <a href={`mailto:${email}`} class="font-semibold text-white transition-colors hover:text-asil-red">{email}</a>
@@ -69,9 +72,9 @@ const annee = new Date().getFullYear();
 
   <div class="border-t border-white/10">
     <div class="container-site flex flex-col items-center justify-between gap-2 py-5 text-xs text-white/50 sm:flex-row">
-      <p>© {annee} ASIL Impro — Tous droits réservés.</p>
+      <p>© {annee} {labels.copyright}</p>
       <p>
-        Site réalisé par
+        {labels.credit}
         <a
           href="https://tsweb.fr"
           target="_blank"

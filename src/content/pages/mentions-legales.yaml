@@ -1,0 +1,31 @@
+seoTitre: Mentions légales — ASIL Impro
+seoDescription: Mentions légales du site de l'ASIL Impro.
+titre: Mentions légales
+sections:
+  - titre: Éditeur du site
+    texte: |-
+      ASIL Impro — Ateliers stéphanois d'improvisation loufoque
+      Association loi 1901
+      Saint-Étienne, France
+      Email : asilimpro@gmail.com
+  - titre: Conception et réalisation
+    texte: TS WEB Lab — micro-entreprise de création de sites web.
+    lienTexte: Visiter TS WEB Lab
+    lienUrl: https://tsweb.fr
+  - titre: Hébergement
+    texte: |-
+      Vercel Inc.
+      440 N Barranca Ave #4133, Covina, CA 91723, États-Unis
+    lienTexte: vercel.com
+    lienUrl: https://vercel.com
+  - titre: Données personnelles
+    texte: >-
+      Les informations transmises via le formulaire de contact sont utilisées
+      uniquement pour répondre à votre demande et ne sont ni cédées ni utilisées
+      à des fins commerciales. Conformément au RGPD, vous pouvez demander leur
+      rectification ou leur suppression en écrivant à l'adresse email indiquée.
+  - titre: Propriété intellectuelle
+    texte: >-
+      L'ensemble des contenus du site est la propriété de l'ASIL Impro ou de
+      leurs auteurs respectifs. Toute reproduction sans autorisation préalable
+      est interdite.

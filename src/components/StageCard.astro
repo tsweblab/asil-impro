@@ -5,9 +5,10 @@ import { formatDateLongue, type Stage } from '../lib/keystatic';
 interface Props {
   stage: Stage;
   index?: number;
+  labels?: { horaires: string; lieu: string; intervenant: string; tarif: string; bouton: string };
 }
 
-const { stage, index = 0 } = Astro.props;
+const { stage, index = 0, labels = { horaires: 'Horaires :', lieu: 'Lieu :', intervenant: 'Intervenant·e :', tarif: 'Tarif :', bouton: "S'inscrire" } } = Astro.props;
 
 const periode = stage.dateFin
   ? `Du ${formatDateLongue(stage.dateDebut!).toLowerCase()} au ${formatDateLongue(stage.dateFin).toLowerCase()}`
@@ -32,10 +33,10 @@ const periode = stage.dateFin
       <p class="font-sans text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-asil-red">{periode}</p>
       <h3 class="text-2xl text-white">{stage.titre}</h3>
       <ul class="grid gap-1.5 text-sm text-white/75">
-        {stage.horaires && <li><strong class="text-white">Horaires :</strong> {stage.horaires}</li>}
-        {stage.lieu && <li><strong class="text-white">Lieu :</strong> {stage.lieu}</li>}
-        {stage.intervenant && <li><strong class="text-white">Intervenant·e :</strong> {stage.intervenant}</li>}
-        {stage.tarif && <li><strong class="text-white">Tarif :</strong> {stage.tarif}</li>}
+        {stage.horaires && <li><strong class="text-white">{labels.horaires}</strong> {stage.horaires}</li>}
+        {stage.lieu && <li><strong class="text-white">{labels.lieu}</strong> {stage.lieu}</li>}
+        {stage.intervenant && <li><strong class="text-white">{labels.intervenant}</strong> {stage.intervenant}</li>}
+        {stage.tarif && <li><strong class="text-white">{labels.tarif}</strong> {stage.tarif}</li>}
       </ul>
       {stage.description && <p class="text-sm leading-relaxed text-white/70">{stage.description}</p>}
       {stage.lienInscription && (
@@ -45,7 +46,7 @@ const periode = stage.dateFin
           rel="noopener noreferrer"
           class="btn-red mt-auto self-start"
         >
-          S'inscrire
+          {labels.bouton}
         </a>
       )}
     </div>

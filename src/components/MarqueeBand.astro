@@ -6,7 +6,7 @@ import InfiniteMarquee from '@astroanimate/core/InfiniteMarquee';
  * les formats de spectacles de l'ASIL en serif italique, ponctués de rouge.
  * Purement décoratif — masqué aux lecteurs d'écran.
  */
-const mots = [
+const motsDefaut = [
   "Catch d'impro",
   'Cabaret',
   'Match',
@@ -15,6 +15,9 @@ const mots = [
   'Gala',
   'Improvisation loufoque',
 ];
+
+interface Props { mots?: readonly string[]; }
+const { mots = motsDefaut } = Astro.props;
 ---
 
 <div class="overflow-hidden border-y border-white/8 bg-asil-black py-5" aria-hidden="true">

@@ -1,41 +1,43 @@
 ---
 import CountUp from '@astroanimate/core/CountUp';
 
-const chiffres = [
-  { valeur: 22, suffixe: ' ans', label: "d'impro loufoque" },
-  { valeur: 100, suffixe: '+', label: 'adhérents' },
-  { valeur: 30, suffixe: '+', label: 'spectacles par saison' },
-];
+interface Props { chiffres: readonly { readonly valeur: string; readonly libelle: string }[]; }
+const { chiffres } = Astro.props;
+const chiffresFormates = chiffres.map((chiffre) => {
+  const correspondance = chiffre.valeur.trim().match(/^(\d+(?:[.,]\d+)?)(.*)$/);
+  return {
+    ...chiffre,
+    nombre: correspondance ? Number(correspondance[1].replace(',', '.')) : null,
+    suffixe: correspondance?.[2] ?? '',
+  };
+});
 ---
 
 <section class="relative overflow-hidden border-y border-white/8 bg-asil-gray-dark" aria-label="Chiffres clés">
   <div class="pointer-events-none absolute inset-0 [background:radial-gradient(40rem_20rem_at_50%_120%,rgba(227,6,19,0.10),transparent_65%)]" aria-hidden="true"></div>
   <div class="container-site relative grid grid-cols-2 gap-8 py-16 sm:grid-cols-4">
-    {chiffres.map((c) => (
+    {chiffresFormates.map((c) => (
       <div class="border-t border-asil-red/60 pt-6">
         <p class="font-display text-5xl text-white sm:text-6xl">
-          <CountUp
-            value={c.valeur}
-            suffix={c.suffixe}
-            enhance={true}
-            duration={1800}
-            textColor="#ffffff"
-            fontSize="1em"
-            fontFamily="'Playfair Display', Georgia, serif"
-          />
+          {c.nombre !== null ? (
+            <CountUp
+              value={c.nombre}
+              suffix={c.suffixe}
+              enhance={true}
+              duration={1800}
+              textColor="#ffffff"
+              fontSize="1em"
+              fontFamily="'Playfair Display', Georgia, serif"
+            />
+          ) : c.valeur}
         </p>
-        <p class="mt-2 font-sans text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/70">{c.label}</p>
+        <p class="mt-2 font-sans text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/70">{c.libelle}</p>
       </div>
     ))}
-    <div class="border-t border-asil-red/60 pt-6">
-      <p class="font-display text-5xl text-white sm:text-6xl">∞</p>
-      <p class="mt-2 font-sans text-[0.7rem] font-semibold uppercase tracking-[0.22em] text-white/70">éclats de rire</p>
-    </div>
   </div>
 </section>
 
 <style>
-  /* CountUp force font-weight: 700 ; aligné sur les titres serif */
   section :global(.count-up) {
     font-weight: 600;
   }

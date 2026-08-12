@@ -7,11 +7,16 @@ import heroDefaut from '../assets/hero-bg.jpg';
 interface Props {
   titre: string;
   sousTitre: string;
+  description: string;
+  boutonPrincipal: string;
+  boutonPrincipalLien: string;
+  boutonSecondaire: string;
+  boutonSecondaireLien: string;
   /** Image uploadée via Keystatic (chemin public), sinon l'image par défaut. */
   imagePublique?: string | null;
 }
 
-const { titre, sousTitre, imagePublique = null } = Astro.props;
+const { titre, sousTitre, description, boutonPrincipal, boutonPrincipalLien, boutonSecondaire, boutonSecondaireLien, imagePublique = null } = Astro.props;
 ---
 
 <section class="relative grid min-h-[calc(100svh-68px)] items-center overflow-hidden bg-asil-black">
@@ -52,15 +57,15 @@ const { titre, sousTitre, imagePublique = null } = Astro.props;
     </FadeInText>
     <FadeInText duration={0.9} delay={0.35}>
       <p class="mt-6 max-w-xl font-display text-lg italic text-white/70 sm:text-xl">
-        Théâtre d'improvisation à Saint-Étienne — sans texte, sans décor, sans filet.
+        {description}
       </p>
     </FadeInText>
     <FadeInText duration={0.9} delay={0.5}>
       <div class="mt-10 flex flex-wrap gap-4">
-        <AnimatedButton variant="shimmer" href="/ateliers" class="btn-red min-h-13 px-9">
-          Découvrir nos ateliers
+        <AnimatedButton variant="shimmer" href={boutonPrincipalLien} class="btn-red min-h-13 px-9">
+          {boutonPrincipal}
         </AnimatedButton>
-        <a href="/programme" class="btn-outline min-h-13 px-9">Voir le programme</a>
+        <a href={boutonSecondaireLien} class="btn-outline min-h-13 px-9">{boutonSecondaire}</a>
       </div>
     </FadeInText>
   </div>

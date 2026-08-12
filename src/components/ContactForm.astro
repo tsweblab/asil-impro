@@ -1,28 +1,45 @@
 ---
 const inputClass =
   'w-full rounded border border-white/20 bg-asil-gray-dark px-4 py-3 text-white placeholder:text-white/35 transition-colors duration-300 focus:border-asil-red focus:outline-none focus:ring-2 focus:ring-asil-red/40';
+
+interface Props {
+  textes: {
+    nomLabel: string; nomPlaceholder: string; emailLabel: string; emailPlaceholder: string;
+    sujetLabel: string; sujetPlaceholder: string; messageLabel: string; messagePlaceholder: string;
+    boutonEnvoyer: string; boutonEnvoi: string; succesMessage: string; erreurMessage: string;
+  };
+}
+const { textes } = Astro.props;
 ---
 
-<form data-contact-form class="grid gap-5" novalidate>
+<form
+  data-contact-form
+  data-submit-text={textes.boutonEnvoyer}
+  data-sending-text={textes.boutonEnvoi}
+  data-success-text={textes.succesMessage}
+  data-error-text={textes.erreurMessage}
+  class="grid gap-5"
+  novalidate
+>
   <div class="grid gap-5 sm:grid-cols-2">
     <div>
-      <label for="nom" class="mb-2 block font-sans text-[0.7rem] font-semibold uppercase tracking-[0.2em]">Nom</label>
-      <input id="nom" name="nom" type="text" required autocomplete="name" placeholder="Votre nom" class={inputClass} />
+      <label for="nom" class="mb-2 block font-sans text-[0.7rem] font-semibold uppercase tracking-[0.2em]">{textes.nomLabel}</label>
+      <input id="nom" name="nom" type="text" required autocomplete="name" placeholder={textes.nomPlaceholder} class={inputClass} />
     </div>
     <div>
-      <label for="email" class="mb-2 block font-sans text-[0.7rem] font-semibold uppercase tracking-[0.2em]">Email</label>
-      <input id="email" name="email" type="email" required autocomplete="email" placeholder="votre@email.fr" class={inputClass} />
+      <label for="email" class="mb-2 block font-sans text-[0.7rem] font-semibold uppercase tracking-[0.2em]">{textes.emailLabel}</label>
+      <input id="email" name="email" type="email" required autocomplete="email" placeholder={textes.emailPlaceholder} class={inputClass} />
     </div>
   </div>
 
   <div>
-    <label for="sujet" class="mb-2 block font-sans text-[0.7rem] font-semibold uppercase tracking-[0.2em]">Sujet</label>
-    <input id="sujet" name="sujet" type="text" required placeholder="Inscription, réservation, question…" class={inputClass} />
+    <label for="sujet" class="mb-2 block font-sans text-[0.7rem] font-semibold uppercase tracking-[0.2em]">{textes.sujetLabel}</label>
+    <input id="sujet" name="sujet" type="text" required placeholder={textes.sujetPlaceholder} class={inputClass} />
   </div>
 
   <div>
-    <label for="message" class="mb-2 block font-sans text-[0.7rem] font-semibold uppercase tracking-[0.2em]">Message</label>
-    <textarea id="message" name="message" required rows="6" placeholder="Votre message…" class={inputClass}></textarea>
+    <label for="message" class="mb-2 block font-sans text-[0.7rem] font-semibold uppercase tracking-[0.2em]">{textes.messageLabel}</label>
+    <textarea id="message" name="message" required rows="6" placeholder={textes.messagePlaceholder} class={inputClass}></textarea>
   </div>
 
   <!-- Honeypot anti-spam : invisible pour les humains, rempli par les bots -->
@@ -32,7 +49,7 @@ const inputClass =
   </div>
 
   <button type="submit" class="btn-red justify-self-start px-9" data-submit>
-    Envoyer le message
+    {textes.boutonEnvoyer}
   </button>
 
   <p data-feedback role="status" aria-live="polite" class="hidden rounded border px-4 py-3 text-sm font-semibold"></p>
@@ -67,7 +84,7 @@ const inputClass =
       }
 
       bouton.disabled = true;
-      bouton.textContent = 'Envoi en cours…';
+      bouton.textContent = form.dataset.sendingText || 'Envoi en cours…';
 
       try {
         const reponse = await fetch('/api/contact', {
@@ -77,16 +94,16 @@ const inputClass =
         const data = await reponse.json();
 
         if (reponse.ok && data.ok) {
-          afficher('Merci ! Votre message a bien été envoyé. Nous vous répondrons au plus vite.', true);
+          afficher(form.dataset.successText || 'Merci ! Votre message a bien été envoyé.', true);
           form.reset();
         } else {
-          afficher(data.error ?? "Une erreur est survenue. Réessayez ou écrivez-nous directement par email.", false);
+          afficher(data.error ?? form.dataset.errorText ?? "Une erreur est survenue.", false);
         }
       } catch {
-        afficher("Impossible d'envoyer le message. Vérifiez votre connexion ou écrivez-nous par email.", false);
+        afficher(form.dataset.errorText || "Impossible d'envoyer le message.", false);
       } finally {
         bouton.disabled = false;
-        bouton.textContent = 'Envoyer le message';
+        bouton.textContent = form.dataset.submitText || 'Envoyer le message';
       }
     });
   }

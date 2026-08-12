@@ -4,16 +4,17 @@ import type { Evenement } from '../lib/keystatic';
 
 interface Props {
   evenements: Evenement[];
+  boutonTexte?: string;
 }
 
-const { evenements } = Astro.props;
+const { evenements, boutonTexte = 'Réserver' } = Astro.props;
 ---
 
 <div class="relative" data-carousel>
   <ul class="carousel-track list-none p-0" role="list">
     {evenements.map((e) => (
       <li class="flex">
-        <EventCard evenement={e} compact />
+        <EventCard evenement={e} compact boutonTexte={boutonTexte} />
       </li>
     ))}
   </ul>

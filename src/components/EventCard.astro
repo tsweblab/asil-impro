@@ -5,9 +5,10 @@ interface Props {
   evenement: Evenement;
   /** Variante compacte pour le carrousel de l'accueil. */
   compact?: boolean;
+  boutonTexte?: string;
 }
 
-const { evenement, compact = false } = Astro.props;
+const { evenement, compact = false, boutonTexte = 'Réserver' } = Astro.props;
 const heure = formatHeure(evenement.date!);
 ---
 
@@ -40,7 +41,7 @@ const heure = formatHeure(evenement.date!);
       rel="noopener noreferrer"
       class="btn-red mt-auto self-start min-h-10 px-5 text-xs"
     >
-      Réserver
+      {boutonTexte}
     </a>
   )}
 </article>

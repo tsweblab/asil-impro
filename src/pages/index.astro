@@ -8,178 +8,124 @@ import EventCarousel from '../components/EventCarousel.astro';
 import SectionChiffres from '../components/SectionChiffres.astro';
 import SitePhoto from '../components/SitePhoto.astro';
 import MarqueeBand from '../components/MarqueeBand.astro';
-import { getSettings, getEvenementsAVenir } from '../lib/keystatic';
+import PhotoCarousel from '../components/PhotoCarousel.astro';
+import FlexibleBlocks from '../components/FlexibleBlocks.astro';
+import { getSettings, getEvenementsAVenir, getHomePage } from '../lib/keystatic';
 import maud from '../assets/maud.jpg';
 import comediens from '../assets/comediens.jpg';
 
 const settings = await getSettings();
+const page = await getHomePage();
 const aVenir = await getEvenementsAVenir();
 const misEnAvant = aVenir.filter((e) => e.misEnAvant);
 const prochains = (misEnAvant.length > 0 ? misEnAvant : aVenir).slice(0, 4);
-
-const raisons = [
-  {
-    titre: 'Créativité',
-    texte: "Inventer des histoires sans texte, sans décor, sans filet : chaque atelier est un terrain de jeu illimité.",
-    icone: 'M9.66 3.44a7 7 0 0 1 8.4 9.6c-.4.85-1.06 1.85-1.06 2.76V17a2 2 0 0 1-2 2h-6a2 2 0 0 1-2-2v-1.2c0-.91-.66-1.9-1.06-2.76a7 7 0 0 1 3.72-9.6ZM9 22h6',
-  },
-  {
-    titre: 'La scène',
-    texte: "Plus de 30 spectacles par saison dans les bars, théâtres et café-théâtres de Saint-Étienne. Le trac, puis le frisson.",
-    icone: 'M3 9l9-6 9 6v11a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V9Z',
-  },
-  {
-    titre: 'Liens humains',
-    texte: "Une troupe soudée de 100+ improvisateurs et improvisatrices, de 18 à 108 ans, débutants comme confirmés.",
-    icone: 'M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2M9.5 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM21 21v-2a4 4 0 0 0-3-3.85M16 3.15A4 4 0 0 1 16 11',
-  },
-  {
-    titre: 'Le fun',
-    texte: "Loufoque, c'est dans notre nom. On vient pour rire, vaincre ses peurs et repartir avec le sourire.",
-    icone: 'M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20ZM8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01',
-  },
-];
 ---
 
-<Layout
-  title="ASIL Impro — L'asso stéphanoise d'improvisation théâtrale"
-  description="Ateliers stéphanois d'improvisation loufoque : cours d'impro, spectacles, stages et catch d'impro à Saint-Étienne depuis 22 ans. Rejoignez l'aventure !"
->
+<Layout title={page.seoTitre} description={page.seoDescription}>
   <Hero
     titre={settings.heroTitre}
     sousTitre={settings.heroSousTitre}
+    description={page.heroDescription}
+    boutonPrincipal={page.heroBoutonPrincipal}
+    boutonPrincipalLien={page.heroBoutonPrincipalLien}
+    boutonSecondaire={page.heroBoutonSecondaire}
+    boutonSecondaireLien={page.heroBoutonSecondaireLien}
     imagePublique={settings.heroImage}
   />
 
-  <MarqueeBand />
+  <MarqueeBand mots={page.marqueeMots.length ? page.marqueeMots : undefined} />
 
   {prochains.length > 0 && (
     <section class="container-site py-16 sm:py-20" aria-labelledby="prochainement">
       <div class="mb-10 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p class="eyebrow mb-4">L'agenda</p>
-          <h2 id="prochainement" class="section-title text-4xl sm:text-5xl">Prochainement</h2>
+          <p class="eyebrow mb-4">{page.agendaSurtitre}</p>
+          <h2 id="prochainement" class="section-title text-4xl sm:text-5xl">{page.agendaTitre}</h2>
         </div>
         <a href="/programme" class="group font-sans text-xs font-semibold uppercase tracking-[0.2em] text-asil-red transition-colors hover:text-white">
-          Tout le programme <span class="inline-block transition-transform duration-300 group-hover:translate-x-1">→</span>
+          {page.agendaLienTexte} <span class="inline-block transition-transform duration-300 group-hover:translate-x-1">→</span>
         </a>
       </div>
-      <EventCarousel evenements={prochains} />
+      <EventCarousel evenements={prochains} boutonTexte={settings.evenementBouton} />
     </section>
   )}
 
-  <section class="bg-asil-gray-light py-20 text-asil-black sm:py-28" aria-labelledby="pourquoi">
-    <div class="container-site">
+  {page.galeriePhotos.length > 0 && (
+    <section class="container-site py-16 sm:py-20" aria-labelledby="galerie-accueil">
       <FadeInText enhance={true} duration={0.7}>
-        <div class="mx-auto max-w-2xl text-center">
-          <p class="eyebrow mb-4 justify-center before:hidden">La troupe</p>
-          <h2 id="pourquoi" class="section-title centered text-4xl sm:text-5xl">
-            Pourquoi rejoindre l'ASIL ?
-          </h2>
-        </div>
+        <p class="eyebrow mb-4">{page.galerieSurtitre}</p>
+        <h2 id="galerie-accueil" class="section-title text-4xl sm:text-5xl">{page.galerieTitre}</h2>
       </FadeInText>
-      <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {raisons.map((r, i) => (
-          <ScaleIn enhance={true} delay={i * 120} class="h-full">
-            <article class="h-full rounded-2xl border border-black/5 bg-white p-8 transition-all duration-300 hover:-translate-y-1 hover:border-asil-red/30 hover:shadow-[0_20px_50px_-20px_rgba(0,0,0,0.25)]">
-              <span class="grid size-13 place-items-center rounded-full bg-asil-red/10 text-asil-red">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-6" aria-hidden="true">
-                  <path d={r.icone} />
-                </svg>
-              </span>
-              <h3 class="mt-6 text-xl text-asil-black">{r.titre}</h3>
-              <p class="mt-3 text-sm leading-relaxed text-asil-gray">{r.texte}</p>
-            </article>
-          </ScaleIn>
-        ))}
+      {page.galerieDescription && <p class="mt-5 max-w-2xl leading-relaxed text-white/75">{page.galerieDescription}</p>}
+      <div class="mt-10"><PhotoCarousel photos={page.galeriePhotos} /></div>
+    </section>
+  )}
+
+  {page.raisons.length > 0 && (
+    <section class="bg-asil-gray-light py-20 text-asil-black sm:py-28" aria-labelledby="pourquoi">
+      <div class="container-site">
+        <FadeInText enhance={true} duration={0.7}>
+          <div class="mx-auto max-w-2xl text-center">
+            <p class="eyebrow mb-4 justify-center before:hidden">{page.pourquoiSurtitre}</p>
+            <h2 id="pourquoi" class="section-title centered text-4xl sm:text-5xl">{page.pourquoiTitre}</h2>
+          </div>
+        </FadeInText>
+        <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {page.raisons.map((raison, i) => (
+            <ScaleIn enhance={true} delay={i * 120} class="h-full">
+              <article class="h-full rounded-2xl border border-black/5 bg-white p-8 transition-all duration-300 hover:-translate-y-1 hover:border-asil-red/30 hover:shadow-[0_20px_50px_-20px_rgba(0,0,0,0.25)]">
+                <span class="grid size-13 place-items-center rounded-full bg-asil-red/10 text-asil-red" aria-hidden="true">✦</span>
+                <h3 class="mt-6 text-xl text-asil-black">{raison.titre}</h3>
+                <p class="mt-3 text-sm leading-relaxed text-asil-gray">{raison.texte}</p>
+              </article>
+            </ScaleIn>
+          ))}
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  )}
 
   <section class="container-site grid items-center gap-10 py-16 sm:py-24 lg:grid-cols-2 lg:gap-16" aria-labelledby="rejoindre">
     <div>
       <FadeInText enhance={true} duration={0.7}>
-        <p class="eyebrow mb-4">Les ateliers</p>
-        <h2 id="rejoindre" class="section-title text-4xl sm:text-5xl">
-          Devenez improvisateur·rice
-        </h2>
+        <p class="eyebrow mb-4">{page.rejoindreSurtitre}</p>
+        <h2 id="rejoindre" class="section-title text-4xl sm:text-5xl">{page.rejoindreTitre}</h2>
       </FadeInText>
-      <p class="mt-6 leading-relaxed text-white/80">
-        Pour découvrir le théâtre d'improvisation, vaincre ses peurs, créer des
-        liens forts, affiner son jeu et retrouver le plaisir de la scène sans
-        apprendre un texte.
-      </p>
-      <p class="mt-4 leading-relaxed text-white/80">
-        Débutants ou improvisateurs expérimentés, les ateliers accueillent tous
-        les profils. Match, catch, cabaret, formes longues : tous les formats
-        sont abordés à l'ASIL.
-      </p>
-      <div class="mt-8">
-        <AnimatedButton variant="shimmer" href="/ateliers" class="btn-red px-8">
-          Inscrivez-vous
-        </AnimatedButton>
-      </div>
+      <p class="mt-6 whitespace-pre-line leading-relaxed text-white/80">{page.rejoindreTexte}</p>
+      <AnimatedButton variant="shimmer" href={page.rejoindreBoutonLien} class="btn-red mt-8 px-8">{page.rejoindreBouton}</AnimatedButton>
     </div>
     <ScaleIn enhance={true}>
-      <SitePhoto
-        publique={settings.photoRejoindre}
-        fallback={maud}
-        alt="Improvisatrice de l'ASIL sur scène"
-        class="w-full rounded-2xl object-cover shadow-2xl shadow-black/60"
-        widths={[480, 800, 1200]}
-        sizes="(min-width: 1024px) 34rem, 100vw"
-        loading="lazy"
-      />
+      <SitePhoto publique={settings.photoRejoindre} fallback={maud} alt="Improvisatrice de l'ASIL sur scène" class="w-full rounded-2xl object-cover shadow-2xl shadow-black/60" widths={[480, 800, 1200]} sizes="(min-width: 1024px) 34rem, 100vw" loading="lazy" />
     </ScaleIn>
   </section>
 
-  <SectionChiffres />
+  {page.chiffres.length > 0 && <SectionChiffres chiffres={page.chiffres} />}
 
   <section class="container-site grid items-center gap-10 py-16 sm:py-24 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-16" aria-labelledby="asil-quoi">
     <ScaleIn enhance={true} class="order-2 lg:order-1">
-      <SitePhoto
-        publique={settings.photoAsil}
-        fallback={comediens}
-        alt="Comédiens de l'ASIL en spectacle d'improvisation"
-        class="w-full rounded-2xl object-cover shadow-2xl shadow-black/60"
-        widths={[480, 800, 1365]}
-        sizes="(min-width: 1024px) 30rem, 100vw"
-        loading="lazy"
-      />
+      <SitePhoto publique={settings.photoAsil} fallback={comediens} alt="Comédiens de l'ASIL en spectacle d'improvisation" class="w-full rounded-2xl object-cover shadow-2xl shadow-black/60" widths={[480, 800, 1365]} sizes="(min-width: 1024px) 30rem, 100vw" loading="lazy" />
     </ScaleIn>
     <div class="order-1 lg:order-2">
       <FadeInText enhance={true} duration={0.7}>
-        <p class="eyebrow mb-4">Depuis 2002</p>
-        <h2 id="asil-quoi" class="section-title text-4xl sm:text-5xl">L'ASIL, c'est quoi ?</h2>
+        <p class="eyebrow mb-4">{page.presentationSurtitre}</p>
+        <h2 id="asil-quoi" class="section-title text-4xl sm:text-5xl">{page.presentationTitre}</h2>
       </FadeInText>
-      <p class="mt-6 leading-relaxed text-white/80">
-        Les <strong class="text-white">Ateliers stéphanois d'improvisation loufoque</strong>,
-        une association créée en 2002. Elle dispense des cours d'improvisation
-        tous niveaux et propose des spectacles de ses élèves toute l'année dans
-        les bars, café-théâtres et lieux culturels de Saint-Étienne et sa région.
-      </p>
-      <blockquote class="mt-7 border-l-2 border-asil-red pl-6 font-display text-2xl italic leading-snug text-white/90">
-        « Qui vit sans folie n'est pas aussi sage qu'il le croit. »
-      </blockquote>
+      <p class="mt-6 whitespace-pre-line leading-relaxed text-white/80">{page.presentationTexte}</p>
+      {page.presentationCitation && <blockquote class="mt-7 border-l-2 border-asil-red pl-6 font-display text-2xl italic leading-snug text-white/90">{page.presentationCitation}</blockquote>}
     </div>
   </section>
+
+  <FlexibleBlocks blocs={page.blocsLibres} />
 
   <section class="relative overflow-hidden bg-asil-red">
     <div class="pointer-events-none absolute inset-0 [background:radial-gradient(45rem_25rem_at_50%_-30%,rgba(255,255,255,0.18),transparent_60%)]" aria-hidden="true"></div>
     <div class="pointer-events-none absolute inset-0 [background:radial-gradient(40rem_20rem_at_50%_130%,rgba(0,0,0,0.35),transparent_65%)]" aria-hidden="true"></div>
     <div class="container-site relative flex flex-col items-center gap-6 py-20 text-center sm:py-28">
       <FadeInText enhance={true} duration={0.7}>
-        <h2 class="max-w-3xl text-4xl text-white sm:text-6xl">
-          Rejoignez <em class="italic">l'aventure</em>
-        </h2>
+        <h2 class="max-w-3xl text-4xl text-white sm:text-6xl">{page.ctaTitre}</h2>
       </FadeInText>
-      <p class="max-w-xl leading-relaxed text-white/90">
-        Une question, une envie de monter sur scène, un lieu à nous proposer ?
-        Écrivez-nous, on ne mord pas (sauf en impro).
-      </p>
-      <a href="/contact" class="btn mt-2 bg-white text-asil-red hover:-translate-y-0.5 hover:bg-asil-black hover:text-white hover:shadow-2xl min-h-13 px-10">
-        Contactez-nous
-      </a>
+      <p class="max-w-xl whitespace-pre-line leading-relaxed text-white/90">{page.ctaTexte}</p>
+      <a href={page.ctaBoutonLien} class="btn mt-2 min-h-13 bg-white px-10 text-asil-red hover:bg-asil-black hover:text-white">{page.ctaBouton}</a>
     </div>
   </section>
 </Layout>

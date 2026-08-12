@@ -1,0 +1,91 @@
+seoTitre: ASIL Impro — L'asso stéphanoise d'improvisation théâtrale
+seoDescription: >-
+  Ateliers stéphanois d'improvisation loufoque : cours d'impro, spectacles,
+  stages et catch d'impro à Saint-Étienne. Rejoignez l'aventure !
+heroDescription: Théâtre d'improvisation à Saint-Étienne — sans texte, sans décor, sans filet.
+heroBoutonPrincipal: Découvrir nos ateliers
+heroBoutonPrincipalLien: /ateliers
+heroBoutonSecondaire: Voir le programme
+heroBoutonSecondaireLien: /programme
+marqueeMots:
+  - Catch d'impro
+  - Cabaret
+  - Match
+  - Formes longues
+  - Baptêmes de scène
+  - Gala
+  - Improvisation loufoque
+agendaSurtitre: L'agenda
+agendaTitre: Prochainement
+agendaLienTexte: Tout le programme
+galerieSurtitre: En images
+galerieTitre: Nos derniers événements
+galerieDescription: Retrouvez les derniers moments partagés par l'ASIL sur les réseaux sociaux.
+galeriePhotos:
+  - actif: true
+    typeContenu: publication
+    image: null
+    alt: Publication récente de l'ASIL sur Instagram
+    legende: Retrouvez l'ASIL sur Instagram
+    lien: https://www.instagram.com/p/DaD0oqwIECP/
+  - actif: true
+    typeContenu: photo
+    image: null
+    alt: Emplacement pour une photo récente de l'ASIL
+    legende: Photo récente n°2
+  - actif: true
+    typeContenu: photo
+    image: null
+    alt: Emplacement pour une photo récente de l'ASIL
+    legende: Photo récente n°3
+pourquoiSurtitre: La troupe
+pourquoiTitre: Pourquoi rejoindre l'ASIL ?
+raisons:
+  - titre: Créativité
+    texte: >-
+      Inventer des histoires sans texte, sans décor, sans filet : chaque atelier
+      est un terrain de jeu illimité.
+  - titre: La scène
+    texte: >-
+      Plus de 30 spectacles par saison dans les bars, théâtres et café-théâtres
+      de Saint-Étienne. Le trac, puis le frisson.
+  - titre: Liens humains
+    texte: >-
+      Une troupe soudée de plus de 100 improvisateurs et improvisatrices,
+      débutants comme confirmés.
+  - titre: Le fun
+    texte: >-
+      Loufoque, c'est dans notre nom. On vient pour rire, vaincre ses peurs et
+      repartir avec le sourire.
+rejoindreSurtitre: Les ateliers
+rejoindreTitre: Devenez improvisateur·rice
+rejoindreTexte: |-
+  Pour découvrir le théâtre d'improvisation, vaincre ses peurs, créer des liens forts, affiner son jeu et retrouver le plaisir de la scène sans apprendre un texte.
+
+  Débutants ou improvisateurs expérimentés, les ateliers accueillent tous les profils. Match, catch, cabaret, formes longues : tous les formats sont abordés à l'ASIL.
+rejoindreBouton: Inscrivez-vous
+rejoindreBoutonLien: /ateliers
+chiffres:
+  - valeur: 24 ans
+    libelle: d'impro loufoque
+  - valeur: 100+
+    libelle: adhérents
+  - valeur: 30+
+    libelle: spectacles par saison
+  - valeur: ∞
+    libelle: éclats de rire
+presentationSurtitre: Depuis 2002
+presentationTitre: L'ASIL, c'est quoi ?
+presentationTexte: >-
+  Les Ateliers stéphanois d'improvisation loufoque sont une association créée
+  en 2002. Elle dispense des cours d'improvisation tous niveaux et propose des
+  spectacles de ses élèves toute l'année dans les bars, café-théâtres et lieux
+  culturels de Saint-Étienne et sa région.
+presentationCitation: « Qui vit sans folie n'est pas aussi sage qu'il le croit. »
+ctaTitre: Rejoignez l'aventure
+ctaTexte: >-
+  Une question, une envie de monter sur scène, un lieu à nous proposer ?
+  Écrivez-nous, on ne mord pas (sauf en impro).
+ctaBouton: Contactez-nous
+ctaBoutonLien: /contact
+blocsLibres: []

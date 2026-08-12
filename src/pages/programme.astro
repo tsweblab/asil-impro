@@ -2,44 +2,54 @@
 import FadeInText from '@astroanimate/core/FadeInText';
 import Layout from '../layouts/Layout.astro';
 import EventCard from '../components/EventCard.astro';
-import { getEvenements, grouperParMois } from '../lib/keystatic';
+import FlexibleBlocks from '../components/FlexibleBlocks.astro';
+import { getEvenements, getProgrammePage, getSettings } from '../lib/keystatic';
 
-// Toute la saison est affichée (comme sur le site historique) ; seul le
-// carrousel de l'accueil se limite aux événements à venir.
 const evenements = await getEvenements();
-const parMois = grouperParMois(evenements);
+const page = await getProgrammePage();
+const settings = await getSettings();
+const nomsMois = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+const cleDate = (annee: number, mois: number) => `${annee}-${String(mois).padStart(2, '0')}`;
+const ancre = (cle: string) => `mois-${cle}`;
 
-// Ancre URL-safe pour un mois : "Février 2027" -> "fevrier-2027"
-const ancre = (mois: string) =>
-  mois
-    .toLowerCase()
-    .replace(/é/g, 'e')
-    .replace(/û/g, 'u')
-    .replace(/\s+/g, '-');
+const moisConfigures = page.mois.map((m) => ({
+  annee: m.annee!,
+  mois: Number(m.mois),
+  cle: cleDate(m.annee!, Number(m.mois)),
+}));
+
+const moisDerives = [...new Set(evenements.map((e) => {
+  const date = new Date(e.date!);
+  return cleDate(date.getFullYear(), date.getMonth() + 1);
+}))].sort().map((cle) => {
+  const [annee, mois] = cle.split('-').map(Number);
+  return { annee, mois, cle };
+});
+
+const moisAffiches = moisConfigures.length > 0 ? moisConfigures : moisDerives;
+const sections = moisAffiches.map((m) => ({
+  ...m,
+  titre: `${nomsMois[m.mois - 1]} ${m.annee}`,
+  evenements: evenements.filter((e) => {
+    const date = new Date(e.date!);
+    return date.getFullYear() === m.annee && date.getMonth() + 1 === m.mois;
+  }),
+}));
 ---
 
-<Layout
-  title="Programme des spectacles — ASIL Impro"
-  description="L'agenda des spectacles d'improvisation de l'ASIL à Saint-Étienne : catch d'impro, cabarets, baptêmes de scène, gala… Toutes les dates, mois par mois."
->
+<Layout title={page.seoTitre} description={page.seoDescription}>
   <section class="container-site py-14 sm:py-20">
     <FadeInText duration={0.7}>
-      <p class="eyebrow mb-4">Saison en cours</p>
-      <h1 class="section-title text-5xl sm:text-6xl">Le programme</h1>
+      <p class="eyebrow mb-4">{page.surtitre}</p>
+      <h1 class="section-title text-5xl sm:text-6xl">{page.titre}</h1>
     </FadeInText>
-    <p class="mt-5 max-w-2xl leading-relaxed text-white/75">
-      Plus de 30 spectacles par saison à Saint-Étienne et dans sa région.
-      Retrouvez toutes nos dates, mois par mois.
-    </p>
+    <p class="mt-5 max-w-2xl whitespace-pre-line leading-relaxed text-white/75">{page.introduction}</p>
 
-    {parMois.size > 1 && (
+    {sections.length > 0 && (
       <nav aria-label="Aller à un mois" class="mt-8 flex flex-wrap gap-2">
-        {[...parMois.keys()].map((mois) => (
-          <a
-            href={`#${ancre(mois)}`}
-            class="rounded-full border border-white/20 px-5 py-2 font-sans text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-white/75 transition-all duration-300 hover:border-asil-red hover:bg-asil-red hover:text-white"
-          >
-            {mois}
+        {sections.map((section) => (
+          <a href={`#${ancre(section.cle)}`} class="rounded-full border border-white/20 px-5 py-2 font-sans text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-white/75 transition-all duration-300 hover:border-asil-red hover:bg-asil-red hover:text-white">
+            {section.titre}
           </a>
         ))}
       </nav>
@@ -47,31 +57,34 @@ const ancre = (mois: string) =>
   </section>
 
   <section class="container-site pb-20">
-    {evenements.length === 0 && (
+    {sections.length === 0 && (
       <div class="card-scene p-10 text-center">
-        <h2 class="text-2xl">La prochaine saison se prépare…</h2>
-        <p class="mt-3 text-white/70">
-          Les dates arrivent bientôt. Suivez-nous sur les réseaux pour ne rien manquer !
-        </p>
+        <h2 class="text-2xl">{page.aucunEvenementTitre}</h2>
+        <p class="mt-3 whitespace-pre-line text-white/70">{page.aucunEvenementTexte}</p>
       </div>
     )}
 
     <div class="grid gap-14">
-      {[...parMois.entries()].map(([mois, liste]) => (
-        <section id={ancre(mois)} aria-label={mois} class="scroll-mt-24">
+      {sections.map((section) => (
+        <section id={ancre(section.cle)} aria-label={section.titre} class="scroll-mt-24">
           <div class="mb-7 flex items-baseline gap-6">
-            <h2 class="shrink-0 font-display text-3xl italic text-asil-red sm:text-4xl">{mois}</h2>
+            <h2 class="shrink-0 font-display text-3xl italic text-asil-red sm:text-4xl">{section.titre}</h2>
             <div class="h-px grow bg-gradient-to-r from-white/20 to-transparent" aria-hidden="true"></div>
           </div>
-          <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {liste.map((e) => (
-              <div class="scroll-reveal h-full">
-                <EventCard evenement={e} />
-              </div>
-            ))}
-          </div>
+          {section.evenements.length > 0 ? (
+            <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {section.evenements.map((e) => <div class="scroll-reveal h-full"><EventCard evenement={e} boutonTexte={settings.evenementBouton} /></div>)}
+            </div>
+          ) : (
+            <div class="card-scene p-8">
+              <h3 class="text-xl">{page.moisVideTitre}</h3>
+              <p class="mt-2 whitespace-pre-line text-sm text-white/70">{page.moisVideTexte}</p>
+            </div>
+          )}
         </section>
       ))}
     </div>
   </section>
+
+  <FlexibleBlocks blocs={page.blocsLibres} />
 </Layout>

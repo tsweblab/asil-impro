@@ -4,15 +4,16 @@ import SocialLinks from './SocialLinks.astro';
 interface Props {
   facebook: string;
   instagram: string;
+  labels: { accueil: string; programme: string; stages: string; ateliers: string; contact: string };
 }
 
-const { facebook, instagram } = Astro.props;
+const { facebook, instagram, labels } = Astro.props;
 
 const liens = [
-  { href: '/', label: 'Accueil' },
-  { href: '/programme', label: 'Programme' },
-  { href: '/stages', label: 'Stages' },
-  { href: '/ateliers', label: 'Ateliers' },
+  { href: '/', label: labels.accueil },
+  { href: '/programme', label: labels.programme },
+  { href: '/stages', label: labels.stages },
+  { href: '/ateliers', label: labels.ateliers },
 ];
 ---
 
@@ -42,7 +43,7 @@ const liens = [
 
     <div class="hidden items-center gap-4 lg:flex">
       <SocialLinks facebook={facebook} instagram={instagram} />
-      <a href="/contact" class="btn-red min-h-10 px-6">Contact</a>
+      <a href="/contact" class="btn-red min-h-10 px-6">{labels.contact}</a>
     </div>
 
     <!-- Bouton hamburger mobile -->
@@ -78,7 +79,7 @@ const liens = [
           {lien.label}
         </a>
       ))}
-      <a href="/contact" class="btn-red mt-2">Contact</a>
+      <a href="/contact" class="btn-red mt-2">{labels.contact}</a>
       <SocialLinks facebook={facebook} instagram={instagram} class="mt-4 px-3 pb-2" />
     </div>
   </nav>

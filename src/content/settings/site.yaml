@@ -2,5 +2,24 @@ telephones: []
 email: asilimpro@gmail.com
 facebook: https://www.facebook.com/profile.php?id=100063601480001
 instagram: https://www.instagram.com/asil_impro/
-heroTitre: L'asso stéphanoise qui improvise depuis 22 ans !
+navAccueil: Accueil
+navProgramme: Programme
+navStages: Stages
+navAteliers: Ateliers
+navContact: Contact
+navMentions: Mentions légales
+evenementBouton: Réserver
+atelierLieuLabel: 'Lieu :'
+atelierTarifLabel: 'Tarif annuel :'
+stageHorairesLabel: 'Horaires :'
+stageLieuLabel: 'Lieu :'
+stageIntervenantLabel: 'Intervenant·e :'
+stageTarifLabel: 'Tarif :'
+stageBouton: S'inscrire
+footerDescription: Ateliers stéphanois d'improvisation loufoque — l'asso qui improvise à Saint-Étienne depuis 2002.
+footerLiensTitre: Liens rapides
+footerContactTitre: Gardons le contact !
+footerCopyright: ASIL Impro — Tous droits réservés.
+footerCredit: Site réalisé par
+heroTitre: L'asso stéphanoise qui improvise depuis 24 ans !
 heroSousTitre: Ateliers stéphanois d'improvisation loufoque

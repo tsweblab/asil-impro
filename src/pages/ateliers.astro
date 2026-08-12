@@ -4,124 +4,71 @@ import AnimatedButton from '@astroanimate/core/AnimatedButton';
 import Layout from '../layouts/Layout.astro';
 import AtelierCard from '../components/AtelierCard.astro';
 import SitePhoto from '../components/SitePhoto.astro';
-import { getAteliers, getSettings, type Atelier } from '../lib/keystatic';
+import IntervenantCard from '../components/IntervenantCard.astro';
+import FlexibleBlocks from '../components/FlexibleBlocks.astro';
+import { getAteliers, getSettings, getAteliersPage, getIntervenants, type BlocLibre } from '../lib/keystatic';
 import atelierPhoto from '../assets/atelier-portrait.jpg';
 
-const ateliers = await getAteliers();
+const ateliers = (await getAteliers()).filter((atelier) => atelier.categorie === 'adultes');
+const intervenants = await getIntervenants();
 const settings = await getSettings();
-
-const categories: { cle: NonNullable<Atelier['categorie']>; titre: string; intro: string }[] = [
-  {
-    cle: 'enfants',
-    titre: 'Enfants (5-11 ans)',
-    intro: "Éveil à l'imaginaire, écoute et confiance en soi : l'impro comme un grand terrain de jeu.",
-  },
-  {
-    cle: 'ados',
-    titre: 'Ados (12-18 ans)',
-    intro: "S'exprimer, oser, construire des histoires ensemble et monter sur scène pour de vrai.",
-  },
-  {
-    cle: 'adultes',
-    titre: 'Adultes',
-    intro: "Débutants ou improvisateurs expérimentés, de 18 à 108 ans : tous les profils sont bienvenus.",
-  },
-];
-
-const parCategorie = new Map(
-  categories.map((c) => [c.cle, ateliers.filter((a) => a.categorie === c.cle)]),
-);
+const contenu = await getAteliersPage();
+const page = {
+  seoTitre: contenu?.seoTitre ?? "Ateliers d'improvisation — ASIL Impro",
+  seoDescription: contenu?.seoDescription ?? "Cours d'improvisation théâtrale à Saint-Étienne pour adultes.",
+  surtitre: contenu?.surtitre ?? 'Tous les mardis et mercredis',
+  titre: contenu?.titre ?? 'Les ateliers',
+  citation: contenu?.citation ?? "« Qui vit sans folie n'est pas aussi sage qu'il le croit. »",
+  introduction: contenu?.introduction ?? '',
+  lieuTexte: contenu?.lieuTexte ?? '',
+  boutonTexte: contenu?.boutonTexte ?? 'Demander une inscription',
+  boutonLien: contenu?.boutonLien ?? '/contact',
+  adultesTitre: contenu?.adultesTitre ?? 'Adultes',
+  adultesIntroduction: contenu?.adultesIntroduction ?? '',
+  aucunAtelierTexte: contenu?.aucunAtelierTexte ?? 'Les prochains créneaux seront bientôt annoncés.',
+  intervenantsSurtitre: contenu?.intervenantsSurtitre ?? 'Ils et elles vous accompagnent',
+  intervenantsTitre: contenu?.intervenantsTitre ?? 'Les intervenant·es',
+  blocsLibres: (contenu?.blocsLibres ?? []).filter((bloc) => bloc.actif !== false) as BlocLibre[],
+};
 ---
 
-<Layout
-  title="Ateliers d'improvisation — ASIL Impro"
-  description="Cours d'improvisation théâtrale à Saint-Étienne pour enfants, ados et adultes : créneaux, lieux, tarifs et infos pratiques des ateliers de l'ASIL."
->
+<Layout title={page.seoTitre} description={page.seoDescription}>
   <section class="container-site grid items-center gap-10 py-14 sm:py-20 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] lg:gap-16">
     <div>
       <FadeInText duration={0.7}>
-        <p class="eyebrow mb-4">Tous les mardis et mercredis</p>
-        <h1 class="section-title text-5xl sm:text-6xl">Les ateliers</h1>
+        <p class="eyebrow mb-4">{page.surtitre}</p>
+        <h1 class="section-title text-5xl sm:text-6xl">{page.titre}</h1>
       </FadeInText>
-      <blockquote class="mt-7 border-l-2 border-asil-red pl-6 font-display text-2xl italic text-white/90">
-        « Qui vit sans folie n'est pas aussi sage qu'il le croit. »
-      </blockquote>
-      <p class="mt-5 leading-relaxed text-white/80">
-        2h par semaine pour développer tous les aspects du théâtre
-        d'improvisation : l'écoute, la construction d'histoires, les
-        personnages… et le plaisir de jouer sans texte.
-      </p>
-      <p class="mt-4 leading-relaxed text-white/80">
-        Les ateliers ont lieu à l'<strong class="text-white">Amicale Laïque Michelet</strong>,
-        26 rue Coraly-Royet, 42100 Saint-Étienne.
-      </p>
-      <div class="mt-8">
-        <AnimatedButton variant="shimmer" href="/contact" class="btn-red px-8">
-          Demander une inscription
-        </AnimatedButton>
-      </div>
+      {page.citation && <blockquote class="mt-7 border-l-2 border-asil-red pl-6 font-display text-2xl italic text-white/90">{page.citation}</blockquote>}
+      <p class="mt-5 whitespace-pre-line leading-relaxed text-white/80">{page.introduction}</p>
+      {page.lieuTexte && <p class="mt-4 whitespace-pre-line leading-relaxed text-white/80">{page.lieuTexte}</p>}
+      <AnimatedButton variant="shimmer" href={page.boutonLien} class="btn-red mt-8 px-8">{page.boutonTexte}</AnimatedButton>
     </div>
-    <SitePhoto
-      publique={settings.photoAteliers}
-      fallback={atelierPhoto}
-      alt="Atelier d'improvisation de l'ASIL"
-      class="w-full rounded-2xl object-cover shadow-2xl shadow-black/60"
-      widths={[480, 800, 1000]}
-      sizes="(min-width: 1024px) 26rem, 100vw"
-      loading="eager"
-    />
+    <SitePhoto publique={settings.photoAteliers} fallback={atelierPhoto} alt="Atelier d'improvisation de l'ASIL" class="w-full rounded-2xl object-cover shadow-2xl shadow-black/60" widths={[480, 800, 1000]} sizes="(min-width: 1024px) 26rem, 100vw" loading="eager" />
   </section>
 
-  {categories.map((cat) => {
-    const liste = parCategorie.get(cat.cle) ?? [];
-    return (
-      <section class="container-site pb-16" aria-labelledby={`cat-${cat.cle}`}>
-        <div class="mb-7 flex items-baseline gap-6">
-          <h2 id={`cat-${cat.cle}`} class="shrink-0 font-display text-3xl italic text-asil-red sm:text-4xl">{cat.titre}</h2>
-          <div class="h-px grow bg-gradient-to-r from-white/20 to-transparent" aria-hidden="true"></div>
-        </div>
-        <p class="mb-8 max-w-2xl text-white/70">{cat.intro}</p>
-        {liste.length === 0 ? (
-          <div class="rounded-2xl border border-dashed border-white/20 bg-asil-gray-dark/60 p-8">
-            <p class="text-white/75">
-              Les créneaux {cat.titre.toLowerCase()} ouvrent prochainement.
-              <a href="/contact" class="font-semibold text-asil-red hover:underline"> Contactez-nous</a>
-              pour être informé·e dès l'ouverture des inscriptions.
-            </p>
-          </div>
-        ) : (
-          <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {liste.map((atelier, i) => (
-              <AtelierCard atelier={atelier} index={i} />
-            ))}
-          </div>
-        )}
-      </section>
-    );
-  })}
-
-  <section class="bg-asil-gray-light py-20 text-asil-black sm:py-24" aria-labelledby="intervenantes">
-    <div class="container-site">
-      <p class="eyebrow mb-4">Elles vous accompagnent</p>
-      <h2 id="intervenantes" class="section-title text-4xl sm:text-5xl">Les intervenantes</h2>
-      <div class="mt-12 grid gap-6 md:grid-cols-2">
-        <article class="rounded-2xl border border-black/5 bg-white p-9 transition-all duration-300 hover:-translate-y-1 hover:border-asil-red/30 hover:shadow-[0_20px_50px_-20px_rgba(0,0,0,0.25)]">
-          <h3 class="text-2xl">Katar</h3>
-          <p class="mt-3 text-sm leading-relaxed text-asil-gray">
-            Improvisatrice depuis 1996, co-fondatrice de la LISA en 2000 et
-            comédienne professionnelle depuis 2002, Katarzyna Perdek explore
-            sans cesse les différentes facettes de l'impro.
-          </p>
-        </article>
-        <article class="rounded-2xl border border-black/5 bg-white p-9 transition-all duration-300 hover:-translate-y-1 hover:border-asil-red/30 hover:shadow-[0_20px_50px_-20px_rgba(0,0,0,0.25)]">
-          <h3 class="text-2xl">Marie-Eve</h3>
-          <p class="mt-3 text-sm leading-relaxed text-asil-gray">
-            Membre fondatrice de la LISA et de l'ASIL, elle aime former les gens
-            en laissant une grande part au ludique et accompagne vers un jeu
-            généreux et heureux.
-          </p>
-        </article>
-      </div>
+  <section class="container-site pb-16" aria-labelledby="ateliers-adultes">
+    <div class="mb-7 flex items-baseline gap-6">
+      <h2 id="ateliers-adultes" class="shrink-0 font-display text-3xl italic text-asil-red sm:text-4xl">{page.adultesTitre}</h2>
+      <div class="h-px grow bg-gradient-to-r from-white/20 to-transparent" aria-hidden="true"></div>
     </div>
+    {page.adultesIntroduction && <p class="mb-8 max-w-2xl whitespace-pre-line text-white/70">{page.adultesIntroduction}</p>}
+    {ateliers.length === 0 ? (
+      <div class="rounded-2xl border border-dashed border-white/20 bg-asil-gray-dark/60 p-8"><p class="whitespace-pre-line text-white/75">{page.aucunAtelierTexte}</p></div>
+    ) : (
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">{ateliers.map((atelier, i) => <AtelierCard atelier={atelier} index={i} labels={{ lieu: settings.atelierLieuLabel, tarif: settings.atelierTarifLabel }} />)}</div>
+    )}
   </section>
+
+  {intervenants.length > 0 && (
+    <section class="bg-asil-gray-light py-20 text-asil-black sm:py-24" aria-labelledby="intervenants">
+      <div class="container-site">
+        <p class="eyebrow mb-4">{page.intervenantsSurtitre}</p>
+        <h2 id="intervenants" class="section-title text-4xl sm:text-5xl">{page.intervenantsTitre}</h2>
+        <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">{intervenants.map((personne) => <IntervenantCard personne={personne} />)}</div>
+      </div>
+    </section>
+  )}
+
+  <FlexibleBlocks blocs={page.blocsLibres} />
 </Layout>

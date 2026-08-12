@@ -3,66 +3,42 @@ import FadeInText from '@astroanimate/core/FadeInText';
 import Layout from '../layouts/Layout.astro';
 import StageCard from '../components/StageCard.astro';
 import SitePhoto from '../components/SitePhoto.astro';
-import { getStages, getSettings } from '../lib/keystatic';
+import FlexibleBlocks from '../components/FlexibleBlocks.astro';
+import { getStages, getSettings, getStagesPage, type BlocLibre } from '../lib/keystatic';
 import stagePhoto from '../assets/stage-nb.jpg';
 
 const stages = await getStages();
 const settings = await getSettings();
+const contenu = await getStagesPage();
 const today = new Date().toISOString().slice(0, 10);
 const aVenir = stages.filter((s) => (s.dateFin ?? s.dateDebut ?? '') >= today);
+const page = {
+  seoTitre: contenu?.seoTitre ?? "Stages d'improvisation — ASIL Impro",
+  seoDescription: contenu?.seoDescription ?? "Stages d'improvisation théâtrale à Saint-Étienne.",
+  surtitre: contenu?.surtitre ?? 'Une journée pour jouer', titre: contenu?.titre ?? 'Les stages',
+  citation: contenu?.citation ?? '« Toi-même tu sais… »', introduction: contenu?.introduction ?? '',
+  conseil: contenu?.conseil ?? '', listeTitre: contenu?.listeTitre ?? 'Prochains stages',
+  videTitre: contenu?.videTitre ?? 'Les prochaines dates arrivent bientôt',
+  videTexte: contenu?.videTexte ?? 'Le calendrier des stages de la saison est en préparation.',
+  blocsLibres: (contenu?.blocsLibres ?? []).filter((bloc) => bloc.actif !== false) as BlocLibre[],
+};
 ---
 
-<Layout
-  title="Stages d'improvisation — ASIL Impro"
-  description="Stages d'improvisation théâtrale d'une journée à Saint-Étienne, ouverts à toutes et tous. Thèmes variés, intervenantes expérimentées : découvrez les prochaines dates."
->
+<Layout title={page.seoTitre} description={page.seoDescription}>
   <section class="container-site grid items-center gap-10 py-14 sm:py-20 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] lg:gap-16">
     <div>
-      <FadeInText duration={0.7}>
-        <p class="eyebrow mb-4">Une journée pour jouer</p>
-        <h1 class="section-title text-5xl sm:text-6xl">Les stages</h1>
-      </FadeInText>
-      <blockquote class="mt-7 border-l-2 border-asil-red pl-6 font-display text-2xl italic text-white/90">
-        « Toi-même tu sais… »
-      </blockquote>
-      <p class="mt-5 leading-relaxed text-white/80">
-        L'ASIL propose des stages d'une journée <strong class="text-white">ouverts à toutes et à tous</strong>,
-        chacun autour d'un thème particulier. Ils ont lieu de 10h à 17h, avec une
-        pause d'une heure pour manger.
-      </p>
-      <p class="mt-4 leading-relaxed text-white/80">
-        Prévoyez votre pique-nique et une tenue confortable !
-      </p>
+      <FadeInText duration={0.7}><p class="eyebrow mb-4">{page.surtitre}</p><h1 class="section-title text-5xl sm:text-6xl">{page.titre}</h1></FadeInText>
+      {page.citation && <blockquote class="mt-7 border-l-2 border-asil-red pl-6 font-display text-2xl italic text-white/90">{page.citation}</blockquote>}
+      <p class="mt-5 whitespace-pre-line leading-relaxed text-white/80">{page.introduction}</p>
+      {page.conseil && <p class="mt-4 whitespace-pre-line leading-relaxed text-white/80">{page.conseil}</p>}
     </div>
-    <SitePhoto
-      publique={settings.photoStages}
-      fallback={stagePhoto}
-      alt="Participants d'un stage d'improvisation de l'ASIL"
-      class="w-full rounded-2xl object-cover shadow-2xl shadow-black/60"
-      widths={[480, 800, 1200]}
-      sizes="(min-width: 1024px) 26rem, 100vw"
-      loading="eager"
-    />
+    <SitePhoto publique={settings.photoStages} fallback={stagePhoto} alt="Participants d'un stage d'improvisation de l'ASIL" class="w-full rounded-2xl object-cover shadow-2xl shadow-black/60" widths={[480, 800, 1200]} sizes="(min-width: 1024px) 26rem, 100vw" loading="eager" />
   </section>
-
   <section class="container-site pb-20" aria-labelledby="stages-a-venir">
-    <h2 id="stages-a-venir" class="section-title mb-12 text-4xl sm:text-5xl">Prochains stages</h2>
-
+    <h2 id="stages-a-venir" class="section-title mb-12 text-4xl sm:text-5xl">{page.listeTitre}</h2>
     {aVenir.length === 0 ? (
-      <div class="card-scene p-10 text-center">
-        <h3 class="text-2xl">Les prochaines dates arrivent bientôt</h3>
-        <p class="mt-3 text-white/70">
-          Le calendrier des stages de la saison est en préparation.
-          <a href="/contact" class="font-semibold text-asil-red hover:underline">Contactez-nous</a>
-          pour être prévenu·e en avant-première.
-        </p>
-      </div>
-    ) : (
-      <div class="grid gap-8">
-        {aVenir.map((stage, i) => (
-          <StageCard stage={stage} index={i} />
-        ))}
-      </div>
-    )}
+      <div class="card-scene p-10 text-center"><h3 class="text-2xl">{page.videTitre}</h3><p class="mt-3 whitespace-pre-line text-white/70">{page.videTexte}</p></div>
+    ) : <div class="grid gap-8">{aVenir.map((stage, i) => <StageCard stage={stage} index={i} labels={{ horaires: settings.stageHorairesLabel, lieu: settings.stageLieuLabel, intervenant: settings.stageIntervenantLabel, tarif: settings.stageTarifLabel, bouton: settings.stageBouton }} />)}</div>}
   </section>
+  <FlexibleBlocks blocs={page.blocsLibres} />
 </Layout>

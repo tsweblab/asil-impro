@@ -1,0 +1,31 @@
+seoTitre: Contact — ASIL Impro
+seoDescription: >-
+  Contactez l'ASIL Impro à Saint-Étienne : inscriptions, réservations,
+  propositions de lieux, email et réseaux sociaux.
+surtitre: On vous répond vite
+titre: Contact
+introduction: >-
+  Une question sur les ateliers, une réservation, une scène à nous proposer ?
+  Écrivez-nous, on improvise une réponse rapidement.
+formulaireTitre: Envoyez-nous un message
+nomLabel: Nom
+nomPlaceholder: Votre nom
+emailLabel: Email
+emailPlaceholder: votre@email.fr
+sujetLabel: Sujet
+sujetPlaceholder: Inscription, réservation, question…
+messageLabel: Message
+messagePlaceholder: Votre message…
+boutonEnvoyer: Envoyer le message
+boutonEnvoi: Envoi en cours…
+succesMessage: Merci ! Votre message a bien été envoyé. Nous vous répondrons au plus vite.
+erreurMessage: Impossible d'envoyer le message. Vérifiez votre connexion ou écrivez-nous par email.
+coordonneesTitre: Nos coordonnées
+emailTitre: Email
+telephoneTitre: Téléphone
+ateliersTitre: Ateliers
+ateliersAdresse: |-
+  Amicale Laïque Michelet
+  26 rue Coraly-Royet, 42100 Saint-Étienne
+reseauxTitre: Réseaux sociaux
+blocsLibres: []

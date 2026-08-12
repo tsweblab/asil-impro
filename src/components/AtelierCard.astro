@@ -5,9 +5,10 @@ import type { Atelier } from '../lib/keystatic';
 interface Props {
   atelier: Atelier;
   index?: number;
+  labels?: { lieu: string; tarif: string };
 }
 
-const { atelier, index = 0 } = Astro.props;
+const { atelier, index = 0, labels = { lieu: 'Lieu :', tarif: 'Tarif annuel :' } } = Astro.props;
 ---
 
 <ScaleIn enhance={true} delay={index * 120} class="h-full">
@@ -17,8 +18,8 @@ const { atelier, index = 0 } = Astro.props;
       <div class="border-l-4 border-asil-red pl-4 text-sm leading-relaxed text-white/85 whitespace-pre-line">{atelier.creneaux}</div>
     )}
     <ul class="grid gap-1.5 text-sm text-white/75">
-      {atelier.lieu && <li><strong class="text-white">Lieu :</strong> {atelier.lieu}</li>}
-      {atelier.tarif && <li><strong class="text-white">Tarif annuel :</strong> {atelier.tarif}</li>}
+      {atelier.lieu && <li><strong class="text-white">{labels.lieu}</strong> {atelier.lieu}</li>}
+      {atelier.tarif && <li><strong class="text-white">{labels.tarif}</strong> {atelier.tarif}</li>}
     </ul>
     {atelier.description && (
       <p class="text-sm leading-relaxed text-white/70">{atelier.description}</p>

@@ -28,25 +28,22 @@ Tout le contenu éditable vit dans `src/content/` (fichiers YAML versionnés) :
 | Événements | `src/content/evenements/` | Accueil (carrousel) + Programme |
 | Stages | `src/content/stages/` | Page Stages |
 | Ateliers | `src/content/ateliers/` | Page Ateliers |
-| Paramètres | `src/content/settings/site.yaml` | Hero, email, téléphone, réseaux |
+| Intervenant·es | `src/content/intervenants/` | Page Ateliers |
+| Textes des pages | `src/content/pages/` | Toutes les pages publiques |
+| Paramètres | `src/content/settings/site.yaml` | Navigation, pied de page, coordonnées, réseaux et photos principales |
 
 - Un événement coché **« Mettre en avant »** apparaît dans le carrousel de l'accueil.
+- La galerie de l'accueil accepte des photos ajoutables, supprimables et réorganisables depuis Keystatic.
+- Les mois du Programme peuvent être ajoutés, masqués et réorganisés ; le site les trie automatiquement.
+- Chaque page dispose de blocs libres permettant d'ajouter des sections texte + photo.
 - Seuls les événements/stages **à venir** sont affichés (filtrage par date au build).
 - ⚠️ Le contenu étant lu **au build**, un changement de contenu nécessite un re-déploiement (automatique en mode GitHub : chaque commit Keystatic redéclenche un build Vercel).
 
-### Passage en production (mode GitHub)
-
-`keystatic.config.ts` est en `storage: { kind: 'local' }` pour le dev.
-Pour la prod, passer en mode GitHub ([doc](https://keystatic.com/docs/github-mode)) :
-
-```ts
-storage: {
-  kind: 'github',
-  repo: 'ts-web-lab/asil-impro',
-},
-```
-
-puis créer l'app GitHub associée (`npx keystatic github setup` ou via la doc) et renseigner les variables d'environnement Keystatic sur Vercel.
+En développement (`npm run dev`), Keystatic utilise directement les fichiers locaux :
+les essais restent sur la machine et ne déclenchent aucun déploiement. En production,
+le projet utilise Keystatic Cloud (`tsweb/asil-impro`). Les éditeurs se connectent
+avec leur compte Keystatic Cloud ; chaque publication crée un commit puis déclenche
+automatiquement un nouveau déploiement Vercel.
 
 ## Formulaire de contact
 
