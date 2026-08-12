@@ -17,7 +17,7 @@ const liens = [
 ];
 ---
 
-<header class="fixed inset-x-0 top-0 z-50 border-b border-white/8 bg-asil-night/75 backdrop-blur-xl">
+<header data-site-header class="fixed inset-x-0 top-0 z-50 border-b border-white/8 bg-asil-night/85 shadow-[0_8px_30px_rgba(0,0,0,0.18)] backdrop-blur-xl">
   <div class="container-site flex items-center justify-between gap-6 py-3">
     <a href="/" aria-label="ASIL Impro — accueil" class="shrink-0">
       <img
@@ -53,7 +53,7 @@ const liens = [
       aria-expanded="false"
       aria-controls="menu-mobile"
       aria-label="Ouvrir le menu"
-      class="grid size-11 place-items-center rounded border border-white/30 text-white lg:hidden"
+      class="hamburger-button grid size-11 place-items-center rounded-xl border border-white/25 bg-white/[0.04] text-white shadow-lg shadow-black/20 transition hover:border-asil-red/70 hover:bg-asil-red/10 lg:hidden"
     >
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" class="size-6" aria-hidden="true">
         <path data-line="top" d="M4 7h16" />
@@ -67,7 +67,9 @@ const liens = [
   <nav
     id="menu-mobile"
     aria-label="Navigation mobile"
-    class="grid max-h-0 overflow-hidden bg-asil-gray-dark transition-[max-height] duration-300 ease-out lg:hidden"
+    aria-hidden="true"
+    inert
+    class="grid max-h-0 overflow-x-hidden overflow-y-auto border-t border-white/8 bg-asil-gray-dark/98 opacity-0 shadow-2xl shadow-black/50 transition-[max-height,opacity] duration-300 ease-out lg:hidden"
     data-menu-mobile
   >
     <div class="container-site flex flex-col gap-1 py-4">
@@ -92,27 +94,50 @@ const liens = [
   function initNavbar() {
     const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
     const menu = document.querySelector<HTMLElement>('[data-menu-mobile]');
-    if (!toggle || !menu) return;
+    const header = document.querySelector<HTMLElement>('[data-site-header]');
+    if (!toggle || !menu || !header) return;
 
-    const fermer = () => {
+    const fermer = (rendreFocus = false) => {
       toggle.setAttribute('aria-expanded', 'false');
       toggle.setAttribute('aria-label', 'Ouvrir le menu');
+      menu.setAttribute('aria-hidden', 'true');
+      menu.inert = true;
       menu.style.maxHeight = '0';
+      menu.classList.add('opacity-0');
+      document.body.classList.remove('menu-mobile-open');
+      document.documentElement.classList.remove('menu-mobile-open');
+      if (rendreFocus) toggle.focus();
+    };
+
+    const ouvrir = () => {
+      toggle.setAttribute('aria-expanded', 'true');
+      toggle.setAttribute('aria-label', 'Fermer le menu');
+      menu.setAttribute('aria-hidden', 'false');
+      menu.inert = false;
+      menu.classList.remove('opacity-0');
+      const hauteurDisponible = Math.max(180, window.innerHeight - header.querySelector(':scope > div')!.getBoundingClientRect().height);
+      menu.style.maxHeight = `${Math.min(menu.scrollHeight, hauteurDisponible)}px`;
+      document.body.classList.add('menu-mobile-open');
+      document.documentElement.classList.add('menu-mobile-open');
     };
 
     if (!toggle.dataset.bound) {
       toggle.dataset.bound = 'true';
       toggle.addEventListener('click', () => {
         const ouvert = toggle.getAttribute('aria-expanded') === 'true';
-        if (ouvert) {
-          fermer();
-        } else {
-          toggle.setAttribute('aria-expanded', 'true');
-          toggle.setAttribute('aria-label', 'Fermer le menu');
-          menu.style.maxHeight = menu.scrollHeight + 'px';
-        }
+        ouvert ? fermer() : ouvrir();
       });
-      menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', fermer));
+      menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => fermer()));
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') fermer(true);
+      });
+      document.addEventListener('pointerdown', (event) => {
+        if (toggle.getAttribute('aria-expanded') === 'true' && !header.contains(event.target as Node)) fermer();
+      });
+      window.addEventListener('resize', () => {
+        if (window.innerWidth >= 1024) fermer();
+        else if (toggle.getAttribute('aria-expanded') === 'true') ouvrir();
+      });
     }
 
     // Lien actif : mis à jour à chaque navigation (la navbar persiste
@@ -133,3 +158,44 @@ const liens = [
   initNavbar();
   document.addEventListener('astro:page-load', initNavbar);
 </script>
+
+<style>
+  [data-menu-mobile] {
+    scrollbar-width: none;
+  }
+
+  [data-menu-mobile]::-webkit-scrollbar {
+    display: none;
+  }
+
+  :global(html.menu-mobile-open),
+  :global(body.menu-mobile-open) {
+    overflow: hidden;
+  }
+
+  [data-line] {
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: transform 260ms ease, opacity 180ms ease;
+  }
+
+  [aria-expanded="true"] [data-line="top"] {
+    transform: translateY(5px) rotate(45deg);
+  }
+
+  [aria-expanded="true"] [data-line="mid"] {
+    opacity: 0;
+    transform: scaleX(0.25);
+  }
+
+  [aria-expanded="true"] [data-line="bot"] {
+    transform: translateY(-5px) rotate(-45deg);
+  }
+
+  @media (min-width: 1024px) {
+    :global(html.menu-mobile-open),
+    :global(body.menu-mobile-open) {
+      overflow: auto;
+    }
+  }
+</style>

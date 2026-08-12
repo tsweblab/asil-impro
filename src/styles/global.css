@@ -18,10 +18,13 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    overflow-x: clip;
   }
 
   body {
     @apply bg-asil-night font-sans text-white antialiased;
+    min-width: 0;
+    overflow-x: clip;
     background-image:
       radial-gradient(1200px 600px at 85% -10%, rgba(227, 6, 19, 0.07), transparent 60%),
       radial-gradient(900px 500px at -10% 30%, rgba(255, 255, 255, 0.03), transparent 55%);
@@ -110,6 +113,7 @@
   --poster-width: min(82vw, 34rem);
   --poster-height: 48rem;
   isolation: isolate;
+  overflow: clip;
 }
 
 .poster-stack {
@@ -163,36 +167,73 @@
   top: 26rem;
   z-index: 40;
   display: grid;
-  width: 4.5rem;
-  height: 4.5rem;
+  width: 4.75rem;
+  height: 4.75rem;
   place-items: center;
-  border: 2px solid rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.58);
   border-radius: 999px;
   cursor: pointer;
   color: white;
-  background: rgba(227, 6, 19, 0.92);
-  box-shadow: 0 18px 45px -15px rgba(227, 6, 19, 0.95);
-  backdrop-filter: blur(12px);
+  background:
+    radial-gradient(circle at 35% 25%, rgba(255, 255, 255, 0.24), transparent 35%),
+    linear-gradient(145deg, rgba(227, 6, 19, 0.98), rgba(128, 0, 8, 0.96));
+  box-shadow:
+    0 0 0 5px rgba(11, 10, 10, 0.72),
+    0 0 0 6px rgba(227, 6, 19, 0.32),
+    0 20px 48px -14px rgba(227, 6, 19, 0.9);
+  backdrop-filter: blur(16px);
   transform: translateY(-50%);
-  transition: transform 250ms ease, background-color 250ms ease, border-color 250ms ease, box-shadow 250ms ease;
+  transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1), border-color 250ms ease, box-shadow 280ms ease, filter 250ms ease;
 }
 
-.poster-arrow span {
-  font-size: 2rem;
-  line-height: 1;
-  transform: translateY(-0.08em);
+.poster-arrow::before {
+  content: "";
+  position: absolute;
+  inset: 0.42rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.poster-arrow-icon {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  place-items: center;
+  transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.poster-arrow-icon svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  stroke: currentColor;
+  stroke-width: 2.15;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .poster-arrow:hover,
 .poster-arrow:focus-visible {
   border-color: white;
-  background: var(--color-asil-red-dark);
-  box-shadow: 0 22px 55px -12px rgba(227, 6, 19, 1);
-  transform: translateY(-50%) scale(1.1);
+  box-shadow:
+    0 0 0 5px rgba(11, 10, 10, 0.82),
+    0 0 0 7px rgba(227, 6, 19, 0.55),
+    0 24px 58px -10px rgba(227, 6, 19, 1);
+  filter: brightness(1.12);
+  transform: translateY(-50%) scale(1.08);
 }
 
-.poster-arrow--prev { left: 1rem; }
-.poster-arrow--next { right: 1rem; }
+.poster-arrow--prev:hover .poster-arrow-icon,
+.poster-arrow--prev:focus-visible .poster-arrow-icon { transform: translateX(-0.2rem); }
+
+.poster-arrow--next:hover .poster-arrow-icon,
+.poster-arrow--next:focus-visible .poster-arrow-icon { transform: translateX(0.2rem); }
+
+.poster-arrow:active { transform: translateY(-50%) scale(0.96); }
+
+.poster-arrow--prev { left: 1.25rem; }
+.poster-arrow--next { right: 1.25rem; }
 
 .photo-carousel-dot {
   width: 0.55rem;
@@ -209,14 +250,16 @@
 
 @media (prefers-reduced-motion: reduce) {
   .poster-card,
-  .photo-carousel-dot {
+  .photo-carousel-dot,
+  .poster-arrow,
+  .poster-arrow-icon {
     transition: none;
   }
 }
 
 @media (max-width: 900px) {
-  .poster-arrow--prev { left: 0; }
-  .poster-arrow--next { right: 0; }
+  .poster-arrow--prev { left: 0.75rem; }
+  .poster-arrow--next { right: 0.75rem; }
   .poster-card {
     transform:
       translateX(calc(-50% + var(--poster-offset) * 6rem))
@@ -235,10 +278,17 @@
   .poster-stack { height: 43rem; padding-top: 1rem; }
   .poster-arrow {
     top: 21.5rem;
-    width: 3.5rem;
-    height: 3.5rem;
+    width: 3.4rem;
+    height: 3.4rem;
+    box-shadow:
+      0 0 0 4px rgba(11, 10, 10, 0.78),
+      0 0 0 5px rgba(227, 6, 19, 0.32),
+      0 16px 38px -12px rgba(227, 6, 19, 0.9);
   }
-  .poster-arrow span { font-size: 1.55rem; }
+  .poster-arrow::before { inset: 0.32rem; }
+  .poster-arrow-icon { width: 1.5rem; height: 1.5rem; }
+  .poster-arrow--prev { left: 0.55rem; }
+  .poster-arrow--next { right: 0.55rem; }
   .poster-card {
     top: 1rem;
     transform:
