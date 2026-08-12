@@ -167,8 +167,8 @@
   top: 26rem;
   z-index: 40;
   display: grid;
-  width: 4.75rem;
-  height: 4.75rem;
+  width: 3.75rem;
+  height: 3.75rem;
   place-items: center;
   border: 1px solid rgba(255, 255, 255, 0.58);
   border-radius: 999px;
@@ -178,9 +178,9 @@
     radial-gradient(circle at 35% 25%, rgba(255, 255, 255, 0.24), transparent 35%),
     linear-gradient(145deg, rgba(227, 6, 19, 0.98), rgba(128, 0, 8, 0.96));
   box-shadow:
-    0 0 0 5px rgba(11, 10, 10, 0.72),
-    0 0 0 6px rgba(227, 6, 19, 0.32),
-    0 20px 48px -14px rgba(227, 6, 19, 0.9);
+    0 0 0 3px rgba(11, 10, 10, 0.72),
+    0 0 0 4px rgba(227, 6, 19, 0.28),
+    0 16px 38px -14px rgba(227, 6, 19, 0.82);
   backdrop-filter: blur(16px);
   transform: translateY(-50%);
   transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1), border-color 250ms ease, box-shadow 280ms ease, filter 250ms ease;
@@ -189,7 +189,7 @@
 .poster-arrow::before {
   content: "";
   position: absolute;
-  inset: 0.42rem;
+  inset: 0.34rem;
   border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: inherit;
   pointer-events: none;
@@ -197,8 +197,8 @@
 
 .poster-arrow-icon {
   display: grid;
-  width: 2rem;
-  height: 2rem;
+  width: 1.55rem;
+  height: 1.55rem;
   place-items: center;
   transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -217,9 +217,9 @@
 .poster-arrow:focus-visible {
   border-color: white;
   box-shadow:
-    0 0 0 5px rgba(11, 10, 10, 0.82),
-    0 0 0 7px rgba(227, 6, 19, 0.55),
-    0 24px 58px -10px rgba(227, 6, 19, 1);
+    0 0 0 3px rgba(11, 10, 10, 0.82),
+    0 0 0 5px rgba(227, 6, 19, 0.5),
+    0 18px 42px -12px rgba(227, 6, 19, 0.95);
   filter: brightness(1.12);
   transform: translateY(-50%) scale(1.08);
 }
@@ -278,15 +278,15 @@
   .poster-stack { height: 43rem; padding-top: 1rem; }
   .poster-arrow {
     top: 21.5rem;
-    width: 3.4rem;
-    height: 3.4rem;
+    width: 2.8rem;
+    height: 2.8rem;
     box-shadow:
-      0 0 0 4px rgba(11, 10, 10, 0.78),
-      0 0 0 5px rgba(227, 6, 19, 0.32),
-      0 16px 38px -12px rgba(227, 6, 19, 0.9);
+      0 0 0 2px rgba(11, 10, 10, 0.78),
+      0 0 0 3px rgba(227, 6, 19, 0.28),
+      0 12px 28px -12px rgba(227, 6, 19, 0.82);
   }
-  .poster-arrow::before { inset: 0.32rem; }
-  .poster-arrow-icon { width: 1.5rem; height: 1.5rem; }
+  .poster-arrow::before { inset: 0.27rem; }
+  .poster-arrow-icon { width: 1.2rem; height: 1.2rem; }
   .poster-arrow--prev { left: 0.55rem; }
   .poster-arrow--next { right: 0.55rem; }
   .poster-card {
