@@ -1,5 +1,5 @@
 ---
-import FadeInText from '@astroanimate/core/FadeInText';
+import FadeInText from '../components/motion/FadeInText.astro';
 import Layout from '../layouts/Layout.astro';
 import ContactForm from '../components/ContactForm.astro';
 import SitePhoto from '../components/SitePhoto.astro';
@@ -14,6 +14,7 @@ const page = {
   seoTitre: contenu?.seoTitre ?? 'Contact — ASIL Impro', seoDescription: contenu?.seoDescription ?? "Contactez l'ASIL Impro à Saint-Étienne.",
   surtitre: contenu?.surtitre ?? 'On vous répond vite', titre: contenu?.titre ?? 'Contact', introduction: contenu?.introduction ?? '',
   photoContact: contenu?.photoContact ?? null,
+  photoContactFit: contenu?.photoContactFit ?? 'cover',
   photoContactAlt: contenu?.photoContactAlt ?? "Spectacle d'improvisation de l'ASIL",
   formulaireTitre: contenu?.formulaireTitre ?? 'Envoyez-nous un message',
   nomLabel: contenu?.nomLabel ?? 'Nom', nomPlaceholder: contenu?.nomPlaceholder ?? 'Votre nom',
@@ -39,7 +40,7 @@ const page = {
   <section class="container-site grid gap-12 pb-20 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-16">
     <div><h2 class="mb-7 text-2xl">{page.formulaireTitre}</h2><ContactForm textes={page} /></div>
     <aside class="flex flex-col gap-8">
-      <SitePhoto publique={page.photoContact} fallback={scenePhoto} alt={page.photoContactAlt} class="w-full rounded-2xl object-cover shadow-2xl shadow-black/60" widths={[480, 800, 1200]} sizes="(min-width: 1024px) 26rem, 100vw" loading="lazy" />
+      <SitePhoto publique={page.photoContact} fallback={scenePhoto} alt={page.photoContactAlt} fit={page.photoContactFit} class="aspect-[4/3] w-full rounded-2xl shadow-2xl shadow-black/60" widths={[480, 800, 1200]} sizes="(min-width: 1024px) 26rem, 100vw" loading="lazy" />
       <div class="card-scene p-8">
         <h2 class="text-2xl">{page.coordonneesTitre}</h2>
         <ul class="mt-5 grid gap-4 text-sm">

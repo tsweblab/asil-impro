@@ -1,0 +1,25 @@
+---
+interface Props {
+  duration?: number;
+  delay?: number;
+  enhance?: boolean;
+  class?: string;
+}
+
+const {
+  duration = 0.7,
+  delay = 0,
+  enhance = false,
+  class: className = '',
+} = Astro.props;
+
+const delaySeconds = delay > 10 ? delay / 1000 : delay;
+---
+
+<div
+  class:list={['motion-fade-in', enhance && 'motion-on-view', className]}
+  style={`--motion-duration:${duration}s;--motion-delay:${delaySeconds}s`}
+>
+  <slot />
+</div>
+

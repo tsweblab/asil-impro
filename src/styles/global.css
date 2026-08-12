@@ -1,9 +1,12 @@
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/playfair-display";
 @import "tailwindcss";
 
 @theme {
   /* Charte ASIL Impro — noir / blanc / rouge */
   --color-asil-red: #e30613;
   --color-asil-red-dark: #b8050f;
+  --color-asil-red-light: #ff5a64;
   --color-asil-black: #000000;
   --color-asil-night: #0b0a0a;
   --color-asil-gray-dark: #161414;
@@ -36,6 +39,7 @@
   h4 {
     @apply font-display font-semibold tracking-tight;
     text-wrap: balance;
+    overflow-wrap: anywhere;
   }
 
   ::selection {
@@ -48,6 +52,22 @@
   }
 }
 
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 100;
+  transform: translateY(-180%);
+  border-radius: 999px;
+  background: white;
+  padding: 0.75rem 1rem;
+  color: black;
+  font-weight: 700;
+  transition: transform 180ms ease;
+}
+
+.skip-link:focus { transform: none; }
+
 @utility container-site {
   width: min(100% - 2.5rem, 72rem);
   margin-inline: auto;
@@ -56,7 +76,7 @@
 @layer components {
   /* Étiquette « petites capitales » au-dessus des titres */
   .eyebrow {
-    @apply inline-flex items-center gap-3 font-sans text-[0.7rem] font-semibold uppercase tracking-[0.35em] text-asil-red;
+    @apply inline-flex items-center gap-3 font-sans text-[0.7rem] font-semibold uppercase tracking-[0.35em] text-asil-red-light;
   }
 
   .eyebrow::before {
@@ -86,6 +106,67 @@
   .card-hover {
     @apply transition-all duration-300 hover:-translate-y-1 hover:border-asil-red/40 hover:shadow-[0_20px_60px_-20px_rgba(227,6,19,0.35)];
   }
+}
+
+/* Animations natives du site : légères, progressives et sans dépendance externe. */
+.motion-fade-in,
+.motion-scale-in {
+  animation-duration: var(--motion-duration, 0.7s);
+  animation-delay: var(--motion-delay, 0s);
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.motion-fade-in { animation-name: motion-fade-in; }
+.motion-scale-in { animation-name: motion-scale-in; }
+
+@keyframes motion-fade-in {
+  from { opacity: 0; transform: translateY(1.25rem); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes motion-scale-in {
+  from { opacity: 0; transform: translateY(1rem) scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+
+.motion-shimmer-button {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.motion-shimmer-button::after {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  z-index: -1;
+  background: linear-gradient(110deg, transparent 38%, rgba(255, 255, 255, 0.24) 50%, transparent 62%);
+  transform: translateX(-65%);
+  transition: transform 650ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.motion-shimmer-button:hover::after,
+.motion-shimmer-button:focus-visible::after { transform: translateX(65%); }
+
+.native-marquee {
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, black 7%, black 93%, transparent);
+}
+
+.native-marquee__track {
+  display: flex;
+  width: max-content;
+  animation: native-marquee var(--marquee-speed, 45s) linear infinite;
+}
+
+.native-marquee__group {
+  display: flex;
+  flex: none;
+}
+
+@keyframes native-marquee {
+  to { transform: translateX(-50%); }
 }
 
 /* Carrousel scroll-snap pur CSS */

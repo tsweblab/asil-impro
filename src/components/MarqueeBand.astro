@@ -1,5 +1,5 @@
 ---
-import InfiniteMarquee from '@astroanimate/core/InfiniteMarquee';
+import InfiniteMarquee from './motion/InfiniteMarquee.astro';
 
 /**
  * Bandeau typographique défilant (tendance « kinetic type ») :
@@ -21,7 +21,7 @@ const { mots = motsDefaut } = Astro.props;
 ---
 
 <div class="overflow-hidden border-y border-white/8 bg-asil-black py-5" aria-hidden="true">
-  <InfiniteMarquee speed="45s" gap="0rem" fade={true} pauseOnHover={false}>
+  <InfiniteMarquee speed="45s">
     <div class="flex items-center whitespace-nowrap">
       {mots.map((mot) => (
         <span class="flex items-center">

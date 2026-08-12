@@ -1,6 +1,6 @@
 ---
-import FadeInText from '@astroanimate/core/FadeInText';
-import AnimatedButton from '@astroanimate/core/AnimatedButton';
+import FadeInText from '../components/motion/FadeInText.astro';
+import AnimatedButton from '../components/motion/AnimatedButton.astro';
 import Layout from '../layouts/Layout.astro';
 import AtelierCard from '../components/AtelierCard.astro';
 import SitePhoto from '../components/SitePhoto.astro';
@@ -20,6 +20,7 @@ const page = {
   citation: contenu?.citation ?? "« Qui vit sans folie n'est pas aussi sage qu'il le croit. »",
   introduction: contenu?.introduction ?? '',
   photoAteliers: contenu?.photoAteliers ?? null,
+  photoAteliersFit: contenu?.photoAteliersFit ?? 'cover',
   photoAteliersAlt: contenu?.photoAteliersAlt ?? "Atelier d'improvisation de l'ASIL",
   lieuTexte: contenu?.lieuTexte ?? '',
   boutonTexte: contenu?.boutonTexte ?? 'Demander une inscription',
@@ -47,12 +48,12 @@ const page = {
       {page.lieuTexte && <p class="mt-4 whitespace-pre-line leading-relaxed text-white/80">{page.lieuTexte}</p>}
       <AnimatedButton variant="shimmer" href={page.boutonLien} class="btn-red mt-8 px-8">{page.boutonTexte}</AnimatedButton>
     </div>
-    <SitePhoto publique={page.photoAteliers} fallback={atelierPhoto} alt={page.photoAteliersAlt} class="w-full rounded-2xl object-cover shadow-2xl shadow-black/60" widths={[480, 800, 1000]} sizes="(min-width: 1024px) 26rem, 100vw" loading="eager" />
+    <SitePhoto publique={page.photoAteliers} fallback={atelierPhoto} alt={page.photoAteliersAlt} fit={page.photoAteliersFit} class="aspect-[4/3] w-full rounded-2xl shadow-2xl shadow-black/60" widths={[480, 800, 1000]} sizes="(min-width: 1024px) 26rem, 100vw" loading="eager" />
   </section>
 
   <section class="container-site pb-16" aria-labelledby="ateliers-adultes">
     <div class="mb-7 flex items-baseline gap-6">
-      <h2 id="ateliers-adultes" class="shrink-0 font-display text-3xl italic text-asil-red sm:text-4xl">{page.adultesTitre}</h2>
+      <h2 id="ateliers-adultes" class="shrink-0 font-display text-3xl italic text-asil-red-light sm:text-4xl">{page.adultesTitre}</h2>
       <div class="h-px grow bg-gradient-to-r from-white/20 to-transparent" aria-hidden="true"></div>
     </div>
     {page.adultesIntroduction && <p class="mb-8 max-w-2xl whitespace-pre-line text-white/70">{page.adultesIntroduction}</p>}
@@ -66,7 +67,7 @@ const page = {
   {intervenants.length > 0 && (
     <section class="bg-asil-gray-light py-20 text-asil-black sm:py-24" aria-labelledby="intervenants">
       <div class="container-site">
-        <p class="eyebrow mb-4">{page.intervenantsSurtitre}</p>
+        <p class="eyebrow mb-4 !text-asil-red">{page.intervenantsSurtitre}</p>
         <h2 id="intervenants" class="section-title text-4xl sm:text-5xl">{page.intervenantsTitre}</h2>
         <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">{intervenants.map((personne) => <IntervenantCard personne={personne} />)}</div>
       </div>

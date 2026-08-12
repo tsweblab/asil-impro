@@ -1,0 +1,18 @@
+---
+interface Props {
+  delay?: number;
+  enhance?: boolean;
+  class?: string;
+}
+
+const { delay = 0, enhance = false, class: className = '' } = Astro.props;
+const delaySeconds = delay > 10 ? delay / 1000 : delay;
+---
+
+<div
+  class:list={['motion-scale-in', enhance && 'motion-on-view', className]}
+  style={`--motion-delay:${delaySeconds}s`}
+>
+  <slot />
+</div>
+

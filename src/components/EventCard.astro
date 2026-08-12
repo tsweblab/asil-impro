@@ -24,13 +24,14 @@ const heure = formatHeure(evenement.date!);
       src={evenement.image}
       alt={evenement.imageAlt || `Affiche ou photo de ${evenement.titre}`}
       class:list={[
-        '-mx-6 -mt-6 mb-2 aspect-[16/9] w-[calc(100%+3rem)] object-cover',
+        '-mx-6 -mt-6 mb-2 aspect-[16/9] w-[calc(100%+3rem)] bg-black/30',
+        evenement.imageFit === 'contain' ? 'object-contain' : 'object-cover',
         !compact && 'sm:-mx-7 sm:-mt-7 sm:w-[calc(100%+3.5rem)]',
       ]}
       loading="lazy"
     />
   )}
-  <p class="font-sans text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-asil-red">
+  <p class="font-sans text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-asil-red-light">
     {formatDateLongue(evenement.date!)}{heure && ` — ${heure}`}
   </p>
   <!-- Séparateur « billet de spectacle » : pointillés + encoches perforées -->

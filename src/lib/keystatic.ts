@@ -28,6 +28,7 @@ export type BlocLibre = {
   texte?: string;
   image?: string | null;
   imageAlt?: string;
+  imageFit?: 'cover' | 'contain';
   imagePosition?: 'gauche' | 'droite';
   boutonTexte?: string;
   boutonLien?: string;
@@ -68,14 +69,13 @@ export async function getEvenements(): Promise<Evenement[]> {
   return all
     .map(({ slug, entry }) => ({ ...entry, slug }))
     .filter((e) => e.date && e.actif !== false)
-    .sort((a, b) => (a.date! < b.date! ? -1 : 1));
+    .sort((a, b) => eventSortKey(a.date!).localeCompare(eventSortKey(b.date!)));
 }
 
 /** Événements à venir (date >= aujourd'hui), triés chronologiquement. */
 export async function getEvenementsAVenir(): Promise<Evenement[]> {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  return (await getEvenements()).filter((e) => new Date(e.date!) >= today);
+  const today = todayInParis();
+  return (await getEvenements()).filter((e) => eventDateKey(e.date!) >= today);
 }
 
 export async function getStages(): Promise<Stage[]> {
@@ -111,6 +111,7 @@ export async function getHomePage() {
     heroSousTitre: page?.heroSousTitre ?? "Ateliers stéphanois d'improvisation loufoque",
     heroDescription: page?.heroDescription ?? "Théâtre d'improvisation à Saint-Étienne — sans texte, sans décor, sans filet.",
     heroImage: page?.heroImage ?? null,
+    heroImageFit: page?.heroImageFit ?? 'cover',
     heroImageAlt: page?.heroImageAlt ?? '',
     heroBoutonPrincipal: page?.heroBoutonPrincipal ?? 'Découvrir nos ateliers',
     heroBoutonPrincipalLien: page?.heroBoutonPrincipalLien ?? '/ateliers',
@@ -133,6 +134,7 @@ export async function getHomePage() {
     rejoindreBouton: page?.rejoindreBouton ?? 'Inscrivez-vous',
     rejoindreBoutonLien: page?.rejoindreBoutonLien ?? '/ateliers',
     photoRejoindre: page?.photoRejoindre ?? null,
+    photoRejoindreFit: page?.photoRejoindreFit ?? 'cover',
     photoRejoindreAlt: page?.photoRejoindreAlt ?? "Improvisatrice de l'ASIL sur scène",
     chiffres: page?.chiffres ?? [],
     presentationSurtitre: page?.presentationSurtitre ?? 'Depuis 2002',
@@ -140,6 +142,7 @@ export async function getHomePage() {
     presentationTexte: page?.presentationTexte ?? '',
     presentationCitation: page?.presentationCitation ?? '',
     photoAsil: page?.photoAsil ?? null,
+    photoAsilFit: page?.photoAsilFit ?? 'cover',
     photoAsilAlt: page?.photoAsilAlt ?? "Comédiens de l'ASIL en spectacle d'improvisation",
     ctaTitre: page?.ctaTitre ?? "Rejoignez l'aventure",
     ctaTexte: page?.ctaTexte ?? '',
@@ -158,7 +161,7 @@ export async function getProgrammePage() {
     titre: page?.titre ?? 'Le programme',
     introduction: page?.introduction ?? '',
     evenementBouton: page?.evenementBouton ?? 'Réserver',
-    mois: (page?.mois ?? []).filter((m) => m.actif !== false).sort((a, b) => (a.annee ?? 0) - (b.annee ?? 0) || Number(a.mois) - Number(b.mois)),
+    mois: [...(page?.mois ?? [])].sort((a, b) => (a.annee ?? 0) - (b.annee ?? 0) || Number(a.mois) - Number(b.mois)),
     moisVideTitre: page?.moisVideTitre ?? 'Aucun spectacle prévu pour le moment',
     moisVideTexte: page?.moisVideTexte ?? 'De nouvelles dates pourront être ajoutées prochainement.',
     aucunEvenementTitre: page?.aucunEvenementTitre ?? 'La prochaine saison se prépare…',
@@ -183,20 +186,68 @@ const MOIS = [
 
 const JOURS = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
 
+type DateParts = { year: number; month: number; day: number; hour: number; minute: number };
+
+const parisDateTime = new Intl.DateTimeFormat('fr-FR', {
+  timeZone: 'Europe/Paris',
+  year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit',
+  hourCycle: 'h23',
+});
+
+function partsFromFormatter(date: Date): DateParts {
+  const values = Object.fromEntries(parisDateTime.formatToParts(date).map((part) => [part.type, part.value]));
+  return {
+    year: Number(values.year), month: Number(values.month), day: Number(values.day),
+    hour: Number(values.hour), minute: Number(values.minute),
+  };
+}
+
+/** Les dates sans fuseau saisies dans Keystatic sont des heures locales de Paris. */
+export function datePartsInParis(iso: string): DateParts {
+  const local = iso.match(/^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}))?/);
+  const hasExplicitZone = /(?:Z|[+-]\d{2}:?\d{2})$/i.test(iso);
+  if (local && !hasExplicitZone) {
+    return { year: +local[1], month: +local[2], day: +local[3], hour: +(local[4] ?? 0), minute: +(local[5] ?? 0) };
+  }
+  const parsed = new Date(iso);
+  return Number.isNaN(parsed.getTime())
+    ? { year: 1970, month: 1, day: 1, hour: 0, minute: 0 }
+    : partsFromFormatter(parsed);
+}
+
+export function eventDateKey(iso: string): string {
+  const p = datePartsInParis(iso);
+  return `${p.year}-${String(p.month).padStart(2, '0')}-${String(p.day).padStart(2, '0')}`;
+}
+
+export function eventMonthKey(iso: string): string {
+  return eventDateKey(iso).slice(0, 7);
+}
+
+export function eventSortKey(iso: string): string {
+  const p = datePartsInParis(iso);
+  return `${eventDateKey(iso)}T${String(p.hour).padStart(2, '0')}:${String(p.minute).padStart(2, '0')}`;
+}
+
+export function todayInParis(): string {
+  return eventDateKey(new Date().toISOString());
+}
+
 export function formatDateLongue(iso: string): string {
-  const d = new Date(iso);
-  return `${JOURS[d.getDay()]} ${d.getDate()} ${MOIS[d.getMonth()].toLowerCase()} ${d.getFullYear()}`;
+  const p = datePartsInParis(iso);
+  const weekday = new Date(Date.UTC(p.year, p.month - 1, p.day, 12)).getUTCDay();
+  return `${JOURS[weekday]} ${p.day} ${MOIS[p.month - 1].toLowerCase()} ${p.year}`;
 }
 
 export function formatHeure(iso: string): string {
-  const d = new Date(iso);
-  if (d.getHours() === 0 && d.getMinutes() === 0) return '';
-  return `${d.getHours()}h${String(d.getMinutes()).padStart(2, '0')}`;
+  const p = datePartsInParis(iso);
+  if (p.hour === 0 && p.minute === 0) return '';
+  return `${p.hour}h${String(p.minute).padStart(2, '0')}`;
 }
 
 export function moisAnnee(iso: string): string {
-  const d = new Date(iso);
-  return `${MOIS[d.getMonth()]} ${d.getFullYear()}`;
+  const p = datePartsInParis(iso);
+  return `${MOIS[p.month - 1]} ${p.year}`;
 }
 
 /** Groupe les événements par mois (clé "Mois Année"), dans l'ordre chronologique. */

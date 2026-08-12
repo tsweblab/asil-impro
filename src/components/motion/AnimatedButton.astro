@@ -1,0 +1,14 @@
+---
+interface Props {
+  href: string;
+  class?: string;
+  variant?: string;
+}
+
+const { href, class: className = '' } = Astro.props;
+---
+
+<a href={href} class:list={['motion-shimmer-button', className]}>
+  <slot />
+</a>
+

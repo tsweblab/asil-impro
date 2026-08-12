@@ -6,6 +6,16 @@ const moisOptions = [
   ['9', 'Septembre'], ['10', 'Octobre'], ['11', 'Novembre'], ['12', 'Décembre'],
 ].map(([value, label]) => ({ value, label }));
 
+const cadrageImage = (label = 'Cadrage de la photo') => fields.select({
+  label,
+  description: '« Remplir » recadre la photo pour couvrir le cadre. « Entière » conserve toute la photo avec des marges si nécessaire.',
+  options: [
+    { label: 'Remplir le cadre (recadrage)', value: 'cover' },
+    { label: 'Afficher la photo entière', value: 'contain' },
+  ],
+  defaultValue: 'cover',
+});
+
 const blocsLibres = (directory: string, publicPath: string) =>
   fields.array(
     fields.object({
@@ -18,6 +28,7 @@ const blocsLibres = (directory: string, publicPath: string) =>
         directory,
         publicPath,
       }),
+      imageFit: cadrageImage(),
       imageAlt: fields.text({ label: "Description de la photo (accessibilité)" }),
       imagePosition: fields.select({
         label: 'Position de la photo',
@@ -46,6 +57,7 @@ const galeriePhotos = (directory: string, publicPath: string, label = 'Galerie p
         directory,
         publicPath,
       }),
+      imageFit: cadrageImage(),
       alt: fields.text({
         label: 'Description de la photo (accessibilité)',
         validation: { isRequired: true },
@@ -142,6 +154,7 @@ export default config({
           directory: 'public/images/evenements',
           publicPath: '/images/evenements/',
         }),
+        imageFit: cadrageImage(),
         imageAlt: fields.text({ label: 'Description de la photo principale (accessibilité)' }),
         galeriePhotos: galeriePhotos('public/images/evenements', '/images/evenements/', 'Photos supplémentaires'),
         blocsTexte: blocsTexte(),
@@ -180,6 +193,7 @@ export default config({
           directory: 'public/images/stages',
           publicPath: '/images/stages/',
         }),
+        imageFit: cadrageImage(),
         imageAlt: fields.text({ label: 'Description de la photo principale (accessibilité)' }),
         dateDebut: fields.date({
           label: 'Date',
@@ -272,6 +286,7 @@ export default config({
           directory: 'public/images/ateliers',
           publicPath: '/images/ateliers/',
         }),
+        imageFit: cadrageImage(),
         imageAlt: fields.text({ label: 'Description de la photo principale (accessibilité)' }),
         galeriePhotos: galeriePhotos('public/images/ateliers', '/images/ateliers/', "Galerie de l'atelier"),
         blocsTexte: blocsTexte("Informations supplémentaires de l'atelier"),
@@ -314,6 +329,7 @@ export default config({
           directory: 'public/images/intervenants',
           publicPath: '/images/intervenants/',
         }),
+        imageFit: cadrageImage(),
         imageAlt: fields.text({ label: "Description de l’image (accessibilité)" }),
         ordre: fields.integer({ label: "Ordre d’affichage", defaultValue: 0 }),
         actif: fields.checkbox({ label: 'Afficher cette personne', defaultValue: true }),
@@ -325,14 +341,14 @@ export default config({
       label: 'Identité, navigation, pied de page et réseaux',
       path: 'src/content/settings/site',
       schema: {
-        siteNom: fields.text({ label: 'Nom du site', defaultValue: 'ASIL Impro' }),
+        siteNom: fields.text({ label: 'Nom du site', defaultValue: 'ASIL Impro', validation: { isRequired: true } }),
         logo: fields.image({
           label: 'Logo du site',
           description: 'Utilisé dans le menu et le pied de page.',
           directory: 'public/images/branding',
           publicPath: '/images/branding/',
         }),
-        logoAlt: fields.text({ label: 'Description du logo', defaultValue: 'ASIL Impro' }),
+        logoAlt: fields.text({ label: 'Description du logo', defaultValue: 'ASIL Impro', validation: { isRequired: true } }),
         imagePartage: fields.image({
           label: 'Image de partage du site',
           description: 'Image affichée lors du partage du site sur les réseaux sociaux.',
@@ -368,6 +384,7 @@ export default config({
           label: 'Email de contact',
           description: 'Affiché sur le site (lien cliquable) — page Contact et pied de page.',
           defaultValue: 'admin@asil-impro.fr',
+          validation: { isRequired: true },
         }),
         facebook: fields.url({
           label: 'Page Facebook',
@@ -377,12 +394,12 @@ export default config({
           label: 'Compte Instagram',
           description: 'Adresse complète, ex : https://www.instagram.com/asil_impro/',
         }),
-        navAccueil: fields.text({ label: 'Menu — Accueil', defaultValue: 'Accueil' }),
-        navProgramme: fields.text({ label: 'Menu — Programme', defaultValue: 'Programme' }),
-        navStages: fields.text({ label: 'Menu — Stages', defaultValue: 'Stages' }),
-        navAteliers: fields.text({ label: 'Menu — Ateliers', defaultValue: 'Ateliers' }),
-        navContact: fields.text({ label: 'Menu — Contact', defaultValue: 'Contact' }),
-        navMentions: fields.text({ label: 'Pied de page — Mentions légales', defaultValue: 'Mentions légales' }),
+        navAccueil: fields.text({ label: 'Menu — Accueil', defaultValue: 'Accueil', validation: { isRequired: true } }),
+        navProgramme: fields.text({ label: 'Menu — Programme', defaultValue: 'Programme', validation: { isRequired: true } }),
+        navStages: fields.text({ label: 'Menu — Stages', defaultValue: 'Stages', validation: { isRequired: true } }),
+        navAteliers: fields.text({ label: 'Menu — Ateliers', defaultValue: 'Ateliers', validation: { isRequired: true } }),
+        navContact: fields.text({ label: 'Menu — Contact', defaultValue: 'Contact', validation: { isRequired: true } }),
+        navMentions: fields.text({ label: 'Pied de page — Mentions légales', defaultValue: 'Mentions légales', validation: { isRequired: true } }),
         footerDescription: fields.text({
           label: 'Pied de page — Présentation',
           multiline: true,
@@ -400,10 +417,10 @@ export default config({
       label: "Modifier la page d’accueil",
       path: 'src/content/pages/accueil',
       schema: {
-        seoTitre: fields.text({ label: 'Titre affiché dans Google' }),
-        seoDescription: fields.text({ label: 'Description affichée dans Google', multiline: true }),
+        seoTitre: fields.text({ label: 'Titre affiché dans Google', validation: { isRequired: true, length: { max: 70 } } }),
+        seoDescription: fields.text({ label: 'Description affichée dans Google', multiline: true, validation: { isRequired: true, length: { max: 180 } } }),
         heroSousTitre: fields.text({ label: 'Bandeau principal — Petit titre' }),
-        heroTitre: fields.text({ label: 'Bandeau principal — Grand titre' }),
+        heroTitre: fields.text({ label: 'Bandeau principal — Grand titre', validation: { isRequired: true } }),
         heroDescription: fields.text({ label: 'Accueil — Texte sous le grand titre', multiline: true }),
         heroImage: fields.image({
           label: "Bandeau principal — Photo de fond",
@@ -411,9 +428,10 @@ export default config({
           directory: 'public/images/site',
           publicPath: '/images/site/',
         }),
+        heroImageFit: cadrageImage('Bandeau principal — Cadrage de la photo'),
         heroImageAlt: fields.text({ label: 'Bandeau principal — Description de la photo (laisser vide si décorative)' }),
-        heroBoutonPrincipal: fields.text({ label: 'Accueil — Bouton principal' }),
-        heroBoutonPrincipalLien: fields.text({ label: 'Accueil — Lien du bouton principal' }),
+        heroBoutonPrincipal: fields.text({ label: 'Accueil — Bouton principal', validation: { isRequired: true } }),
+        heroBoutonPrincipalLien: fields.text({ label: 'Accueil — Lien du bouton principal', validation: { isRequired: true } }),
         heroBoutonSecondaire: fields.text({ label: 'Accueil — Bouton secondaire' }),
         heroBoutonSecondaireLien: fields.text({ label: 'Accueil — Lien du bouton secondaire' }),
         marqueeMots: fields.array(fields.text({ label: 'Texte' }), {
@@ -421,10 +439,10 @@ export default config({
           itemLabel: (props) => props.value || 'Nouveau texte',
         }),
         agendaSurtitre: fields.text({ label: 'Agenda — Petit titre' }),
-        agendaTitre: fields.text({ label: 'Agenda — Titre' }),
+        agendaTitre: fields.text({ label: 'Agenda — Titre', validation: { isRequired: true } }),
         agendaLienTexte: fields.text({ label: 'Agenda — Texte du lien vers le programme' }),
         galerieSurtitre: fields.text({ label: 'Galerie — Petit titre' }),
-        galerieTitre: fields.text({ label: 'Galerie — Titre' }),
+        galerieTitre: fields.text({ label: 'Galerie — Titre', validation: { isRequired: true } }),
         galerieDescription: fields.text({ label: 'Galerie — Présentation', multiline: true }),
         galeriePlaceholderTexte: fields.text({ label: 'Galerie — Texte lorsqu’une photo est vide' }),
         galerieLienTitre: fields.text({
@@ -450,6 +468,7 @@ export default config({
               directory: 'public/images/galerie-accueil',
               publicPath: '/images/galerie-accueil/',
             }),
+            imageFit: cadrageImage(),
             alt: fields.text({ label: "Description de l’image ou de la publication", validation: { isRequired: true } }),
             legende: fields.text({ label: 'Légende (optionnelle)' }),
             lien: fields.url({
@@ -464,7 +483,7 @@ export default config({
           },
         ),
         rejoindreSurtitre: fields.text({ label: 'Rejoindre — Petit titre' }),
-        rejoindreTitre: fields.text({ label: 'Rejoindre — Titre' }),
+        rejoindreTitre: fields.text({ label: 'Rejoindre — Titre', validation: { isRequired: true } }),
         rejoindreTexte: fields.text({ label: 'Rejoindre — Texte', multiline: true }),
         rejoindreBouton: fields.text({ label: 'Rejoindre — Bouton' }),
         rejoindreBoutonLien: fields.text({ label: 'Rejoindre — Lien du bouton' }),
@@ -473,6 +492,7 @@ export default config({
           directory: 'public/images/site',
           publicPath: '/images/site/',
         }),
+        photoRejoindreFit: cadrageImage('Rejoindre — Cadrage de la photo'),
         photoRejoindreAlt: fields.text({ label: 'Rejoindre — Description de la photo' }),
         chiffres: fields.array(
           fields.object({
@@ -482,7 +502,7 @@ export default config({
           { label: 'Chiffres clés', itemLabel: (props) => `${props.fields.valeur.value || '—'} ${props.fields.libelle.value || ''}` },
         ),
         presentationSurtitre: fields.text({ label: "Présentation de l’ASIL — Petit titre" }),
-        presentationTitre: fields.text({ label: "Présentation de l’ASIL — Titre" }),
+        presentationTitre: fields.text({ label: "Présentation de l’ASIL — Titre", validation: { isRequired: true } }),
         presentationTexte: fields.text({ label: "Présentation de l’ASIL — Texte", multiline: true }),
         presentationCitation: fields.text({ label: "Présentation de l’ASIL — Citation" }),
         photoAsil: fields.image({
@@ -490,8 +510,9 @@ export default config({
           directory: 'public/images/site',
           publicPath: '/images/site/',
         }),
+        photoAsilFit: cadrageImage('Présentation de l’ASIL — Cadrage de la photo'),
         photoAsilAlt: fields.text({ label: "Présentation de l’ASIL — Description de la photo" }),
-        ctaTitre: fields.text({ label: 'Bandeau final — Titre' }),
+        ctaTitre: fields.text({ label: 'Bandeau final — Titre', validation: { isRequired: true } }),
         ctaTexte: fields.text({ label: 'Bandeau final — Texte', multiline: true }),
         ctaBouton: fields.text({ label: 'Bandeau final — Bouton' }),
         ctaBoutonLien: fields.text({ label: 'Bandeau final — Lien du bouton' }),
@@ -502,10 +523,10 @@ export default config({
       label: 'Présentation et mois affichés',
       path: 'src/content/pages/programme',
       schema: {
-        seoTitre: fields.text({ label: 'Titre affiché dans Google' }),
-        seoDescription: fields.text({ label: 'Description affichée dans Google', multiline: true }),
+        seoTitre: fields.text({ label: 'Titre affiché dans Google', validation: { isRequired: true, length: { max: 70 } } }),
+        seoDescription: fields.text({ label: 'Description affichée dans Google', multiline: true, validation: { isRequired: true, length: { max: 180 } } }),
         surtitre: fields.text({ label: 'Petit titre' }),
-        titre: fields.text({ label: 'Grand titre' }),
+        titre: fields.text({ label: 'Grand titre', validation: { isRequired: true } }),
         introduction: fields.text({ label: 'Texte de présentation', multiline: true }),
         evenementBouton: fields.text({ label: 'Spectacles — Texte du bouton de réservation', defaultValue: 'Réserver' }),
         mois: fields.array(
@@ -531,10 +552,10 @@ export default config({
       label: 'Présentation de la page',
       path: 'src/content/pages/ateliers',
       schema: {
-        seoTitre: fields.text({ label: 'Titre affiché dans Google' }),
-        seoDescription: fields.text({ label: 'Description affichée dans Google', multiline: true }),
+        seoTitre: fields.text({ label: 'Titre affiché dans Google', validation: { isRequired: true, length: { max: 70 } } }),
+        seoDescription: fields.text({ label: 'Description affichée dans Google', multiline: true, validation: { isRequired: true, length: { max: 180 } } }),
         surtitre: fields.text({ label: 'Petit titre' }),
-        titre: fields.text({ label: 'Grand titre' }),
+        titre: fields.text({ label: 'Grand titre', validation: { isRequired: true } }),
         citation: fields.text({ label: 'Citation' }),
         introduction: fields.text({ label: 'Présentation', multiline: true }),
         photoAteliers: fields.image({
@@ -542,6 +563,7 @@ export default config({
           directory: 'public/images/site',
           publicPath: '/images/site/',
         }),
+        photoAteliersFit: cadrageImage("En-tête — Cadrage de la photo"),
         photoAteliersAlt: fields.text({ label: "En-tête — Description de la photo" }),
         lieuTexte: fields.text({ label: 'Informations sur le lieu', multiline: true }),
         boutonTexte: fields.text({ label: 'Bouton de contact' }),
@@ -560,10 +582,10 @@ export default config({
       label: 'Présentation de la page',
       path: 'src/content/pages/stages',
       schema: {
-        seoTitre: fields.text({ label: 'Titre affiché dans Google' }),
-        seoDescription: fields.text({ label: 'Description affichée dans Google', multiline: true }),
+        seoTitre: fields.text({ label: 'Titre affiché dans Google', validation: { isRequired: true, length: { max: 70 } } }),
+        seoDescription: fields.text({ label: 'Description affichée dans Google', multiline: true, validation: { isRequired: true, length: { max: 180 } } }),
         surtitre: fields.text({ label: 'Petit titre' }),
-        titre: fields.text({ label: 'Grand titre' }),
+        titre: fields.text({ label: 'Grand titre', validation: { isRequired: true } }),
         citation: fields.text({ label: 'Citation' }),
         introduction: fields.text({ label: 'Présentation', multiline: true }),
         photoStages: fields.image({
@@ -571,6 +593,7 @@ export default config({
           directory: 'public/images/site',
           publicPath: '/images/site/',
         }),
+        photoStagesFit: cadrageImage("En-tête — Cadrage de la photo"),
         photoStagesAlt: fields.text({ label: "En-tête — Description de la photo" }),
         conseil: fields.text({ label: 'Conseil pratique', multiline: true }),
         listeTitre: fields.text({ label: 'Titre de la liste des stages' }),
@@ -591,16 +614,17 @@ export default config({
       label: 'Modifier la page Contact',
       path: 'src/content/pages/contact',
       schema: {
-        seoTitre: fields.text({ label: 'Titre affiché dans Google' }),
-        seoDescription: fields.text({ label: 'Description affichée dans Google', multiline: true }),
+        seoTitre: fields.text({ label: 'Titre affiché dans Google', validation: { isRequired: true, length: { max: 70 } } }),
+        seoDescription: fields.text({ label: 'Description affichée dans Google', multiline: true, validation: { isRequired: true, length: { max: 180 } } }),
         surtitre: fields.text({ label: 'Petit titre' }),
-        titre: fields.text({ label: 'Grand titre' }),
+        titre: fields.text({ label: 'Grand titre', validation: { isRequired: true } }),
         introduction: fields.text({ label: 'Présentation', multiline: true }),
         photoContact: fields.image({
           label: "En-tête — Photo de la page",
           directory: 'public/images/site',
           publicPath: '/images/site/',
         }),
+        photoContactFit: cadrageImage("En-tête — Cadrage de la photo"),
         photoContactAlt: fields.text({ label: "En-tête — Description de la photo" }),
         formulaireTitre: fields.text({ label: 'Titre du formulaire' }),
         nomLabel: fields.text({ label: 'Champ nom — Libellé' }),
@@ -628,9 +652,9 @@ export default config({
       label: 'Mentions légales',
       path: 'src/content/pages/mentions-legales',
       schema: {
-        seoTitre: fields.text({ label: 'Titre affiché dans Google' }),
-        seoDescription: fields.text({ label: 'Description affichée dans Google', multiline: true }),
-        titre: fields.text({ label: 'Grand titre' }),
+        seoTitre: fields.text({ label: 'Titre affiché dans Google', validation: { isRequired: true, length: { max: 70 } } }),
+        seoDescription: fields.text({ label: 'Description affichée dans Google', multiline: true, validation: { isRequired: true, length: { max: 180 } } }),
+        titre: fields.text({ label: 'Grand titre', validation: { isRequired: true } }),
         sections: fields.array(
           fields.object({
             titre: fields.text({ label: 'Titre', validation: { isRequired: true } }),

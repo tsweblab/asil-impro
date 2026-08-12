@@ -15,6 +15,7 @@ interface Props {
   widths?: number[];
   sizes?: string;
   loading?: 'eager' | 'lazy';
+  fit?: 'cover' | 'contain';
 }
 
 const {
@@ -25,11 +26,13 @@ const {
   widths = [480, 800, 1200],
   sizes = '100vw',
   loading = 'lazy',
+  fit = 'cover',
 } = Astro.props;
+const classes = [className, fit === 'contain' ? 'object-contain bg-black/40' : 'object-cover'];
 ---
 
 {publique ? (
-  <img src={publique} alt={alt} class={className} loading={loading} />
+  <img src={publique} alt={alt} class:list={classes} loading={loading} decoding="async" />
 ) : (
-  <Image src={fallback} alt={alt} class={className} widths={widths} sizes={sizes} loading={loading} />
+  <Image src={fallback} alt={alt} class:list={classes} widths={widths} sizes={sizes} loading={loading} />
 )}

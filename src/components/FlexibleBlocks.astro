@@ -1,8 +1,8 @@
 ---
 import type { BlocLibre } from '../lib/keystatic';
-import FadeInText from '@astroanimate/core/FadeInText';
-import ScaleIn from '@astroanimate/core/ScaleIn';
-import AnimatedButton from '@astroanimate/core/AnimatedButton';
+import FadeInText from './motion/FadeInText.astro';
+import ScaleIn from './motion/ScaleIn.astro';
+import AnimatedButton from './motion/AnimatedButton.astro';
 
 interface Props { blocs?: BlocLibre[]; }
 const { blocs = [] } = Astro.props;
@@ -12,7 +12,7 @@ const { blocs = [] } = Astro.props;
   <section class:list={['container-site grid items-center gap-10 py-16 lg:grid-cols-2 lg:gap-16', index > 0 && 'border-t border-white/8']}>
     {bloc.image && (
       <ScaleIn enhance={true} class:list={[bloc.imagePosition === 'gauche' ? 'lg:order-1' : 'lg:order-2']}>
-        <img src={bloc.image} alt={bloc.imageAlt || ''} loading="lazy" class="w-full rounded-2xl object-cover shadow-2xl shadow-black/60" />
+        <img src={bloc.image} alt={bloc.imageAlt || ''} loading="lazy" class:list={['aspect-[4/3] w-full rounded-2xl bg-black/30 shadow-2xl shadow-black/60', bloc.imageFit === 'contain' ? 'object-contain' : 'object-cover']} />
       </ScaleIn>
     )}
     <div class:list={[bloc.imagePosition === 'gauche' ? 'lg:order-2' : 'lg:order-1', !bloc.image && 'lg:col-span-2 max-w-3xl']}>

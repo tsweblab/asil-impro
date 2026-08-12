@@ -1,5 +1,5 @@
 ---
-import CountUp from '@astroanimate/core/CountUp';
+import CountUp from './motion/CountUp.astro';
 
 interface Props { chiffres: readonly { readonly valeur: string; readonly libelle: string }[]; }
 const { chiffres } = Astro.props;
@@ -23,11 +23,7 @@ const chiffresFormates = chiffres.map((chiffre) => {
             <CountUp
               value={c.nombre}
               suffix={c.suffixe}
-              enhance={true}
               duration={1800}
-              textColor="#ffffff"
-              fontSize="1em"
-              fontFamily="'Playfair Display', Georgia, serif"
             />
           ) : c.valeur}
         </p>

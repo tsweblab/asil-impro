@@ -1,9 +1,9 @@
 ---
-import FadeInText from '@astroanimate/core/FadeInText';
+import FadeInText from '../components/motion/FadeInText.astro';
 import Layout from '../layouts/Layout.astro';
 import EventCard from '../components/EventCard.astro';
 import FlexibleBlocks from '../components/FlexibleBlocks.astro';
-import { getEvenements, getProgrammePage } from '../lib/keystatic';
+import { eventMonthKey, getEvenements, getProgrammePage } from '../lib/keystatic';
 
 const evenements = await getEvenements();
 const page = await getProgrammePage();
@@ -15,28 +15,43 @@ const moisConfigures = page.mois.map((m) => ({
   annee: m.annee!,
   mois: Number(m.mois),
   cle: cleDate(m.annee!, Number(m.mois)),
+  actif: m.actif !== false,
 }));
 
 const moisDerives = [...new Set(evenements.map((e) => {
-  const date = new Date(e.date!);
-  return cleDate(date.getFullYear(), date.getMonth() + 1);
+  return eventMonthKey(e.date!);
 }))].sort().map((cle) => {
   const [annee, mois] = cle.split('-').map(Number);
   return { annee, mois, cle };
 });
 
-const moisAffiches = moisConfigures.length > 0 ? moisConfigures : moisDerives;
+const configuration = new Map(moisConfigures.map((mois) => [mois.cle, mois]));
+const moisAffiches = [...new Map([
+  ...moisConfigures.filter((mois) => mois.actif).map((mois) => [mois.cle, mois] as const),
+  ...moisDerives.filter((mois) => configuration.get(mois.cle)?.actif !== false).map((mois) => [mois.cle, mois] as const),
+]).values()].sort((a, b) => a.cle.localeCompare(b.cle));
 const sections = moisAffiches.map((m) => ({
   ...m,
   titre: `${nomsMois[m.mois - 1]} ${m.annee}`,
-  evenements: evenements.filter((e) => {
-    const date = new Date(e.date!);
-    return date.getFullYear() === m.annee && date.getMonth() + 1 === m.mois;
-  }),
+  evenements: evenements.filter((e) => eventMonthKey(e.date!) === m.cle),
+}));
+const structuredData = evenements.map((event) => ({
+  '@context': 'https://schema.org',
+  '@type': 'Event',
+  name: event.titre,
+  startDate: event.date,
+  description: event.description,
+  image: event.image ? new URL(event.image, Astro.site).toString() : undefined,
+  location: event.lieu ? {
+    '@type': 'Place',
+    name: event.lieu,
+    address: event.adresse ? { '@type': 'PostalAddress', streetAddress: event.adresse } : undefined,
+  } : undefined,
+  offers: event.lienReservation ? { '@type': 'Offer', url: event.lienReservation, availability: 'https://schema.org/InStock' } : undefined,
 }));
 ---
 
-<Layout title={page.seoTitre} description={page.seoDescription}>
+<Layout title={page.seoTitre} description={page.seoDescription} structuredData={structuredData}>
   <section class="container-site py-14 sm:py-20">
     <FadeInText duration={0.7}>
       <p class="eyebrow mb-4">{page.surtitre}</p>
@@ -67,7 +82,7 @@ const sections = moisAffiches.map((m) => ({
       {sections.map((section) => (
         <section id={ancre(section.cle)} aria-label={section.titre} class="scroll-mt-24">
           <div class="mb-7 flex items-baseline gap-6">
-            <h2 class="shrink-0 font-display text-3xl italic text-asil-red sm:text-4xl">{section.titre}</h2>
+            <h2 class="shrink-0 font-display text-3xl italic text-asil-red-light sm:text-4xl">{section.titre}</h2>
             <div class="h-px grow bg-gradient-to-r from-white/20 to-transparent" aria-hidden="true"></div>
           </div>
           {section.evenements.length > 0 ? (

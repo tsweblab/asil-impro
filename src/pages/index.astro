@@ -1,7 +1,7 @@
 ---
-import FadeInText from '@astroanimate/core/FadeInText';
-import ScaleIn from '@astroanimate/core/ScaleIn';
-import AnimatedButton from '@astroanimate/core/AnimatedButton';
+import FadeInText from '../components/motion/FadeInText.astro';
+import ScaleIn from '../components/motion/ScaleIn.astro';
+import AnimatedButton from '../components/motion/AnimatedButton.astro';
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import EventCarousel from '../components/EventCarousel.astro';
@@ -32,6 +32,7 @@ const prochains = (misEnAvant.length > 0 ? misEnAvant : aVenir).slice(0, 4);
     boutonSecondaireLien={page.heroBoutonSecondaireLien}
     imagePublique={page.heroImage}
     imageAlt={page.heroImageAlt}
+    imageFit={page.heroImageFit}
   />
 
   <MarqueeBand mots={page.marqueeMots.length ? page.marqueeMots : undefined} />
@@ -72,7 +73,7 @@ const prochains = (misEnAvant.length > 0 ? misEnAvant : aVenir).slice(0, 4);
       <AnimatedButton variant="shimmer" href={page.rejoindreBoutonLien} class="btn-red mt-8 px-8">{page.rejoindreBouton}</AnimatedButton>
     </div>
     <ScaleIn enhance={true}>
-      <SitePhoto publique={page.photoRejoindre} fallback={maud} alt={page.photoRejoindreAlt} class="w-full rounded-2xl object-cover shadow-2xl shadow-black/60" widths={[480, 800, 1200]} sizes="(min-width: 1024px) 34rem, 100vw" loading="lazy" />
+      <SitePhoto publique={page.photoRejoindre} fallback={maud} alt={page.photoRejoindreAlt} fit={page.photoRejoindreFit} class="aspect-[4/3] w-full rounded-2xl shadow-2xl shadow-black/60" widths={[480, 800, 1200]} sizes="(min-width: 1024px) 34rem, 100vw" loading="lazy" />
     </ScaleIn>
   </section>
 
@@ -80,7 +81,7 @@ const prochains = (misEnAvant.length > 0 ? misEnAvant : aVenir).slice(0, 4);
 
   <section class="container-site grid items-center gap-10 py-16 sm:py-24 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-16" aria-labelledby="asil-quoi">
     <ScaleIn enhance={true} class="order-2 lg:order-1">
-      <SitePhoto publique={page.photoAsil} fallback={comediens} alt={page.photoAsilAlt} class="w-full rounded-2xl object-cover shadow-2xl shadow-black/60" widths={[480, 800, 1365]} sizes="(min-width: 1024px) 30rem, 100vw" loading="lazy" />
+      <SitePhoto publique={page.photoAsil} fallback={comediens} alt={page.photoAsilAlt} fit={page.photoAsilFit} class="aspect-[4/3] w-full rounded-2xl shadow-2xl shadow-black/60" widths={[480, 800, 1365]} sizes="(min-width: 1024px) 30rem, 100vw" loading="lazy" />
     </ScaleIn>
     <div class="order-1 lg:order-2">
       <FadeInText enhance={true} duration={0.7}>

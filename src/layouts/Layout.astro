@@ -9,11 +9,31 @@ interface Props {
   title: string;
   description: string;
   ogImage?: string;
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
 }
 
 const settings = await getSettings();
-const { title, description, ogImage = settings.imagePartage } = Astro.props;
+const { title, description, ogImage = settings.imagePartage, structuredData } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const socialImage = new URL(ogImage, Astro.site);
+const organization = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: settings.siteNom,
+  url: Astro.site?.toString(),
+  logo: new URL(settings.logo, Astro.site).toString(),
+  email: settings.email,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: '26 rue Coraly-Royet',
+    postalCode: '42100',
+    addressLocality: 'Saint-Étienne',
+    addressCountry: 'FR',
+  },
+  sameAs: [settings.facebook, settings.instagram].filter(Boolean),
+};
+const jsonLd = [organization, ...(Array.isArray(structuredData) ? structuredData : structuredData ? [structuredData] : [])];
+const safeJsonLd = JSON.stringify(jsonLd).replaceAll('<', '\\u003c');
 ---
 
 <!doctype html>
@@ -23,6 +43,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="robots" content="noindex, nofollow, noarchive" />
     <link rel="canonical" href={canonicalURL} />
     <link rel="icon" href={settings.favicon} />
     <link rel="sitemap" href="/sitemap-index.xml" />
@@ -33,22 +54,21 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalURL} />
-    <meta property="og:image" content={new URL(ogImage, Astro.site)} />
+    <meta property="og:image" content={socialImage} />
     <meta property="og:locale" content="fr_FR" />
     <meta property="og:site_name" content={settings.siteNom} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self'; frame-src https://www.instagram.com https://www.facebook.com https://www.tiktok.com https://www.youtube-nocookie.com; upgrade-insecure-requests" />
+    <script type="application/ld+json" is:inline set:html={safeJsonLd}></script>
 
     <!-- Polices : Playfair Display (titres, serif théâtral) + Inter (corps) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600&family=Inter:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-
     <ClientRouter />
   </head>
   <body class="grain">
+    <a href="#contenu-principal" class="skip-link">Aller au contenu principal</a>
     <Navbar
       facebook={settings.facebook}
       instagram={settings.instagram}
@@ -58,7 +78,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       labels={{ accueil: settings.navAccueil, programme: settings.navProgramme, stages: settings.navStages, ateliers: settings.navAteliers, contact: settings.navContact }}
       transition:persist="navbar"
     />
-    <main>
+    <main id="contenu-principal" tabindex="-1">
       <slot />
     </main>
     <Footer

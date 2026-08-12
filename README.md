@@ -4,10 +4,11 @@ Refonte du site [asil-impro.fr](https://asil-impro.fr) pour l'ASIL (Ateliers st�
 
 ## Stack
 
-- **[Astro 6](https://astro.build)** — pages statiques pré-rendues + SSR ciblé (adapter Vercel)
+- **[Astro 7](https://astro.build)** — pages statiques pré-rendues + SSR ciblé (adapter Vercel)
 - **[Keystatic](https://keystatic.com)** — CMS Git-based, admin sur `/keystatic`
 - **[Tailwind CSS 4](https://tailwindcss.com)** — via le plugin Vite `@tailwindcss/vite`
-- **[AstroAnimate](https://www.npmjs.com/package/@astroanimate/core)** — animations CSS-first (FadeInText, ScaleIn, CountUp, AnimatedButton)
+- **Animations CSS natives** — apparitions, compteurs et bandeaux sans dépendance d’animation externe
+- **Polices locales** — Inter et Playfair Display sont intégrées au projet, sans appel à Google Fonts
 - **View Transitions** — `<ClientRouter />` natif d'Astro, navbar persistante
 
 ## Démarrer
@@ -16,6 +17,7 @@ Refonte du site [asil-impro.fr](https://asil-impro.fr) pour l'ASIL (Ateliers st�
 npm install
 npm run dev        # http://localhost:4321 — admin : http://localhost:4321/keystatic
 npm run build      # build de production (sortie .vercel/output)
+npm run check      # vérification complète Astro et TypeScript
 npm run preview    # prévisualiser le build
 ```
 
@@ -34,6 +36,7 @@ Tout le contenu éditable vit dans `src/content/` (fichiers YAML versionnés) :
 
 - Un événement coché **« Mettre en avant »** apparaît dans le carrousel de l'accueil.
 - La galerie de l'accueil accepte des photos ajoutables, supprimables et réorganisables depuis Keystatic.
+- Chaque photo de contenu propose un choix de cadrage : remplir le cadre ou afficher l’image entière.
 - Les mois du Programme peuvent être ajoutés, masqués et réorganisés ; le site les trie automatiquement.
 - Chaque page dispose de blocs libres permettant d'ajouter des sections texte + photo.
 - Seuls les événements/stages **à venir** sont affichés (filtrage par date au build).
@@ -59,10 +62,12 @@ Variables d'environnement (voir `.env.example`) :
 
 1. Pousser le repo sur GitHub et l'importer dans Vercel (framework auto-détecté : Astro).
 2. Renseigner les variables d'environnement ci-dessus.
-3. Le domaine `asil-impro.fr` se configure dans Vercel → Settings → Domains.
+3. Raccorder le futur domaine dans Vercel → Settings → Domains, puis remplacer l’URL provisoire dans `astro.config.mjs`.
+
+Tant que le domaine définitif n’est pas raccordé, le site demande aux moteurs de recherche de ne pas l’indexer (`robots.txt`, balises robots et en-tête Vercel).
 
 ## Notes techniques
 
 - `output: 'static'` remplace l'ancien mode `hybrid` (fusionné dans `static` depuis Astro 5) : les routes Keystatic et `/api/contact` sont en SSR via `prerender = false`, tout le reste est pré-rendu.
-- **Vite est pinné en 7.x** dans `devDependencies` : Astro 6 utilise Vite 7, et sans ce pin npm résout Vite 8 (rolldown) pour `@tailwindcss/vite`, ce qui casse le build (`Missing field tsconfigPaths`). Ne pas retirer ce pin sans passer à Astro 7.
+- Le projet demande Node.js 22.12 ou plus récent et utilise Vite 8 avec Astro 7.
 - Les images éditoriales sont dans `src/assets/` (optimisées par `<Image />` d'Astro : WebP + srcset). Les images uploadées via Keystatic vont dans `public/images/`.

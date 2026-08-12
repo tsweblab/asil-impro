@@ -1,0 +1,65 @@
+---
+interface Props {
+  value: number;
+  suffix?: string;
+  duration?: number;
+  class?: string;
+}
+
+const { value, suffix = '', duration = 1800, class: className = '' } = Astro.props;
+const decimals = Number.isInteger(value) ? 0 : String(value).split('.')[1]?.length ?? 0;
+---
+
+<span
+  class:list={['count-up', className]}
+  data-count-up
+  data-count-value={value}
+  data-count-suffix={suffix}
+  data-count-duration={duration}
+  data-count-decimals={decimals}
+>{value}{suffix}</span>
+
+<script>
+  function initCountUps() {
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.querySelectorAll<HTMLElement>('[data-count-up]').forEach((element) => {
+      if (element.dataset.bound) return;
+      element.dataset.bound = 'true';
+
+      const value = Number(element.dataset.countValue ?? 0);
+      const suffix = element.dataset.countSuffix ?? '';
+      const duration = Number(element.dataset.countDuration ?? 1800);
+      const decimals = Number(element.dataset.countDecimals ?? 0);
+      const finalText = `${value.toLocaleString('fr-FR', { maximumFractionDigits: decimals })}${suffix}`;
+
+      if (reducedMotion || !('IntersectionObserver' in window)) {
+        element.textContent = finalText;
+        return;
+      }
+
+      element.textContent = `0${suffix}`;
+      const observer = new IntersectionObserver((entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        observer.disconnect();
+        const start = performance.now();
+        const animate = (now: number) => {
+          const progress = Math.min(1, (now - start) / duration);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const current = value * eased;
+          element.textContent = `${current.toLocaleString('fr-FR', {
+            minimumFractionDigits: decimals,
+            maximumFractionDigits: decimals,
+          })}${suffix}`;
+          if (progress < 1) requestAnimationFrame(animate);
+          else element.textContent = finalText;
+        };
+        requestAnimationFrame(animate);
+      }, { threshold: 0.4 });
+      observer.observe(element);
+    });
+  }
+
+  initCountUps();
+  document.addEventListener('astro:page-load', initCountUps);
+</script>
+

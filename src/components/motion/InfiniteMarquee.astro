@@ -1,0 +1,16 @@
+---
+interface Props {
+  speed?: string;
+  class?: string;
+}
+
+const { speed = '45s', class: className = '' } = Astro.props;
+---
+
+<div class:list={['native-marquee', className]} style={`--marquee-speed:${speed}`}>
+  <div class="native-marquee__track">
+    <div class="native-marquee__group"><slot /></div>
+    <div class="native-marquee__group" aria-hidden="true"><slot /></div>
+  </div>
+</div>
+

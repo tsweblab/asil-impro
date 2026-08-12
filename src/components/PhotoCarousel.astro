@@ -7,6 +7,7 @@ interface Photo {
   alt: string;
   legende?: string;
   lien?: string | null;
+  imageFit?: 'cover' | 'contain';
 }
 
 interface Props {
@@ -34,10 +35,10 @@ const mode = (photo: Photo) => photo.typeContenu ?? (photo.image ? 'photo' : pho
           <SocialPostPreview url={photo.lien} titre={photo.legende || photo.alt} fallbackTitre={lienTitre} fallbackTexte={lienTexte} />
         ) : photo.image && photo.lien ? (
           <a href={photo.lien} target="_blank" rel="noopener noreferrer" class="block h-full">
-            <img src={photo.image} alt={photo.alt} class="size-full object-cover" loading="lazy" />
+            <img src={photo.image} alt={photo.alt} class:list={['size-full', photo.imageFit === 'contain' ? 'object-contain bg-black' : 'object-cover']} loading="lazy" />
           </a>
         ) : photo.image ? (
-          <img src={photo.image} alt={photo.alt} class="size-full object-cover" loading="lazy" />
+          <img src={photo.image} alt={photo.alt} class:list={['size-full', photo.imageFit === 'contain' ? 'object-contain bg-black' : 'object-cover']} loading="lazy" />
         ) : (
           <div class="grid size-full place-items-center bg-gradient-to-br from-asil-gray-dark to-asil-black px-8 text-center">
             <div>
@@ -78,10 +79,7 @@ const mode = (photo: Photo) => photo.typeContenu ?? (photo.image ? 'photo' : pho
       if (!stack) return;
       const cards = [...carousel.querySelectorAll<HTMLElement>('[data-photo-card]')];
       const dots = [...carousel.querySelectorAll<HTMLButtonElement>('[data-photo-dot]')];
-      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       let active = 0;
-      let timer: number | undefined;
-      let paused = false;
 
       const setActive = (index: number) => {
         active = (index + cards.length) % cards.length;
@@ -95,7 +93,8 @@ const mode = (photo: Photo) => photo.typeContenu ?? (photo.image ? 'photo' : pho
           card.style.setProperty('--poster-depth', String(cards.length - distance));
           card.classList.toggle('is-active', offset === 0);
           card.classList.toggle('is-hidden', distance > 2);
-          card.setAttribute('aria-hidden', distance > 2 ? 'true' : 'false');
+          card.setAttribute('aria-hidden', offset === 0 ? 'false' : 'true');
+          card.inert = offset !== 0;
           card.querySelectorAll<HTMLElement>('iframe, a').forEach((interactive) => {
             interactive.tabIndex = offset === 0 ? 0 : -1;
           });
@@ -106,35 +105,17 @@ const mode = (photo: Photo) => photo.typeContenu ?? (photo.image ? 'photo' : pho
         });
       };
 
-      const goTo = (index: number) => {
-        setActive(index);
-        restart();
-      };
-
-      const restart = () => {
-        if (timer) window.clearInterval(timer);
-        if (!paused && !reducedMotion && cards.length > 1) {
-          timer = window.setInterval(() => goTo(active + 1), 5500);
-        }
-      };
+      const goTo = (index: number) => setActive(index);
 
       carousel.querySelector('[data-photo-prev]')?.addEventListener('click', () => goTo(active - 1));
       carousel.querySelector('[data-photo-next]')?.addEventListener('click', () => goTo(active + 1));
       dots.forEach((dot) => dot.addEventListener('click', () => goTo(Number(dot.dataset.index))));
-
-      const pause = () => { paused = true; if (timer) window.clearInterval(timer); };
-      const resume = () => { paused = false; restart(); };
-      carousel.addEventListener('pointerenter', pause);
-      carousel.addEventListener('pointerleave', resume);
-      carousel.addEventListener('focusin', pause);
-      carousel.addEventListener('focusout', (event) => {
-        if (!carousel.contains((event as FocusEvent).relatedTarget as Node | null)) resume();
+      carousel.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowLeft') { event.preventDefault(); goTo(active - 1); }
+        if (event.key === 'ArrowRight') { event.preventDefault(); goTo(active + 1); }
       });
-      carousel.addEventListener('touchstart', pause, { passive: true });
-      carousel.addEventListener('touchend', resume, { passive: true });
 
       setActive(0);
-      restart();
     });
   }
   initPhotoCarousels();
