@@ -162,6 +162,10 @@
   pointer-events: none;
 }
 
+.poster-navigation {
+  display: contents;
+}
+
 .poster-arrow {
   position: absolute;
   top: 26rem;
@@ -306,19 +310,38 @@
     --poster-height: 40rem;
   }
   .poster-stack { height: 43rem; padding-top: 1rem; }
+  .poster-navigation {
+    display: flex;
+    min-height: 3rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.9rem;
+    margin-top: 0.65rem;
+  }
   .poster-arrow {
-    top: 21.5rem;
+    position: relative;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: auto;
     width: 2.65rem;
     height: 2.65rem;
+    flex: 0 0 auto;
+    background:
+      linear-gradient(145deg, rgba(255, 255, 255, 0.09), transparent 44%),
+      linear-gradient(155deg, rgba(34, 31, 28, 0.78), rgba(7, 7, 7, 0.82));
     box-shadow:
       0 0 0 2px rgba(11, 10, 10, 0.78),
       0 0 0 3px rgba(232, 201, 137, 0.22),
       0 12px 28px -12px rgba(0, 0, 0, 0.95);
+    transform: none;
   }
   .poster-arrow::before { inset: 0.23rem; }
   .poster-arrow-icon { width: 1.1rem; height: 1.1rem; }
-  .poster-arrow--prev { left: 0.55rem; }
-  .poster-arrow--next { right: 0.55rem; }
+  .poster-arrow:hover,
+  .poster-arrow:focus-visible { transform: scale(1.06); }
+  .poster-arrow:active { transform: scale(0.96); }
+  .poster-navigation [data-photo-dots] { margin-top: 0; }
   .poster-card {
     top: 1rem;
     transform:

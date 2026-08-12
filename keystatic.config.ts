@@ -463,15 +463,6 @@ export default config({
             itemLabel: (props) => props.fields.legende.value || props.fields.alt.value || 'Nouvel élément',
           },
         ),
-        pourquoiSurtitre: fields.text({ label: 'Pourquoi nous rejoindre — Petit titre' }),
-        pourquoiTitre: fields.text({ label: 'Pourquoi nous rejoindre — Titre' }),
-        raisons: fields.array(
-          fields.object({
-            titre: fields.text({ label: 'Titre', validation: { isRequired: true } }),
-            texte: fields.text({ label: 'Texte', multiline: true }),
-          }),
-          { label: 'Arguments', itemLabel: (props) => props.fields.titre.value || 'Nouvel argument' },
-        ),
         rejoindreSurtitre: fields.text({ label: 'Rejoindre — Petit titre' }),
         rejoindreTitre: fields.text({ label: 'Rejoindre — Titre' }),
         rejoindreTexte: fields.text({ label: 'Rejoindre — Texte', multiline: true }),

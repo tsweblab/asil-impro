@@ -45,25 +45,6 @@ galeriePhotos:
     image: null
     alt: Emplacement pour une photo récente de l'ASIL
     legende: Photo récente n°3
-pourquoiSurtitre: La troupe
-pourquoiTitre: Pourquoi rejoindre l'ASIL ?
-raisons:
-  - titre: Créativité
-    texte: >-
-      Inventer des histoires sans texte, sans décor, sans filet : chaque atelier
-      est un terrain de jeu illimité.
-  - titre: La scène
-    texte: >-
-      Plus de 30 spectacles par saison dans les bars, théâtres et café-théâtres
-      de Saint-Étienne. Le trac, puis le frisson.
-  - titre: Liens humains
-    texte: >-
-      Une troupe soudée de plus de 100 improvisateurs et improvisatrices,
-      débutants comme confirmés.
-  - titre: Le fun
-    texte: >-
-      Loufoque, c'est dans notre nom. On vient pour rire, vaincre ses peurs et
-      repartir avec le sourire.
 rejoindreSurtitre: Les ateliers
 rejoindreTitre: Devenez improvisateur·rice
 rejoindreTexte: |-

@@ -51,21 +51,21 @@ const mode = (photo: Photo) => photo.typeContenu ?? (photo.image ? 'photo' : pho
     ))}
   </ul>
   {photos.length > 1 && (
-    <>
+    <div class="poster-navigation" aria-label="Navigation du carrousel">
       <button type="button" data-photo-prev aria-label="Publication précédente" class="poster-arrow poster-arrow--prev">
         <span class="poster-arrow-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none"><path d="m14.5 5-7 7 7 7" /></svg>
         </span>
       </button>
+      <div class="mt-4 flex items-center justify-center gap-2" data-photo-dots aria-label="Choisir une publication">
+        {photos.map((_, index) => <button type="button" data-photo-dot data-index={index} aria-label={`Afficher l’élément ${index + 1}`} class="photo-carousel-dot"></button>)}
+      </div>
       <button type="button" data-photo-next aria-label="Publication suivante" class="poster-arrow poster-arrow--next">
         <span class="poster-arrow-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none"><path d="m9.5 5 7 7-7 7" /></svg>
         </span>
       </button>
-      <div class="mt-4 flex items-center justify-center gap-2" data-photo-dots aria-label="Choisir une publication">
-        {photos.map((_, index) => <button type="button" data-photo-dot data-index={index} aria-label={`Afficher l’élément ${index + 1}`} class="photo-carousel-dot"></button>)}
-      </div>
-    </>
+    </div>
   )}
 </div>
 
