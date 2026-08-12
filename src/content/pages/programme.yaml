@@ -10,7 +10,7 @@ introduction: >-
 mois:
   - annee: 2026
     mois: '1'
-    actif: false
+    actif: true
   - annee: 2026
     mois: '2'
     actif: true
