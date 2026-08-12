@@ -8,18 +8,42 @@ introduction: >-
   Plus de 30 spectacles par saison à Saint-Étienne et dans sa région. Retrouvez
   toutes nos dates, mois par mois.
 mois:
-  - { annee: 2026, mois: '1', actif: true }
-  - { annee: 2026, mois: '2', actif: true }
-  - { annee: 2026, mois: '3', actif: true }
-  - { annee: 2026, mois: '4', actif: true }
-  - { annee: 2026, mois: '5', actif: true }
-  - { annee: 2026, mois: '6', actif: true }
-  - { annee: 2026, mois: '7', actif: true }
-  - { annee: 2026, mois: '8', actif: true }
-  - { annee: 2026, mois: '9', actif: true }
-  - { annee: 2026, mois: '10', actif: true }
-  - { annee: 2026, mois: '11', actif: true }
-  - { annee: 2026, mois: '12', actif: true }
+  - annee: 2026
+    mois: '1'
+    actif: false
+  - annee: 2026
+    mois: '2'
+    actif: true
+  - annee: 2026
+    mois: '3'
+    actif: true
+  - annee: 2026
+    mois: '4'
+    actif: true
+  - annee: 2026
+    mois: '5'
+    actif: true
+  - annee: 2026
+    mois: '6'
+    actif: true
+  - annee: 2026
+    mois: '7'
+    actif: true
+  - annee: 2026
+    mois: '8'
+    actif: true
+  - annee: 2026
+    mois: '9'
+    actif: true
+  - annee: 2026
+    mois: '10'
+    actif: true
+  - annee: 2026
+    mois: '11'
+    actif: true
+  - annee: 2026
+    mois: '12'
+    actif: true
 moisVideTitre: Aucun spectacle prévu pour le moment
 moisVideTexte: De nouvelles dates pourront être ajoutées prochainement.
 aucunEvenementTitre: La prochaine saison se prépare…
