@@ -2,9 +2,11 @@
 interface Props {
   url: string;
   titre: string;
+  fallbackTitre?: string;
+  fallbackTexte?: string;
 }
 
-const { url, titre } = Astro.props;
+const { url, titre, fallbackTitre = 'Voir sur {reseau}', fallbackTexte = "L’aperçu n’est pas disponible, mais la publication reste accessible." } = Astro.props;
 
 type Provider = 'instagram' | 'facebook' | 'tiktok' | 'youtube' | 'autre';
 let provider: Provider = 'autre';
@@ -55,8 +57,8 @@ const noms: Record<Provider, string> = {
     <a href={url} target="_blank" rel="noopener noreferrer" class="grid h-full place-items-center px-8 text-center">
       <span>
         <span class="mx-auto grid size-16 place-items-center rounded-full border border-asil-red/60 bg-asil-red/10 text-2xl text-asil-red" aria-hidden="true">↗</span>
-        <strong class="mt-5 block font-display text-xl text-white">Voir sur {noms[provider]}</strong>
-        <span class="mt-2 block text-sm text-white/55">L’aperçu n’est pas disponible, mais la publication reste accessible.</span>
+        <strong class="mt-5 block font-display text-xl text-white">{fallbackTitre.replace('{reseau}', noms[provider])}</strong>
+        <span class="mt-2 block text-sm text-white/55">{fallbackTexte}</span>
       </span>
     </a>
   )}

@@ -11,8 +11,8 @@ interface Props {
   ogImage?: string;
 }
 
-const { title, description, ogImage = '/images/og-asil.jpg' } = Astro.props;
 const settings = await getSettings();
+const { title, description, ogImage = settings.imagePartage } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -24,8 +24,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="alternate icon" type="image/png" href="/images/logo-asil_small.png" />
+    <link rel="icon" href={settings.favicon} />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="generator" content={Astro.generator} />
 
@@ -36,7 +35,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:image" content={new URL(ogImage, Astro.site)} />
     <meta property="og:locale" content="fr_FR" />
-    <meta property="og:site_name" content="ASIL Impro" />
+    <meta property="og:site_name" content={settings.siteNom} />
     <meta name="twitter:card" content="summary_large_image" />
 
     <!-- Polices : Playfair Display (titres, serif théâtral) + Inter (corps) -->
@@ -53,6 +52,9 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <Navbar
       facebook={settings.facebook}
       instagram={settings.instagram}
+      logo={settings.logo}
+      logoAlt={settings.logoAlt}
+      siteNom={settings.siteNom}
       labels={{ accueil: settings.navAccueil, programme: settings.navProgramme, stages: settings.navStages, ateliers: settings.navAteliers, contact: settings.navContact }}
       transition:persist="navbar"
     />
@@ -62,6 +64,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <Footer
       facebook={settings.facebook}
       instagram={settings.instagram}
+      logo={settings.logo}
+      logoAlt={settings.logoAlt}
       email={settings.email}
       telephones={settings.telephones}
       labels={{
@@ -69,6 +73,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
         ateliers: settings.navAteliers, contact: settings.navContact, mentions: settings.navMentions, description: settings.footerDescription,
         liensTitre: settings.footerLiensTitre, contactTitre: settings.footerContactTitre,
         copyright: settings.footerCopyright, credit: settings.footerCredit,
+        creditNom: settings.footerCreditNom, creditLien: settings.footerCreditLien, siteNom: settings.siteNom,
       }}
     />
   </body>

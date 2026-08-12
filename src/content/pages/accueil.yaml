@@ -21,6 +21,9 @@ agendaLienTexte: Tout le programme
 galerieSurtitre: En images
 galerieTitre: Nos derniers événements
 galerieDescription: Retrouvez les derniers moments partagés par l'ASIL sur les réseaux sociaux.
+galeriePlaceholderTexte: Photo à ajouter depuis Keystatic
+galerieLienTitre: Voir sur {reseau}
+galerieLienTexte: L'aperçu n'est pas disponible, mais la publication reste accessible.
 galeriePhotos:
   - actif: true
     typeContenu: publication

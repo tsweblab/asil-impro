@@ -4,10 +4,13 @@ import SocialLinks from './SocialLinks.astro';
 interface Props {
   facebook: string;
   instagram: string;
+  logo: string;
+  logoAlt: string;
+  siteNom: string;
   labels: { accueil: string; programme: string; stages: string; ateliers: string; contact: string };
 }
 
-const { facebook, instagram, labels } = Astro.props;
+const { facebook, instagram, logo, logoAlt, siteNom, labels } = Astro.props;
 
 const liens = [
   { href: '/', label: labels.accueil },
@@ -19,10 +22,10 @@ const liens = [
 
 <header data-site-header class="fixed inset-x-0 top-0 z-50 border-b border-white/8 bg-asil-night/85 shadow-[0_8px_30px_rgba(0,0,0,0.18)] backdrop-blur-xl">
   <div class="container-site flex items-center justify-between gap-6 py-3">
-    <a href="/" aria-label="ASIL Impro — accueil" class="shrink-0">
+    <a href="/" aria-label={`${siteNom} — accueil`} class="shrink-0">
       <img
-        src="/images/logo-asil-blanc.png"
-        alt="ASIL Impro"
+        src={logo}
+        alt={logoAlt}
         width="120"
         height="53"
         class="h-11 w-auto"
@@ -42,7 +45,7 @@ const liens = [
     </nav>
 
     <div class="hidden items-center gap-4 lg:flex">
-      <SocialLinks facebook={facebook} instagram={instagram} />
+      <SocialLinks facebook={facebook} instagram={instagram} siteNom={siteNom} />
       <a href="/contact" class="btn-red min-h-10 px-6">{labels.contact}</a>
     </div>
 
@@ -82,7 +85,7 @@ const liens = [
         </a>
       ))}
       <a href="/contact" class="btn-red mt-2">{labels.contact}</a>
-      <SocialLinks facebook={facebook} instagram={instagram} class="mt-4 px-3 pb-2" />
+      <SocialLinks facebook={facebook} instagram={instagram} siteNom={siteNom} class="mt-4 px-3 pb-2" />
     </div>
   </nav>
 </header>

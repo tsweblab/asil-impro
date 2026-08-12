@@ -37,6 +37,42 @@ const blocsLibres = (directory: string, publicPath: string) =>
     },
   );
 
+const galeriePhotos = (directory: string, publicPath: string, label = 'Galerie photos') =>
+  fields.array(
+    fields.object({
+      actif: fields.checkbox({ label: 'Afficher cette photo', defaultValue: true }),
+      image: fields.image({
+        label: 'Photo',
+        directory,
+        publicPath,
+      }),
+      alt: fields.text({
+        label: 'Description de la photo (accessibilité)',
+        validation: { isRequired: true },
+      }),
+      legende: fields.text({ label: 'Légende (optionnelle)' }),
+    }),
+    {
+      label,
+      description: 'Ajoutez, supprimez et réorganisez librement les photos.',
+      itemLabel: (props) => props.fields.legende.value || props.fields.alt.value || 'Nouvelle photo',
+    },
+  );
+
+const blocsTexte = (label = 'Blocs de texte supplémentaires') =>
+  fields.array(
+    fields.object({
+      actif: fields.checkbox({ label: 'Afficher ce bloc', defaultValue: true }),
+      titre: fields.text({ label: 'Titre (optionnel)' }),
+      texte: fields.text({ label: 'Texte', multiline: true, validation: { isRequired: true } }),
+    }),
+    {
+      label,
+      description: 'Ajoutez, supprimez et réorganisez des informations complémentaires.',
+      itemLabel: (props) => props.fields.titre.value || 'Nouveau texte',
+    },
+  );
+
 const isLocalDevelopment = process.env.NODE_ENV === 'development';
 
 export default config({
@@ -52,15 +88,17 @@ export default config({
   ui: {
     brand: { name: 'ASIL Impro' },
     navigation: {
-      'Spectacles & stages': ['evenements', 'stages'],
-      'Cours': ['ateliers', 'intervenants'],
-      'Textes des pages': ['homePage', 'programmePage', 'ateliersPage', 'stagesPage', 'contactPage', 'mentionsPage'],
-      'Réglages généraux': ['siteSettings'],
+      'PAGE D’ACCUEIL': ['homePage'],
+      'PAGE PROGRAMME': ['programmePage', 'evenements'],
+      'PAGE STAGES': ['stagesPage', 'stages'],
+      'PAGE ATELIERS': ['ateliersPage', 'ateliers', 'intervenants'],
+      'PAGE CONTACT': ['contactPage'],
+      'RÉGLAGES GÉNÉRAUX': ['siteSettings', 'mentionsPage'],
     },
   },
   collections: {
     evenements: collection({
-      label: 'Programme (spectacles)',
+      label: 'Spectacles du programme',
       slugField: 'titre',
       path: 'src/content/evenements/*',
       columns: ['date', 'lieu'],
@@ -98,6 +136,15 @@ export default config({
           description: 'Une ou deux phrases affichées sur la page Programme.',
           multiline: true,
         }),
+        image: fields.image({
+          label: 'Affiche ou photo principale (optionnelle)',
+          description: "Affichée sur la carte du spectacle, y compris sur la page d'accueil lorsqu'il est mis en avant.",
+          directory: 'public/images/evenements',
+          publicPath: '/images/evenements/',
+        }),
+        imageAlt: fields.text({ label: 'Description de la photo principale (accessibilité)' }),
+        galeriePhotos: galeriePhotos('public/images/evenements', '/images/evenements/', 'Photos supplémentaires'),
+        blocsTexte: blocsTexte(),
         actif: fields.checkbox({
           label: 'Afficher cet événement',
           description: 'Décochez pour masquer cet événement sans le supprimer.',
@@ -111,7 +158,7 @@ export default config({
       },
     }),
     stages: collection({
-      label: 'Stages',
+      label: 'Liste des stages',
       slugField: 'titre',
       path: 'src/content/stages/*',
       columns: ['dateDebut', 'intervenant'],
@@ -127,6 +174,13 @@ export default config({
             description: 'Généré automatiquement à partir du titre — inutile d\'y toucher.',
           },
         }),
+        image: fields.image({
+          label: 'Photo principale du stage (optionnelle)',
+          description: 'Cliquez ici pour ajouter ou remplacer la grande photo de ce stage. Sans photo, le visuel rouge ASIL est utilisé.',
+          directory: 'public/images/stages',
+          publicPath: '/images/stages/',
+        }),
+        imageAlt: fields.text({ label: 'Description de la photo principale (accessibilité)' }),
         dateDebut: fields.date({
           label: 'Date',
           description: 'Les stages dont la date est passée disparaissent automatiquement du site.',
@@ -161,12 +215,8 @@ export default config({
           label: "Lien d'inscription",
           description: 'Si renseigné, un bouton « S\'inscrire » apparaît. Ex : lien HelloAsso.',
         }),
-        image: fields.image({
-          label: 'Photo du stage (optionnel)',
-          description: 'Format paysage conseillé. Sans photo, un visuel rouge ASIL est affiché à la place.',
-          directory: 'public/images/stages',
-          publicPath: '/images/stages/',
-        }),
+        galeriePhotos: galeriePhotos('public/images/stages', '/images/stages/', 'Galerie du stage'),
+        blocsTexte: blocsTexte('Informations supplémentaires du stage'),
         actif: fields.checkbox({
           label: 'Afficher ce stage',
           description: 'Décochez pour masquer ce stage sans le supprimer.',
@@ -217,6 +267,14 @@ export default config({
           description: 'Une ou deux phrases : à qui s\'adresse l\'atelier, ce qu\'on y fait…',
           multiline: true,
         }),
+        image: fields.image({
+          label: "Photo principale de l'atelier (optionnelle)",
+          directory: 'public/images/ateliers',
+          publicPath: '/images/ateliers/',
+        }),
+        imageAlt: fields.text({ label: 'Description de la photo principale (accessibilité)' }),
+        galeriePhotos: galeriePhotos('public/images/ateliers', '/images/ateliers/', "Galerie de l'atelier"),
+        blocsTexte: blocsTexte("Informations supplémentaires de l'atelier"),
         ordre: fields.integer({
           label: "Ordre d'affichage",
           description: 'Les ateliers sont affichés du plus petit numéro au plus grand.',
@@ -264,9 +322,29 @@ export default config({
   },
   singletons: {
     siteSettings: singleton({
-      label: 'Paramètres du site',
+      label: 'Navigation, pied de page et réseaux',
       path: 'src/content/settings/site',
       schema: {
+        siteNom: fields.text({ label: 'Nom du site', defaultValue: 'ASIL Impro' }),
+        logo: fields.image({
+          label: 'Logo du site',
+          description: 'Utilisé dans le menu et le pied de page.',
+          directory: 'public/images/branding',
+          publicPath: '/images/branding/',
+        }),
+        logoAlt: fields.text({ label: 'Description du logo', defaultValue: 'ASIL Impro' }),
+        imagePartage: fields.image({
+          label: 'Image de partage du site',
+          description: 'Image affichée lors du partage du site sur les réseaux sociaux.',
+          directory: 'public/images/branding',
+          publicPath: '/images/branding/',
+        }),
+        favicon: fields.image({
+          label: 'Icône du site',
+          description: "Petite image affichée dans l'onglet du navigateur.",
+          directory: 'public/images/branding',
+          publicPath: '/images/branding/',
+        }),
         telephones: fields.array(
           fields.object({
             libelle: fields.text({
@@ -313,6 +391,9 @@ export default config({
         stageIntervenantLabel: fields.text({ label: 'Stages — Libellé intervenant·e', defaultValue: 'Intervenant·e :' }),
         stageTarifLabel: fields.text({ label: 'Stages — Libellé tarif', defaultValue: 'Tarif :' }),
         stageBouton: fields.text({ label: "Stages — Bouton d'inscription", defaultValue: "S'inscrire" }),
+        stageDuLabel: fields.text({ label: 'Stages — Début de période', defaultValue: 'Du' }),
+        stageAuLabel: fields.text({ label: 'Stages — Liaison de période', defaultValue: 'au' }),
+        stageImageFallback: fields.text({ label: 'Stages — Texte du visuel sans photo', defaultValue: 'ASIL' }),
         footerDescription: fields.text({
           label: 'Pied de page — Présentation',
           multiline: true,
@@ -322,6 +403,8 @@ export default config({
         footerContactTitre: fields.text({ label: 'Pied de page — Titre du contact', defaultValue: 'Gardons le contact !' }),
         footerCopyright: fields.text({ label: 'Pied de page — Copyright', defaultValue: 'ASIL Impro — Tous droits réservés.' }),
         footerCredit: fields.text({ label: 'Pied de page — Crédit', defaultValue: 'Site réalisé par' }),
+        footerCreditNom: fields.text({ label: 'Pied de page — Nom du créateur', defaultValue: 'TS WEB Lab' }),
+        footerCreditLien: fields.url({ label: 'Pied de page — Lien du créateur' }),
         heroTitre: fields.text({
           label: "Grand titre de la page d'accueil",
           description: 'Ex : L\'asso stéphanoise qui improvise depuis 22 ans !',
@@ -333,43 +416,49 @@ export default config({
         heroImage: fields.image({
           label: "Photo de fond de l'accueil (optionnel)",
           description: 'Grande photo de spectacle, format paysage (idéalement 1920px de large). Sans photo, l\'image par défaut est utilisée.',
-          directory: 'public/images',
-          publicPath: '/images/',
+          directory: 'public/images/site',
+          publicPath: '/images/site/',
         }),
+        heroImageAlt: fields.text({ label: "Description de la photo de fond de l'accueil (laisser vide si décorative)" }),
         photoRejoindre: fields.image({
           label: 'Photo — Accueil, section « Devenez improvisateur·rice »',
           description: 'Format portrait ou carré conseillé. Sans photo, l\'image par défaut est utilisée.',
           directory: 'public/images/site',
           publicPath: '/images/site/',
         }),
+        photoRejoindreAlt: fields.text({ label: 'Description — Photo « Devenez improvisateur·rice »' }),
         photoAsil: fields.image({
           label: 'Photo — Accueil, section « L\'ASIL, c\'est quoi ? »',
           description: 'Format paysage conseillé. Sans photo, l\'image par défaut est utilisée.',
           directory: 'public/images/site',
           publicPath: '/images/site/',
         }),
+        photoAsilAlt: fields.text({ label: "Description — Photo « L'ASIL, c'est quoi ? »" }),
         photoAteliers: fields.image({
           label: 'Photo — Page Ateliers',
           description: 'Format portrait conseillé. Sans photo, l\'image par défaut est utilisée.',
           directory: 'public/images/site',
           publicPath: '/images/site/',
         }),
+        photoAteliersAlt: fields.text({ label: 'Description — Photo de la page Ateliers' }),
         photoStages: fields.image({
           label: 'Photo — Page Stages',
           description: 'Format portrait conseillé. Sans photo, l\'image par défaut est utilisée.',
           directory: 'public/images/site',
           publicPath: '/images/site/',
         }),
+        photoStagesAlt: fields.text({ label: 'Description — Photo de la page Stages' }),
         photoContact: fields.image({
           label: 'Photo — Page Contact',
           description: 'Format paysage conseillé. Sans photo, l\'image par défaut est utilisée.',
           directory: 'public/images/site',
           publicPath: '/images/site/',
         }),
+        photoContactAlt: fields.text({ label: 'Description — Photo de la page Contact' }),
       },
     }),
     homePage: singleton({
-      label: "Page d’accueil",
+      label: "Modifier la page d’accueil",
       path: 'src/content/pages/accueil',
       schema: {
         seoTitre: fields.text({ label: 'Titre affiché dans Google' }),
@@ -389,6 +478,12 @@ export default config({
         galerieSurtitre: fields.text({ label: 'Galerie — Petit titre' }),
         galerieTitre: fields.text({ label: 'Galerie — Titre' }),
         galerieDescription: fields.text({ label: 'Galerie — Présentation', multiline: true }),
+        galeriePlaceholderTexte: fields.text({ label: 'Galerie — Texte lorsqu’une photo est vide' }),
+        galerieLienTitre: fields.text({
+          label: 'Galerie — Titre si un aperçu social est indisponible',
+          description: 'Utilisez {reseau} pour insérer le nom du réseau social.',
+        }),
+        galerieLienTexte: fields.text({ label: 'Galerie — Explication si un aperçu social est indisponible', multiline: true }),
         galeriePhotos: fields.array(
           fields.object({
             actif: fields.checkbox({ label: 'Afficher cet élément', defaultValue: true }),
@@ -453,7 +548,7 @@ export default config({
       },
     }),
     programmePage: singleton({
-      label: 'Page Programme',
+      label: 'Présentation et mois affichés',
       path: 'src/content/pages/programme',
       schema: {
         seoTitre: fields.text({ label: 'Titre affiché dans Google' }),
@@ -481,7 +576,7 @@ export default config({
       },
     }),
     ateliersPage: singleton({
-      label: 'Page Ateliers',
+      label: 'Présentation de la page',
       path: 'src/content/pages/ateliers',
       schema: {
         seoTitre: fields.text({ label: 'Titre affiché dans Google' }),
@@ -502,7 +597,7 @@ export default config({
       },
     }),
     stagesPage: singleton({
-      label: 'Page Stages',
+      label: 'Présentation de la page',
       path: 'src/content/pages/stages',
       schema: {
         seoTitre: fields.text({ label: 'Titre affiché dans Google' }),
@@ -519,7 +614,7 @@ export default config({
       },
     }),
     contactPage: singleton({
-      label: 'Page Contact',
+      label: 'Modifier la page Contact',
       path: 'src/content/pages/contact',
       schema: {
         seoTitre: fields.text({ label: 'Titre affiché dans Google' }),
@@ -550,7 +645,7 @@ export default config({
       },
     }),
     mentionsPage: singleton({
-      label: 'Page Mentions légales',
+      label: 'Mentions légales',
       path: 'src/content/pages/mentions-legales',
       schema: {
         seoTitre: fields.text({ label: 'Titre affiché dans Google' }),

@@ -1,0 +1,45 @@
+---
+interface Photo {
+  actif?: boolean;
+  image?: string | null;
+  alt: string;
+  legende?: string;
+}
+
+interface BlocTexte {
+  actif?: boolean;
+  titre?: string;
+  texte: string;
+}
+
+interface Props {
+  photos?: readonly Photo[];
+  blocs?: readonly BlocTexte[];
+}
+
+const { photos = [], blocs = [] } = Astro.props;
+const photosAffichees = photos.filter((photo) => photo.actif !== false && photo.image);
+const blocsAffiches = blocs.filter((bloc) => bloc.actif !== false && bloc.texte);
+---
+
+{blocsAffiches.length > 0 && (
+  <div class="grid gap-3 border-t border-white/10 pt-4">
+    {blocsAffiches.map((bloc) => (
+      <section>
+        {bloc.titre && <h4 class="font-sans text-xs font-semibold uppercase tracking-[0.14em] text-white/90">{bloc.titre}</h4>}
+        <p class:list={['whitespace-pre-line text-sm leading-relaxed text-white/70', bloc.titre && 'mt-1.5']}>{bloc.texte}</p>
+      </section>
+    ))}
+  </div>
+)}
+
+{photosAffichees.length > 0 && (
+  <div class="grid grid-cols-2 gap-2 border-t border-white/10 pt-4 sm:grid-cols-3" aria-label="Galerie photos">
+    {photosAffichees.map((photo) => (
+      <figure class="min-w-0">
+        <img src={photo.image!} alt={photo.alt} class="aspect-square w-full rounded-lg object-cover" loading="lazy" />
+        {photo.legende && <figcaption class="mt-1.5 text-xs leading-snug text-white/55">{photo.legende}</figcaption>}
+      </figure>
+    ))}
+  </div>
+)}

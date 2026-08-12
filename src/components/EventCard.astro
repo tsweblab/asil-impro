@@ -1,5 +1,6 @@
 ---
 import { formatDateLongue, formatHeure, type Evenement } from '../lib/keystatic';
+import EntryExtras from './EntryExtras.astro';
 
 interface Props {
   evenement: Evenement;
@@ -18,6 +19,17 @@ const heure = formatHeure(evenement.date!);
     compact ? '' : 'sm:p-7',
   ]}
 >
+  {evenement.image && (
+    <img
+      src={evenement.image}
+      alt={evenement.imageAlt || `Affiche ou photo de ${evenement.titre}`}
+      class:list={[
+        '-mx-6 -mt-6 mb-2 aspect-[16/9] w-[calc(100%+3rem)] object-cover',
+        !compact && 'sm:-mx-7 sm:-mt-7 sm:w-[calc(100%+3.5rem)]',
+      ]}
+      loading="lazy"
+    />
+  )}
   <p class="font-sans text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-asil-red">
     {formatDateLongue(evenement.date!)}{heure && ` — ${heure}`}
   </p>
@@ -34,6 +46,7 @@ const heure = formatHeure(evenement.date!);
   {!compact && evenement.description && (
     <p class="text-sm leading-relaxed text-white/70">{evenement.description}</p>
   )}
+  {!compact && <EntryExtras photos={evenement.galeriePhotos} blocs={evenement.blocsTexte} />}
   {evenement.lienReservation && (
     <a
       href={evenement.lienReservation}

@@ -9,8 +9,13 @@ interface Photo {
   lien?: string | null;
 }
 
-interface Props { photos: Photo[]; }
-const { photos } = Astro.props;
+interface Props {
+  photos: Photo[];
+  placeholderTexte?: string;
+  lienTitre?: string;
+  lienTexte?: string;
+}
+const { photos, placeholderTexte = 'Photo à ajouter depuis Keystatic', lienTitre = 'Voir sur {reseau}', lienTexte = "L’aperçu n’est pas disponible, mais la publication reste accessible." } = Astro.props;
 const mode = (photo: Photo) => photo.typeContenu ?? (photo.image ? 'photo' : photo.lien ? 'publication' : 'photo');
 ---
 
@@ -26,7 +31,7 @@ const mode = (photo: Photo) => photo.typeContenu ?? (photo.image ? 'photo' : pho
         aria-label={`${index + 1} sur ${photos.length} — ${photo.legende || photo.alt}`}
       >
         {mode(photo) === 'publication' && photo.lien ? (
-          <SocialPostPreview url={photo.lien} titre={photo.legende || photo.alt} />
+          <SocialPostPreview url={photo.lien} titre={photo.legende || photo.alt} fallbackTitre={lienTitre} fallbackTexte={lienTexte} />
         ) : photo.image && photo.lien ? (
           <a href={photo.lien} target="_blank" rel="noopener noreferrer" class="block h-full">
             <img src={photo.image} alt={photo.alt} class="size-full object-cover" loading="lazy" />
@@ -37,7 +42,7 @@ const mode = (photo: Photo) => photo.typeContenu ?? (photo.image ? 'photo' : pho
           <div class="grid size-full place-items-center bg-gradient-to-br from-asil-gray-dark to-asil-black px-8 text-center">
             <div>
               <span class="mx-auto grid size-14 place-items-center rounded-full border border-dashed border-asil-red/70 text-2xl text-asil-red" aria-hidden="true">+</span>
-              <p class="mt-4 text-sm text-white/55">Photo à ajouter depuis Keystatic</p>
+              <p class="mt-4 text-sm text-white/55">{placeholderTexte}</p>
             </div>
           </div>
         )}

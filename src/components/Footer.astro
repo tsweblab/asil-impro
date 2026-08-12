@@ -5,15 +5,18 @@ import type { Telephone } from '../lib/keystatic';
 interface Props {
   facebook: string;
   instagram: string;
+  logo: string;
+  logoAlt: string;
   email: string;
   telephones: Telephone[];
   labels: {
     accueil: string; programme: string; stages: string; ateliers: string; contact: string; mentions: string;
     description: string; liensTitre: string; contactTitre: string; copyright: string; credit: string;
+    creditNom: string; creditLien: string; siteNom: string;
   };
 }
 
-const { facebook, instagram, email, telephones, labels } = Astro.props;
+const { facebook, instagram, logo, logoAlt, email, telephones, labels } = Astro.props;
 const annee = new Date().getFullYear();
 ---
 
@@ -24,13 +27,13 @@ const annee = new Date().getFullYear();
     class="pointer-events-none absolute -bottom-[0.18em] left-1/2 -translate-x-1/2 select-none whitespace-nowrap font-display text-[clamp(6rem,20vw,18rem)] font-bold italic leading-none text-white/[0.035]"
     aria-hidden="true"
   >
-    ASIL Impro
+    {labels.siteNom}
   </p>
   <div class="container-site grid gap-10 py-14 md:grid-cols-3">
     <div>
       <img
-        src="/images/logo-asil-blanc.png"
-        alt="ASIL Impro"
+        src={logo}
+        alt={logoAlt}
         width="140"
         height="62"
         class="h-14 w-auto"
@@ -66,7 +69,7 @@ const annee = new Date().getFullYear();
           </li>
         ))}
       </ul>
-      <SocialLinks facebook={facebook} instagram={instagram} class="mt-5" />
+      <SocialLinks facebook={facebook} instagram={instagram} siteNom={labels.siteNom} class="mt-5" />
     </div>
   </div>
 
@@ -76,12 +79,12 @@ const annee = new Date().getFullYear();
       <p>
         {labels.credit}
         <a
-          href="https://tsweb.fr"
+          href={labels.creditLien}
           target="_blank"
           rel="noopener noreferrer"
           class="font-semibold text-white/80 transition-colors hover:text-asil-red"
         >
-          TS WEB Lab
+          {labels.creditNom}
         </a>
       </p>
     </div>

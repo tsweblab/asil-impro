@@ -1,17 +1,18 @@
 ---
 import ScaleIn from '@astroanimate/core/ScaleIn';
 import { formatDateLongue, type Stage } from '../lib/keystatic';
+import EntryExtras from './EntryExtras.astro';
 
 interface Props {
   stage: Stage;
   index?: number;
-  labels?: { horaires: string; lieu: string; intervenant: string; tarif: string; bouton: string };
+  labels?: { horaires: string; lieu: string; intervenant: string; tarif: string; bouton: string; du: string; au: string; imageFallback: string };
 }
 
-const { stage, index = 0, labels = { horaires: 'Horaires :', lieu: 'Lieu :', intervenant: 'Intervenant·e :', tarif: 'Tarif :', bouton: "S'inscrire" } } = Astro.props;
+const { stage, index = 0, labels = { horaires: 'Horaires :', lieu: 'Lieu :', intervenant: 'Intervenant·e :', tarif: 'Tarif :', bouton: "S'inscrire", du: 'Du', au: 'au', imageFallback: 'ASIL' } } = Astro.props;
 
 const periode = stage.dateFin
-  ? `Du ${formatDateLongue(stage.dateDebut!).toLowerCase()} au ${formatDateLongue(stage.dateFin).toLowerCase()}`
+  ? `${labels.du} ${formatDateLongue(stage.dateDebut!).toLowerCase()} ${labels.au} ${formatDateLongue(stage.dateFin).toLowerCase()}`
   : formatDateLongue(stage.dateDebut!);
 ---
 
@@ -20,13 +21,13 @@ const periode = stage.dateFin
     {stage.image ? (
       <img
         src={stage.image}
-        alt={`Stage : ${stage.titre}`}
+        alt={stage.imageAlt || `Stage : ${stage.titre}`}
         class="h-full min-h-48 w-full object-cover"
         loading="lazy"
       />
     ) : (
       <div class="grid min-h-48 place-items-center bg-gradient-to-br from-asil-red to-asil-red-dark" aria-hidden="true">
-        <span class="font-display text-6xl font-bold italic text-white/85">ASIL</span>
+        <span class="font-display text-6xl font-bold italic text-white/85">{labels.imageFallback}</span>
       </div>
     )}
     <div class="flex flex-col gap-3 p-6 md:py-8 md:pr-8 md:pl-0">
@@ -39,6 +40,7 @@ const periode = stage.dateFin
         {stage.tarif && <li><strong class="text-white">{labels.tarif}</strong> {stage.tarif}</li>}
       </ul>
       {stage.description && <p class="text-sm leading-relaxed text-white/70">{stage.description}</p>}
+      <EntryExtras photos={stage.galeriePhotos} blocs={stage.blocsTexte} />
       {stage.lienInscription && (
         <a
           href={stage.lienInscription}

@@ -97,7 +97,7 @@ const { textes } = Astro.props;
           afficher(form.dataset.successText || 'Merci ! Votre message a bien été envoyé.', true);
           form.reset();
         } else {
-          afficher(data.error ?? form.dataset.errorText ?? "Une erreur est survenue.", false);
+          afficher(form.dataset.errorText ?? data.error ?? "Une erreur est survenue.", false);
         }
       } catch {
         afficher(form.dataset.errorText || "Impossible d'envoyer le message.", false);

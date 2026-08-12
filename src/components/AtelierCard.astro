@@ -1,6 +1,7 @@
 ---
 import ScaleIn from '@astroanimate/core/ScaleIn';
 import type { Atelier } from '../lib/keystatic';
+import EntryExtras from './EntryExtras.astro';
 
 interface Props {
   atelier: Atelier;
@@ -13,6 +14,14 @@ const { atelier, index = 0, labels = { lieu: 'Lieu :', tarif: 'Tarif annuel :' }
 
 <ScaleIn enhance={true} delay={index * 120} class="h-full">
   <article class="card-scene card-hover flex h-full flex-col gap-4 p-7">
+    {atelier.image && (
+      <img
+        src={atelier.image}
+        alt={atelier.imageAlt || `Atelier : ${atelier.titre}`}
+        class="-mx-7 -mt-7 mb-2 aspect-[16/9] w-[calc(100%+3.5rem)] rounded-t-2xl object-cover"
+        loading="lazy"
+      />
+    )}
     <h3 class="text-2xl text-white">{atelier.titre}</h3>
     {atelier.creneaux && (
       <div class="border-l-4 border-asil-red pl-4 text-sm leading-relaxed text-white/85 whitespace-pre-line">{atelier.creneaux}</div>
@@ -24,5 +33,6 @@ const { atelier, index = 0, labels = { lieu: 'Lieu :', tarif: 'Tarif annuel :' }
     {atelier.description && (
       <p class="text-sm leading-relaxed text-white/70">{atelier.description}</p>
     )}
+    <EntryExtras photos={atelier.galeriePhotos} blocs={atelier.blocsTexte} />
   </article>
 </ScaleIn>

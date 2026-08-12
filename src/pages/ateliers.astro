@@ -44,7 +44,7 @@ const page = {
       {page.lieuTexte && <p class="mt-4 whitespace-pre-line leading-relaxed text-white/80">{page.lieuTexte}</p>}
       <AnimatedButton variant="shimmer" href={page.boutonLien} class="btn-red mt-8 px-8">{page.boutonTexte}</AnimatedButton>
     </div>
-    <SitePhoto publique={settings.photoAteliers} fallback={atelierPhoto} alt="Atelier d'improvisation de l'ASIL" class="w-full rounded-2xl object-cover shadow-2xl shadow-black/60" widths={[480, 800, 1000]} sizes="(min-width: 1024px) 26rem, 100vw" loading="eager" />
+    <SitePhoto publique={settings.photoAteliers} fallback={atelierPhoto} alt={settings.photoAteliersAlt} class="w-full rounded-2xl object-cover shadow-2xl shadow-black/60" widths={[480, 800, 1000]} sizes="(min-width: 1024px) 26rem, 100vw" loading="eager" />
   </section>
 
   <section class="container-site pb-16" aria-labelledby="ateliers-adultes">

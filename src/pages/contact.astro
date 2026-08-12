@@ -37,14 +37,14 @@ const page = {
   <section class="container-site grid gap-12 pb-20 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-16">
     <div><h2 class="mb-7 text-2xl">{page.formulaireTitre}</h2><ContactForm textes={page} /></div>
     <aside class="flex flex-col gap-8">
-      <SitePhoto publique={settings.photoContact} fallback={scenePhoto} alt="Spectacle d'improvisation de l'ASIL" class="w-full rounded-2xl object-cover shadow-2xl shadow-black/60" widths={[480, 800, 1200]} sizes="(min-width: 1024px) 26rem, 100vw" loading="lazy" />
+      <SitePhoto publique={settings.photoContact} fallback={scenePhoto} alt={settings.photoContactAlt} class="w-full rounded-2xl object-cover shadow-2xl shadow-black/60" widths={[480, 800, 1200]} sizes="(min-width: 1024px) 26rem, 100vw" loading="lazy" />
       <div class="card-scene p-8">
         <h2 class="text-2xl">{page.coordonneesTitre}</h2>
         <ul class="mt-5 grid gap-4 text-sm">
           <li><span class="block text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-white/50">{page.emailTitre}</span><a href={`mailto:${settings.email}`} class="font-semibold text-white hover:text-asil-red">{settings.email}</a></li>
           {settings.telephones.length > 0 && <li><span class="block text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-white/50">{page.telephoneTitre}</span>{settings.telephones.map((t) => <p><a href={`tel:${t.numero.replace(/[\s.]/g, '')}`} class="font-semibold text-white hover:text-asil-red">{t.numero}</a>{t.libelle && <span class="text-white/60"> — {t.libelle}</span>}</p>)}</li>}
           <li><span class="block text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-white/50">{page.ateliersTitre}</span><p class="whitespace-pre-line text-white/80">{page.ateliersAdresse}</p></li>
-          <li><span class="mb-2 block text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-white/50">{page.reseauxTitre}</span><SocialLinks facebook={settings.facebook} instagram={settings.instagram} /></li>
+          <li><span class="mb-2 block text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-white/50">{page.reseauxTitre}</span><SocialLinks facebook={settings.facebook} instagram={settings.instagram} siteNom={settings.siteNom} /></li>
         </ul>
       </div>
     </aside>

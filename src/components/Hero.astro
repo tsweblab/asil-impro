@@ -14,9 +14,10 @@ interface Props {
   boutonSecondaireLien: string;
   /** Image uploadée via Keystatic (chemin public), sinon l'image par défaut. */
   imagePublique?: string | null;
+  imageAlt?: string;
 }
 
-const { titre, sousTitre, description, boutonPrincipal, boutonPrincipalLien, boutonSecondaire, boutonSecondaireLien, imagePublique = null } = Astro.props;
+const { titre, sousTitre, description, boutonPrincipal, boutonPrincipalLien, boutonSecondaire, boutonSecondaireLien, imagePublique = null, imageAlt = '' } = Astro.props;
 ---
 
 <section class="relative grid min-h-[calc(100svh-68px)] items-center overflow-hidden bg-asil-black">
@@ -24,7 +25,7 @@ const { titre, sousTitre, description, boutonPrincipal, boutonPrincipalLien, bou
   {imagePublique ? (
     <img
       src={imagePublique}
-      alt=""
+      alt={imageAlt}
       class="absolute inset-0 size-full object-cover"
       fetchpriority="high"
     />

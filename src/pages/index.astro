@@ -31,6 +31,7 @@ const prochains = (misEnAvant.length > 0 ? misEnAvant : aVenir).slice(0, 4);
     boutonSecondaire={page.heroBoutonSecondaire}
     boutonSecondaireLien={page.heroBoutonSecondaireLien}
     imagePublique={settings.heroImage}
+    imageAlt={settings.heroImageAlt}
   />
 
   <MarqueeBand mots={page.marqueeMots.length ? page.marqueeMots : undefined} />
@@ -57,7 +58,7 @@ const prochains = (misEnAvant.length > 0 ? misEnAvant : aVenir).slice(0, 4);
         <h2 id="galerie-accueil" class="section-title text-4xl sm:text-5xl">{page.galerieTitre}</h2>
       </FadeInText>
       {page.galerieDescription && <p class="mt-5 max-w-2xl leading-relaxed text-white/75">{page.galerieDescription}</p>}
-      <div class="mt-10"><PhotoCarousel photos={page.galeriePhotos} /></div>
+      <div class="mt-10"><PhotoCarousel photos={page.galeriePhotos} placeholderTexte={page.galeriePlaceholderTexte} lienTitre={page.galerieLienTitre} lienTexte={page.galerieLienTexte} /></div>
     </section>
   )}
 
@@ -95,7 +96,7 @@ const prochains = (misEnAvant.length > 0 ? misEnAvant : aVenir).slice(0, 4);
       <AnimatedButton variant="shimmer" href={page.rejoindreBoutonLien} class="btn-red mt-8 px-8">{page.rejoindreBouton}</AnimatedButton>
     </div>
     <ScaleIn enhance={true}>
-      <SitePhoto publique={settings.photoRejoindre} fallback={maud} alt="Improvisatrice de l'ASIL sur scène" class="w-full rounded-2xl object-cover shadow-2xl shadow-black/60" widths={[480, 800, 1200]} sizes="(min-width: 1024px) 34rem, 100vw" loading="lazy" />
+      <SitePhoto publique={settings.photoRejoindre} fallback={maud} alt={settings.photoRejoindreAlt} class="w-full rounded-2xl object-cover shadow-2xl shadow-black/60" widths={[480, 800, 1200]} sizes="(min-width: 1024px) 34rem, 100vw" loading="lazy" />
     </ScaleIn>
   </section>
 
@@ -103,7 +104,7 @@ const prochains = (misEnAvant.length > 0 ? misEnAvant : aVenir).slice(0, 4);
 
   <section class="container-site grid items-center gap-10 py-16 sm:py-24 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-16" aria-labelledby="asil-quoi">
     <ScaleIn enhance={true} class="order-2 lg:order-1">
-      <SitePhoto publique={settings.photoAsil} fallback={comediens} alt="Comédiens de l'ASIL en spectacle d'improvisation" class="w-full rounded-2xl object-cover shadow-2xl shadow-black/60" widths={[480, 800, 1365]} sizes="(min-width: 1024px) 30rem, 100vw" loading="lazy" />
+      <SitePhoto publique={settings.photoAsil} fallback={comediens} alt={settings.photoAsilAlt} class="w-full rounded-2xl object-cover shadow-2xl shadow-black/60" widths={[480, 800, 1365]} sizes="(min-width: 1024px) 30rem, 100vw" loading="lazy" />
     </ScaleIn>
     <div class="order-1 lg:order-2">
       <FadeInText enhance={true} duration={0.7}>
