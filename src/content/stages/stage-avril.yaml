@@ -1,4 +1,6 @@
 titre: Stage d'avril
+image: /images/stages/stage-avril/image.png
+imageFit: cover
 dateDebut: 2027-04-24
 horaires: 10h – 17h (pause repas d'une heure)
 lieu: 70 rue Bergson, 42000 Saint-Étienne
@@ -8,3 +10,6 @@ description: >-
   Stage d'une journée ouvert à toutes et à tous, thème à définir. Prévoyez votre
   pique-nique et une tenue confortable.
 lienInscription: https://www.helloasso.com/associations/asil-impro
+galeriePhotos: []
+blocsTexte: []
+actif: true
