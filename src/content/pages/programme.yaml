@@ -10,30 +10,6 @@ introduction: >-
 evenementBouton: Réserver
 mois:
   - annee: 2026
-    mois: '1'
-    actif: true
-  - annee: 2026
-    mois: '2'
-    actif: true
-  - annee: 2026
-    mois: '3'
-    actif: true
-  - annee: 2026
-    mois: '4'
-    actif: true
-  - annee: 2026
-    mois: '5'
-    actif: true
-  - annee: 2026
-    mois: '6'
-    actif: true
-  - annee: 2026
-    mois: '7'
-    actif: true
-  - annee: 2026
-    mois: '8'
-    actif: true
-  - annee: 2026
     mois: '9'
     actif: true
   - annee: 2026
@@ -44,6 +20,27 @@ mois:
     actif: true
   - annee: 2026
     mois: '12'
+    actif: true
+  - annee: 2027
+    mois: '1'
+    actif: true
+  - annee: 2027
+    mois: '2'
+    actif: true
+  - annee: 2027
+    mois: '3'
+    actif: true
+  - annee: 2027
+    mois: '4'
+    actif: true
+  - annee: 2027
+    mois: '5'
+    actif: true
+  - annee: 2027
+    mois: '6'
+    actif: true
+  - annee: 2027
+    mois: '7'
     actif: true
 moisVideTitre: Aucun spectacle prévu pour le moment
 moisVideTexte: De nouvelles dates pourront être ajoutées prochainement.

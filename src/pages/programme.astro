@@ -25,11 +25,10 @@ const moisDerives = [...new Set(evenements.map((e) => {
   return { annee, mois, cle };
 });
 
-const configuration = new Map(moisConfigures.map((mois) => [mois.cle, mois]));
-const moisAffiches = [...new Map([
-  ...moisConfigures.filter((mois) => mois.actif).map((mois) => [mois.cle, mois] as const),
-  ...moisDerives.filter((mois) => configuration.get(mois.cle)?.actif !== false).map((mois) => [mois.cle, mois] as const),
-]).values()].sort((a, b) => a.cle.localeCompare(b.cle));
+const moisAffiches = (moisConfigures.length > 0
+  ? moisConfigures.filter((mois) => mois.actif)
+  : moisDerives
+).sort((a, b) => a.cle.localeCompare(b.cle));
 const sections = moisAffiches.map((m) => ({
   ...m,
   titre: `${nomsMois[m.mois - 1]} ${m.annee}`,
