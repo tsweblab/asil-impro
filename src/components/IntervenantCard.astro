@@ -4,8 +4,8 @@ interface Props { personne: Intervenant; }
 const { personne } = Astro.props;
 ---
 
-<article class="overflow-hidden rounded-2xl border border-black/5 bg-white transition-all duration-300 hover:-translate-y-1 hover:border-asil-red/30 hover:shadow-[0_20px_50px_-20px_rgba(0,0,0,0.25)]">
-  {personne.image && <img src={personne.image} alt={personne.imageAlt || `Portrait de ${personne.nom}`} class:list={['aspect-[4/3] w-full bg-black/10', personne.imageFit === 'contain' ? 'object-contain' : 'object-cover']} loading="lazy" />}
+<article class="overflow-hidden rounded-2xl border border-black/10 bg-white shadow-[0_14px_36px_-28px_rgba(0,0,0,0.65)] transition-all duration-300 hover:-translate-y-1 hover:border-asil-red/30 hover:shadow-[0_20px_50px_-20px_rgba(0,0,0,0.25)]">
+  {personne.image && <img src={personne.image} alt={personne.imageAlt || `Portrait de ${personne.nom}`} class:list={['w-full bg-black/10', personne.imageFit === 'auto' ? 'h-auto object-contain' : 'aspect-[4/3]', personne.imageFit === 'contain' ? 'object-contain' : personne.imageFit !== 'auto' ? 'object-cover' : '']} loading="lazy" />}
   <div class="p-8">
     <h3 class="text-2xl">{personne.nom}</h3>
     {personne.role && <p class="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-asil-red">{personne.role}</p>}

@@ -28,7 +28,7 @@ export type BlocLibre = {
   texte?: string;
   image?: string | null;
   imageAlt?: string;
-  imageFit?: 'cover' | 'contain';
+  imageFit?: 'cover' | 'contain' | 'auto';
   imagePosition?: 'gauche' | 'droite';
   boutonTexte?: string;
   boutonLien?: string;

@@ -7,7 +7,7 @@ interface Photo {
   alt: string;
   legende?: string;
   lien?: string | null;
-  imageFit?: 'cover' | 'contain';
+  imageFit?: 'cover' | 'contain' | 'auto';
 }
 
 interface Props {
@@ -24,7 +24,7 @@ const mode = (photo: Photo) => photo.typeContenu ?? (photo.image ? 'photo' : pho
   <ul class="poster-stack" role="list" data-poster-stack>
     {photos.map((photo, index) => (
       <li
-        class="poster-card overflow-hidden rounded-3xl border border-white/10 bg-asil-gray-dark"
+        class="poster-card overflow-hidden rounded-3xl border border-white/15 bg-asil-gray-dark"
         data-photo-card
         data-index={index}
         role="group"
@@ -35,10 +35,10 @@ const mode = (photo: Photo) => photo.typeContenu ?? (photo.image ? 'photo' : pho
           <SocialPostPreview url={photo.lien} titre={photo.legende || photo.alt} fallbackTitre={lienTitre} fallbackTexte={lienTexte} />
         ) : photo.image && photo.lien ? (
           <a href={photo.lien} target="_blank" rel="noopener noreferrer" class="block h-full">
-            <img src={photo.image} alt={photo.alt} class:list={['size-full', photo.imageFit === 'contain' ? 'object-contain bg-black' : 'object-cover']} loading="lazy" />
+            <img src={photo.image} alt={photo.alt} class:list={['size-full', photo.imageFit === 'contain' || photo.imageFit === 'auto' ? 'object-contain bg-black' : 'object-cover']} loading="lazy" />
           </a>
         ) : photo.image ? (
-          <img src={photo.image} alt={photo.alt} class:list={['size-full', photo.imageFit === 'contain' ? 'object-contain bg-black' : 'object-cover']} loading="lazy" />
+          <img src={photo.image} alt={photo.alt} class:list={['size-full', photo.imageFit === 'contain' || photo.imageFit === 'auto' ? 'object-contain bg-black' : 'object-cover']} loading="lazy" />
         ) : (
           <div class="grid size-full place-items-center bg-gradient-to-br from-asil-gray-dark to-asil-black px-8 text-center">
             <div>

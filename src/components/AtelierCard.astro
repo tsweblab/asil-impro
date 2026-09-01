@@ -18,7 +18,7 @@ const { atelier, index = 0, labels = { lieu: 'Lieu :', tarif: 'Tarif annuel :' }
       <img
         src={atelier.image}
         alt={atelier.imageAlt || `Atelier : ${atelier.titre}`}
-        class:list={['-mx-7 -mt-7 mb-2 aspect-[16/9] w-[calc(100%+3.5rem)] rounded-t-2xl bg-black/30', atelier.imageFit === 'contain' ? 'object-contain' : 'object-cover']}
+        class:list={['-mx-7 -mt-7 mb-2 w-[calc(100%+3.5rem)] rounded-t-2xl bg-black/30', atelier.imageFit === 'auto' ? 'h-auto object-contain' : 'aspect-[16/9]', atelier.imageFit === 'contain' ? 'object-contain' : atelier.imageFit !== 'auto' ? 'object-cover' : '']}
         loading="lazy"
       />
     )}

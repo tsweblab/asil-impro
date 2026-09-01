@@ -22,7 +22,7 @@ const periode = stage.dateFin
       <img
         src={stage.image}
         alt={stage.imageAlt || `Stage : ${stage.titre}`}
-        class:list={['h-full min-h-48 w-full bg-black/30', stage.imageFit === 'contain' ? 'object-contain' : 'object-cover']}
+        class:list={['w-full bg-black/30', stage.imageFit === 'auto' ? 'h-auto self-start object-contain' : 'h-full min-h-48', stage.imageFit === 'contain' ? 'object-contain' : stage.imageFit !== 'auto' ? 'object-cover' : '']}
         loading="lazy"
       />
     ) : (

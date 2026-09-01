@@ -63,8 +63,8 @@ const prochains = (misEnAvant.length > 0 ? misEnAvant : aVenir).slice(0, 4);
     </section>
   )}
 
-  <section class="container-site grid items-center gap-10 py-16 sm:py-24 lg:grid-cols-2 lg:gap-16" aria-labelledby="rejoindre">
-    <div>
+  <section class="container-site grid items-start gap-10 py-12 sm:py-16 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,24rem)] lg:gap-12" aria-labelledby="rejoindre">
+    <div class="lg:pt-8">
       <FadeInText enhance={true} duration={0.7}>
         <p class="eyebrow mb-4">{page.rejoindreSurtitre}</p>
         <h2 id="rejoindre" class="section-title text-4xl sm:text-5xl">{page.rejoindreTitre}</h2>
@@ -72,18 +72,18 @@ const prochains = (misEnAvant.length > 0 ? misEnAvant : aVenir).slice(0, 4);
       <p class="mt-6 whitespace-pre-line leading-relaxed text-white/80">{page.rejoindreTexte}</p>
       <AnimatedButton variant="shimmer" href={page.rejoindreBoutonLien} class="btn-red mt-8 px-8">{page.rejoindreBouton}</AnimatedButton>
     </div>
-    <ScaleIn enhance={true}>
-      <SitePhoto publique={page.photoRejoindre} fallback={maud} alt={page.photoRejoindreAlt} fit={page.photoRejoindreFit} class="aspect-[4/3] w-full rounded-2xl shadow-2xl shadow-black/60" widths={[480, 800, 1200]} sizes="(min-width: 1024px) 34rem, 100vw" loading="lazy" />
+    <ScaleIn enhance={true} class="lg:justify-self-start">
+      <SitePhoto publique={page.photoRejoindre} fallback={maud} alt={page.photoRejoindreAlt} fit={page.photoRejoindreFit} class="w-full rounded-2xl shadow-2xl shadow-black/60" widths={[480, 800, 1200]} sizes="(min-width: 1024px) 34rem, 100vw" loading="lazy" />
     </ScaleIn>
   </section>
 
   {page.chiffres.length > 0 && <SectionChiffres chiffres={page.chiffres} />}
 
-  <section class="container-site grid items-center gap-10 py-16 sm:py-24 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-16" aria-labelledby="asil-quoi">
-    <ScaleIn enhance={true} class="order-2 lg:order-1">
-      <SitePhoto publique={page.photoAsil} fallback={comediens} alt={page.photoAsilAlt} fit={page.photoAsilFit} class="aspect-[4/3] w-full rounded-2xl shadow-2xl shadow-black/60" widths={[480, 800, 1365]} sizes="(min-width: 1024px) 30rem, 100vw" loading="lazy" />
+  <section class="container-site grid items-start gap-10 py-12 sm:py-16 lg:grid-cols-[minmax(18rem,24rem)_minmax(0,1fr)] lg:gap-12" aria-labelledby="asil-quoi">
+    <ScaleIn enhance={true} class="order-2 lg:order-1 lg:justify-self-end">
+      <SitePhoto publique={page.photoAsil} fallback={comediens} alt={page.photoAsilAlt} fit={page.photoAsilFit} class="w-full rounded-2xl shadow-2xl shadow-black/60" widths={[480, 800, 1365]} sizes="(min-width: 1024px) 30rem, 100vw" loading="lazy" />
     </ScaleIn>
-    <div class="order-1 lg:order-2">
+    <div class="order-1 lg:order-2 lg:pt-8">
       <FadeInText enhance={true} duration={0.7}>
         <p class="eyebrow mb-4">{page.presentationSurtitre}</p>
         <h2 id="asil-quoi" class="section-title text-4xl sm:text-5xl">{page.presentationTitre}</h2>

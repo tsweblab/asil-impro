@@ -9,13 +9,19 @@ const { blocs = [] } = Astro.props;
 ---
 
 {blocs.map((bloc, index) => (
-  <section class:list={['container-site grid items-center gap-10 py-16 lg:grid-cols-2 lg:gap-16', index > 0 && 'border-t border-white/8']}>
+  <section class:list={[
+    'container-site grid items-start gap-10 py-12 sm:py-16 lg:gap-12',
+    bloc.image && (bloc.imagePosition === 'gauche'
+      ? 'lg:grid-cols-[minmax(18rem,24rem)_minmax(0,1fr)]'
+      : 'lg:grid-cols-[minmax(0,1fr)_minmax(18rem,24rem)]'),
+    index > 0 && 'border-t border-white/14',
+  ]}>
     {bloc.image && (
-      <ScaleIn enhance={true} class:list={[bloc.imagePosition === 'gauche' ? 'lg:order-1' : 'lg:order-2']}>
-        <img src={bloc.image} alt={bloc.imageAlt || ''} loading="lazy" class:list={['aspect-[4/3] w-full rounded-2xl bg-black/30 shadow-2xl shadow-black/60', bloc.imageFit === 'contain' ? 'object-contain' : 'object-cover']} />
+      <ScaleIn enhance={true} class:list={['w-full', bloc.imagePosition === 'gauche' ? 'lg:order-1 lg:justify-self-end' : 'lg:order-2 lg:justify-self-start']}>
+        <img src={bloc.image} alt={bloc.imageAlt || ''} loading="lazy" class:list={['mx-auto max-h-[30rem] max-w-full rounded-2xl border border-white/15 bg-black/30 shadow-2xl shadow-black/60', bloc.imageFit === 'auto' ? 'h-auto !w-auto object-contain' : 'aspect-[4/3] w-full', bloc.imageFit === 'contain' ? 'object-contain' : bloc.imageFit !== 'auto' ? 'object-cover' : '']} />
       </ScaleIn>
     )}
-    <div class:list={[bloc.imagePosition === 'gauche' ? 'lg:order-2' : 'lg:order-1', !bloc.image && 'lg:col-span-2 max-w-3xl']}>
+    <div class:list={[bloc.imagePosition === 'gauche' ? 'lg:order-2' : 'lg:order-1', bloc.image && 'lg:pt-8', !bloc.image && 'max-w-3xl']}>
       <FadeInText enhance={true} duration={0.7}>
         {bloc.surtitre && <p class="eyebrow mb-4">{bloc.surtitre}</p>}
         <h2 class="section-title text-4xl sm:text-5xl">{bloc.titre}</h2>

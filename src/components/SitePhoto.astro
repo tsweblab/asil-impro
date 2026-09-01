@@ -15,7 +15,7 @@ interface Props {
   widths?: number[];
   sizes?: string;
   loading?: 'eager' | 'lazy';
-  fit?: 'cover' | 'contain';
+  fit?: 'cover' | 'contain' | 'auto';
 }
 
 const {
@@ -28,7 +28,18 @@ const {
   loading = 'lazy',
   fit = 'cover',
 } = Astro.props;
-const classes = [className, fit === 'contain' ? 'object-contain bg-black/40' : 'object-cover'];
+const classes = [
+  className,
+  'border border-white/15 bg-black/20',
+  fit === 'auto'
+    ? 'mx-auto max-h-[30rem] max-w-full !w-auto object-contain'
+    : 'aspect-[4/3]',
+  fit === 'contain'
+    ? 'object-contain bg-black/40'
+    : fit === 'cover'
+      ? 'object-cover'
+      : '',
+];
 ---
 
 {publique ? (

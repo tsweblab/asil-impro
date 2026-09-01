@@ -4,7 +4,7 @@ interface Photo {
   image?: string | null;
   alt: string;
   legende?: string;
-  imageFit?: 'cover' | 'contain';
+  imageFit?: 'cover' | 'contain' | 'auto';
 }
 
 interface BlocTexte {
@@ -38,7 +38,7 @@ const blocsAffiches = blocs.filter((bloc) => bloc.actif !== false && bloc.texte)
   <div class="grid grid-cols-2 gap-2 border-t border-white/10 pt-4 sm:grid-cols-3" aria-label="Galerie photos">
     {photosAffichees.map((photo) => (
       <figure class="min-w-0">
-        <img src={photo.image!} alt={photo.alt} class:list={['aspect-square w-full rounded-lg bg-black/30', photo.imageFit === 'contain' ? 'object-contain' : 'object-cover']} loading="lazy" />
+        <img src={photo.image!} alt={photo.alt} class:list={['w-full rounded-lg bg-black/30', photo.imageFit === 'auto' ? 'h-auto object-contain' : 'aspect-square', photo.imageFit === 'contain' ? 'object-contain' : photo.imageFit !== 'auto' ? 'object-cover' : '']} loading="lazy" />
         {photo.legende && <figcaption class="mt-1.5 text-xs leading-snug text-white/55">{photo.legende}</figcaption>}
       </figure>
     ))}

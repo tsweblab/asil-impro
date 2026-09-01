@@ -6,14 +6,18 @@ const moisOptions = [
   ['9', 'Septembre'], ['10', 'Octobre'], ['11', 'Novembre'], ['12', 'Décembre'],
 ].map(([value, label]) => ({ value, label }));
 
-const cadrageImage = (label = 'Cadrage de la photo') => fields.select({
+const cadrageImage = (
+  label = 'Cadrage de la photo',
+  defaultValue: 'auto' | 'cover' | 'contain' = 'auto',
+) => fields.select({
   label,
-  description: '« Remplir » recadre la photo pour couvrir le cadre. « Entière » conserve toute la photo avec des marges si nécessaire.',
+  description: '« Automatique » adapte le cadre aux proportions de la photo quand la mise en page le permet. « Remplir » recadre la photo. « Entière » conserve toute la photo dans un cadre fixe.',
   options: [
+    { label: 'Automatique (proportions de la photo)', value: 'auto' },
     { label: 'Remplir le cadre (recadrage)', value: 'cover' },
-    { label: 'Afficher la photo entière', value: 'contain' },
+    { label: 'Photo entière dans un cadre fixe', value: 'contain' },
   ],
-  defaultValue: 'cover',
+  defaultValue,
 });
 
 const blocsLibres = (directory: string, publicPath: string) =>
@@ -428,7 +432,7 @@ export default config({
           directory: 'public/images/site',
           publicPath: '/images/site/',
         }),
-        heroImageFit: cadrageImage('Bandeau principal — Cadrage de la photo'),
+        heroImageFit: cadrageImage('Bandeau principal — Cadrage de la photo', 'cover'),
         heroImageAlt: fields.text({ label: 'Bandeau principal — Description de la photo (laisser vide si décorative)' }),
         heroBoutonPrincipal: fields.text({ label: 'Accueil — Bouton principal', validation: { isRequired: true } }),
         heroBoutonPrincipalLien: fields.text({ label: 'Accueil — Lien du bouton principal', validation: { isRequired: true } }),
@@ -468,7 +472,7 @@ export default config({
               directory: 'public/images/galerie-accueil',
               publicPath: '/images/galerie-accueil/',
             }),
-            imageFit: cadrageImage(),
+            imageFit: cadrageImage('Cadrage de la photo', 'cover'),
             alt: fields.text({ label: "Description de l’image ou de la publication", validation: { isRequired: true } }),
             legende: fields.text({ label: 'Légende (optionnelle)' }),
             lien: fields.url({

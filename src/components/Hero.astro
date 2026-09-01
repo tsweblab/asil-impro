@@ -15,7 +15,7 @@ interface Props {
   /** Image uploadée via Keystatic (chemin public), sinon l'image par défaut. */
   imagePublique?: string | null;
   imageAlt?: string;
-  imageFit?: 'cover' | 'contain';
+  imageFit?: 'cover' | 'contain' | 'auto';
 }
 
 const { titre, sousTitre, description, boutonPrincipal, boutonPrincipalLien, boutonSecondaire, boutonSecondaireLien, imagePublique = null, imageAlt = '', imageFit = 'cover' } = Astro.props;
@@ -27,7 +27,7 @@ const { titre, sousTitre, description, boutonPrincipal, boutonPrincipalLien, bou
     <img
       src={imagePublique}
       alt={imageAlt}
-      class:list={['absolute inset-0 size-full bg-black', imageFit === 'contain' ? 'object-contain' : 'object-cover']}
+      class:list={['absolute inset-0 size-full bg-black', imageFit === 'contain' || imageFit === 'auto' ? 'object-contain' : 'object-cover']}
       fetchpriority="high"
     />
   ) : (
