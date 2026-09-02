@@ -96,18 +96,23 @@ const liens = [
           {lien.label}
         </a>
       ))}
-      {telephone && (
-        <a href={`tel:${telephoneHref}`} class="nav-phone-pill mx-3 my-2 justify-center" aria-label={`Appeler l’ASIL au ${telephone}`}>
-          <span class="nav-phone-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.69 2.8a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.33 1.84.56 2.8.69A2 2 0 0 1 22 16.92Z" />
-            </svg>
-          </span>
-          <span>{telephone}</span>
-        </a>
-      )}
-      <a href="/contact" class="btn-red mt-2">{labels.contact}</a>
-      <SocialLinks facebook={facebook} instagram={instagram} siteNom={siteNom} class="mt-4 px-3 pb-2" />
+      <div class="mobile-menu-actions">
+        {telephone && (
+          <a href={`tel:${telephoneHref}`} class="mobile-menu-action mobile-menu-action--phone" aria-label={`Appeler l’ASIL au ${telephone}`}>
+            <span class="nav-phone-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.69 2.8a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.33 1.84.56 2.8.69A2 2 0 0 1 22 16.92Z" />
+              </svg>
+            </span>
+            <span>{telephone}</span>
+          </a>
+        )}
+        <a href="/contact" class="mobile-menu-action mobile-menu-action--contact">{labels.contact}</a>
+      </div>
+      <div class="mobile-menu-socials">
+        <span class="mobile-menu-socials-label">Suivez-nous</span>
+        <SocialLinks facebook={facebook} instagram={instagram} siteNom={siteNom} class="justify-center" />
+      </div>
     </div>
   </nav>
 </header>
@@ -256,6 +261,70 @@ const liens = [
   .nav-phone-icon svg {
     width: 0.75rem;
     height: 0.75rem;
+  }
+
+  .mobile-menu-actions {
+    display: grid;
+    gap: 0.7rem;
+    margin: 1rem 0.75rem 0;
+  }
+
+  .mobile-menu-action {
+    display: inline-flex;
+    width: 100%;
+    min-height: 3rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    border-radius: 999px;
+    padding: 0.7rem 1rem;
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: white;
+    transition: border-color 220ms ease, background-color 220ms ease;
+  }
+
+  .mobile-menu-action--phone {
+    border: 1px solid rgba(255, 255, 255, 0.42);
+    background: rgba(255, 255, 255, 0.055);
+  }
+
+  .mobile-menu-action--phone:hover,
+  .mobile-menu-action--phone:focus-visible {
+    border-color: rgba(255, 255, 255, 0.82);
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .mobile-menu-action--contact {
+    border: 1px solid var(--color-asil-red);
+    background: var(--color-asil-red);
+  }
+
+  .mobile-menu-action--contact:hover,
+  .mobile-menu-action--contact:focus-visible {
+    border-color: var(--color-asil-red-light);
+    background: var(--color-asil-red-dark);
+  }
+
+  .mobile-menu-socials {
+    display: grid;
+    justify-items: center;
+    gap: 0.65rem;
+    margin: 0.9rem 0.75rem 0.2rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .mobile-menu-socials-label {
+    font-family: var(--font-sans);
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.55);
   }
 
   [aria-expanded="true"] [data-line="top"] {

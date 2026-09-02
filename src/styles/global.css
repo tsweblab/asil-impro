@@ -387,7 +387,7 @@
 }
 
 @media (max-width: 640px) {
-  .card-scene {
+  .card-scene:not(.event-ticket) {
     background:
       linear-gradient(145deg, rgba(39, 35, 35, 0.99), rgba(21, 19, 19, 0.99));
     box-shadow:
