@@ -16,15 +16,15 @@ interface Props {
   lienTitre?: string;
   lienTexte?: string;
 }
-const { photos, placeholderTexte = 'Photo à ajouter depuis Keystatic', lienTitre = 'Voir sur {reseau}', lienTexte = "L’aperçu n’est pas disponible, mais la publication reste accessible." } = Astro.props;
+const { photos, lienTitre = 'Voir sur {reseau}', lienTexte = "L’aperçu n’est pas disponible, mais la publication reste accessible." } = Astro.props;
 const mode = (photo: Photo) => photo.typeContenu ?? (photo.image ? 'photo' : photo.lien ? 'publication' : 'photo');
 ---
 
-<div class="poster-carousel relative" data-photo-carousel role="region" aria-label="Publications récentes">
-  <ul class="poster-stack" role="list" data-poster-stack>
+<div class="poster-carousel relative" data-photo-carousel role="region" aria-roledescription="carrousel" aria-label="Publications récentes">
+  <ul class="poster-stack" role="list" data-poster-stack aria-live="polite" aria-atomic="false">
     {photos.map((photo, index) => (
       <li
-        class="poster-card overflow-hidden rounded-3xl border border-white/15 bg-asil-gray-dark"
+        class="poster-card overflow-hidden rounded-3xl border border-white bg-asil-gray-dark"
         data-photo-card
         data-index={index}
         role="group"
@@ -35,19 +35,14 @@ const mode = (photo: Photo) => photo.typeContenu ?? (photo.image ? 'photo' : pho
           <SocialPostPreview url={photo.lien} titre={photo.legende || photo.alt} fallbackTitre={lienTitre} fallbackTexte={lienTexte} />
         ) : photo.image && photo.lien ? (
           <a href={photo.lien} target="_blank" rel="noopener noreferrer" class="block h-full">
-            <img src={photo.image} alt={photo.alt} class:list={['size-full', photo.imageFit === 'contain' || photo.imageFit === 'auto' ? 'object-contain bg-black' : 'object-cover']} loading="lazy" />
+            <img src={photo.image} alt={photo.alt} class:list={['size-full object-center', photo.imageFit === 'contain' || photo.imageFit === 'auto' ? 'object-contain bg-black' : 'object-cover']} loading="lazy" />
           </a>
         ) : photo.image ? (
-          <img src={photo.image} alt={photo.alt} class:list={['size-full', photo.imageFit === 'contain' || photo.imageFit === 'auto' ? 'object-contain bg-black' : 'object-cover']} loading="lazy" />
+          <img src={photo.image} alt={photo.alt} class:list={['size-full object-center', photo.imageFit === 'contain' || photo.imageFit === 'auto' ? 'object-contain bg-black' : 'object-cover']} loading="lazy" />
         ) : (
-          <div class="grid size-full place-items-center bg-gradient-to-br from-asil-gray-dark to-asil-black px-8 text-center">
-            <div>
-              <span class="mx-auto grid size-14 place-items-center rounded-full border border-dashed border-asil-red/70 text-2xl text-asil-red" aria-hidden="true">+</span>
-              <p class="mt-4 text-sm text-white/55">{placeholderTexte}</p>
-            </div>
-          </div>
+          <div class="size-full bg-black" aria-hidden="true"></div>
         )}
-        {photo.legende && mode(photo) === 'photo' && <p class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent px-5 pb-4 pt-12 text-sm text-white">{photo.legende}</p>}
+        {photo.image && photo.legende && mode(photo) === 'photo' && <p class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent px-5 pb-4 pt-12 text-sm text-white">{photo.legende}</p>}
       </li>
     ))}
   </ul>
@@ -101,7 +96,13 @@ const mode = (photo: Photo) => photo.typeContenu ?? (photo.image ? 'photo' : pho
         });
         dots.forEach((dot, i) => {
           dot.classList.toggle('is-active', i === active);
-          if (i === active) dot.setAttribute('aria-current', 'true'); else dot.removeAttribute('aria-current');
+          if (i === active) {
+            dot.setAttribute('aria-current', 'true');
+            dot.setAttribute('aria-disabled', 'true');
+          } else {
+            dot.removeAttribute('aria-current');
+            dot.removeAttribute('aria-disabled');
+          }
         });
       };
 

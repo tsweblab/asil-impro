@@ -18,7 +18,7 @@ const { blocs = [] } = Astro.props;
   ]}>
     {bloc.image && (
       <ScaleIn enhance={true} class:list={['w-full', bloc.imagePosition === 'gauche' ? 'lg:order-1 lg:justify-self-end' : 'lg:order-2 lg:justify-self-start']}>
-        <img src={bloc.image} alt={bloc.imageAlt || ''} loading="lazy" class:list={['mx-auto max-h-[30rem] max-w-full rounded-2xl border border-white/15 bg-black/30 shadow-2xl shadow-black/60', bloc.imageFit === 'auto' ? 'h-auto !w-auto object-contain' : 'aspect-[4/3] w-full', bloc.imageFit === 'contain' ? 'object-contain' : bloc.imageFit !== 'auto' ? 'object-cover' : '']} />
+        <img src={bloc.image} alt={bloc.imageAlt || ''} loading="lazy" class:list={['mx-auto max-h-[30rem] max-w-full rounded-2xl border border-white bg-black/30 shadow-2xl shadow-black/60', bloc.imageFit === 'auto' ? 'h-auto !w-auto object-contain' : 'aspect-[4/3] w-full', bloc.imageFit === 'contain' ? 'object-contain' : bloc.imageFit !== 'auto' ? 'object-cover' : '']} />
       </ScaleIn>
     )}
     <div class:list={[bloc.imagePosition === 'gauche' ? 'lg:order-2' : 'lg:order-1', bloc.image && 'lg:pt-8', !bloc.image && 'max-w-3xl']}>

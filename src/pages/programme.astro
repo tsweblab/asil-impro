@@ -85,8 +85,16 @@ const structuredData = evenements.map((event) => ({
             <div class="h-px grow bg-gradient-to-r from-white/20 to-transparent" aria-hidden="true"></div>
           </div>
           {section.evenements.length > 0 ? (
-            <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {section.evenements.map((e) => <div class="scroll-reveal h-full"><EventCard evenement={e} boutonTexte={page.evenementBouton} /></div>)}
+            <div class="programme-ticket-grid">
+              {section.evenements.map((e, index) => (
+                <div
+                  class="programme-ticket-grid-item"
+                  data-programme-ticket
+                  data-ticket-order={index}
+                >
+                  <EventCard evenement={e} boutonTexte={page.evenementBouton} />
+                </div>
+              ))}
             </div>
           ) : (
             <div class="card-scene p-8">
@@ -101,3 +109,59 @@ const structuredData = evenements.map((event) => ({
 
   <FlexibleBlocks blocs={page.blocsLibres} />
 </Layout>
+
+<script>
+  const clamp = (value: number) => Math.min(1, Math.max(0, value));
+  const root = document.documentElement;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const items = [...document.querySelectorAll<HTMLElement>('[data-programme-ticket]')];
+  let frame = 0;
+
+  const resetTicket = (item: HTMLElement) => {
+    for (const property of ['--ticket-y', '--ticket-scale', '--ticket-opacity', '--ticket-brightness', '--ticket-saturate', '--ticket-tilt', '--ticket-turn']) {
+      item.style.removeProperty(property);
+    }
+  };
+
+  const updateTicketGrid = () => {
+    frame = 0;
+
+    if (reduceMotion.matches) {
+      root.classList.remove('ticket-grid-motion');
+      items.forEach(resetTicket);
+      return;
+    }
+
+    root.classList.add('ticket-grid-motion');
+    const viewportHeight = window.innerHeight;
+    const entryStart = viewportHeight * 0.94;
+    const entryEnd = viewportHeight * 0.58;
+    const columns = window.innerWidth >= 1024 ? 3 : window.innerWidth >= 640 ? 2 : 1;
+
+    items.forEach((item) => {
+      const rect = item.getBoundingClientRect();
+      const order = Number(item.dataset.ticketOrder || 0);
+      const column = order % columns;
+      const stagger = column * Math.min(24, window.innerWidth * 0.018);
+      const entry = clamp((entryStart - rect.top - stagger) / Math.max(1, entryStart - entryEnd));
+      const rise = Math.min(92, viewportHeight * 0.11);
+      const direction = column % 2 === 0 ? -1 : 1;
+      item.style.setProperty('--ticket-y', `${(1 - entry) * rise}px`);
+      item.style.setProperty('--ticket-scale', `${0.94 + (entry * 0.06)}`);
+      item.style.setProperty('--ticket-opacity', `${0.16 + (entry * 0.84)}`);
+      item.style.setProperty('--ticket-brightness', `${0.72 + (entry * 0.28)}`);
+      item.style.setProperty('--ticket-saturate', `${0.76 + (entry * 0.24)}`);
+      item.style.setProperty('--ticket-tilt', `${(1 - entry) * 3.5}deg`);
+      item.style.setProperty('--ticket-turn', `${direction * (1 - entry) * 1.8}deg`);
+    });
+  };
+
+  const requestUpdate = () => {
+    if (!frame) frame = window.requestAnimationFrame(updateTicketGrid);
+  };
+
+  window.addEventListener('scroll', requestUpdate, { passive: true });
+  window.addEventListener('resize', requestUpdate, { passive: true });
+  reduceMotion.addEventListener('change', requestUpdate);
+  requestUpdate();
+</script>

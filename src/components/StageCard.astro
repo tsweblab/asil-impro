@@ -1,5 +1,4 @@
 ---
-import ScaleIn from './motion/ScaleIn.astro';
 import { formatDateLongue, type Stage } from '../lib/keystatic';
 import EntryExtras from './EntryExtras.astro';
 
@@ -16,7 +15,7 @@ const periode = stage.dateFin
   : formatDateLongue(stage.dateDebut!);
 ---
 
-<ScaleIn enhance={true} delay={index * 120} class="h-full">
+<div class="scroll-reveal scroll-reveal--stage h-full" style={`--reveal-order:${index};`}>
   <article class="card-scene card-hover grid h-full gap-6 overflow-hidden md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
     {stage.image ? (
       <img
@@ -53,4 +52,4 @@ const periode = stage.dateFin
       )}
     </div>
   </article>
-</ScaleIn>
+</div>

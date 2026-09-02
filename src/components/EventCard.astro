@@ -11,52 +11,94 @@ interface Props {
 
 const { evenement, compact = false, boutonTexte = 'Réserver' } = Astro.props;
 const heure = formatHeure(evenement.date!);
+const numeroBillet = new Date(evenement.date!).toISOString().replace(/\D/g, '').slice(2, 12);
+const rechercheMaps = [evenement.lieu, evenement.adresse].filter(Boolean).join(', ');
+const lienMaps = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(rechercheMaps)}`;
 ---
 
 <article
   class:list={[
-    'card-scene card-hover flex h-full flex-col gap-3 p-6',
+    'event-ticket card-scene flex h-full flex-col gap-3 p-6',
     compact ? '' : 'sm:p-7',
   ]}
 >
-  {evenement.image && (
-    <img
-      src={evenement.image}
-      alt={evenement.imageAlt || `Affiche ou photo de ${evenement.titre}`}
-      class:list={[
-        '-mx-6 -mt-6 mb-2 w-[calc(100%+3rem)] bg-black/30',
-        evenement.imageFit === 'auto' ? 'h-auto object-contain' : 'aspect-[16/9]',
-        evenement.imageFit === 'contain' ? 'object-contain' : evenement.imageFit !== 'auto' ? 'object-cover' : '',
-        !compact && 'sm:-mx-7 sm:-mt-7 sm:w-[calc(100%+3.5rem)]',
-      ]}
-      loading="lazy"
-    />
-  )}
-  <p class="font-sans text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-asil-red-light">
-    {formatDateLongue(evenement.date!)}{heure && ` — ${heure}`}
-  </p>
+  <span class="ticket-perforations ticket-perforations--left" aria-hidden="true"></span>
+  <span class="ticket-perforations ticket-perforations--right" aria-hidden="true"></span>
+  <span class="ticket-cut ticket-cut--top-left" aria-hidden="true"></span>
+  <span class="ticket-cut ticket-cut--top-right" aria-hidden="true"></span>
+  <span class="ticket-cut ticket-cut--bottom-left" aria-hidden="true"></span>
+  <span class="ticket-cut ticket-cut--bottom-right" aria-hidden="true"></span>
+  <span class="ticket-cut ticket-cut--middle-left" aria-hidden="true"></span>
+  <span class="ticket-cut ticket-cut--middle-right" aria-hidden="true"></span>
+  <div class="ticket-content-top">
+    {evenement.image && (
+      <img
+        src={evenement.image}
+        alt={evenement.imageAlt || `Affiche ou photo de ${evenement.titre}`}
+        class:list={[
+          '-mx-6 -mt-6 mb-2 w-[calc(100%+3rem)] bg-black/30',
+          evenement.imageFit === 'auto' ? 'h-auto object-contain' : 'aspect-[16/9]',
+          evenement.imageFit === 'contain' ? 'object-contain' : evenement.imageFit !== 'auto' ? 'object-cover' : '',
+          !compact && 'sm:-mx-7 sm:-mt-7 sm:w-[calc(100%+3.5rem)]',
+        ]}
+        loading="lazy"
+      />
+    )}
+    <div class="ticket-practical" aria-label="Informations pratiques">
+      <div class="ticket-date">
+        <span class="ticket-meta-label">Date</span>
+        <time class="ticket-date-value" datetime={evenement.date!}>{formatDateLongue(evenement.date!)}</time>
+      </div>
+      {heure && (
+        <div class="ticket-time">
+          <span class="ticket-meta-label ticket-meta-label--dark">Heure</span>
+          <strong class="ticket-time-value">{heure}</strong>
+        </div>
+      )}
+      <div class="ticket-location">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" />
+          <circle cx="12" cy="10" r="2.5" />
+        </svg>
+        <span class="ticket-location-copy">
+          <span class="ticket-meta-label">Lieu</span>
+          <strong class="ticket-place-name">{evenement.lieu}</strong>
+          {evenement.adresse && <span class="ticket-address">{evenement.adresse}</span>}
+        </span>
+        <a
+          class="ticket-maps-link"
+          href={lienMaps}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Ouvrir ${rechercheMaps} dans Google Maps`}
+        >
+          <img src="https://www.gstatic.com/images/branding/product/2x/maps_96dp.png" alt="" loading="lazy" />
+          <span>Ouvrir</span>
+        </a>
+      </div>
+    </div>
+    <p class="ticket-number text-right">Billet ASIL · N° {numeroBillet}</p>
+  </div>
   <!-- Séparateur « billet de spectacle » : pointillés + encoches perforées -->
-  <div class="relative -mx-6 my-0.5 border-t border-dashed border-white/15" aria-hidden="true">
+  <div class="ticket-separator relative -mx-6 my-0.5 border-t border-dashed border-white/70" aria-hidden="true">
     <span class="absolute -left-2 top-1/2 size-4 -translate-y-1/2 rounded-full bg-asil-night"></span>
     <span class="absolute -right-2 top-1/2 size-4 -translate-y-1/2 rounded-full bg-asil-night"></span>
   </div>
-  <h3 class="text-2xl text-white">{evenement.titre}</h3>
-  <p class="text-sm font-semibold text-white/80">
-    {evenement.lieu}
-    {evenement.adresse && <span class="block font-normal text-white/50">{evenement.adresse}</span>}
-  </p>
-  {!compact && evenement.description && (
-    <p class="text-sm leading-relaxed text-white/70">{evenement.description}</p>
-  )}
-  {!compact && <EntryExtras photos={evenement.galeriePhotos} blocs={evenement.blocsTexte} />}
-  {evenement.lienReservation && (
-    <a
-      href={evenement.lienReservation}
-      target="_blank"
-      rel="noopener noreferrer"
-      class="btn-red mt-auto self-start min-h-10 px-5 text-xs"
-    >
-      {boutonTexte}
-    </a>
-  )}
+  <div class="ticket-content-bottom">
+    <h3 class="ticket-event-title text-2xl text-white">{evenement.titre}</h3>
+    {!compact && evenement.description && (
+      <p class="text-sm leading-relaxed text-white/90">{evenement.description}</p>
+    )}
+    {!compact && <EntryExtras photos={evenement.galeriePhotos} blocs={evenement.blocsTexte} />}
+    {evenement.lienReservation && (
+      <a
+        href={evenement.lienReservation}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-red mt-auto self-start min-h-10 px-5 text-xs"
+      >
+        {boutonTexte}
+      </a>
+    )}
+  </div>
 </article>

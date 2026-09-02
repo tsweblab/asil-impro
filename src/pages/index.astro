@@ -53,13 +53,13 @@ const prochains = (misEnAvant.length > 0 ? misEnAvant : aVenir).slice(0, 4);
   )}
 
   {page.galeriePhotos.length > 0 && (
-    <section class="container-site py-16 sm:py-20" aria-labelledby="galerie-accueil">
+    <section class="container-site py-10 sm:py-12" aria-labelledby="galerie-accueil">
       <FadeInText enhance={true} duration={0.7}>
         <p class="eyebrow mb-4">{page.galerieSurtitre}</p>
         <h2 id="galerie-accueil" class="section-title text-4xl sm:text-5xl">{page.galerieTitre}</h2>
       </FadeInText>
       {page.galerieDescription && <p class="mt-5 max-w-2xl leading-relaxed text-white/75">{page.galerieDescription}</p>}
-      <div class="mt-10"><PhotoCarousel photos={page.galeriePhotos} placeholderTexte={page.galeriePlaceholderTexte} lienTitre={page.galerieLienTitre} lienTexte={page.galerieLienTexte} /></div>
+      <div class="mt-6"><PhotoCarousel photos={page.galeriePhotos} placeholderTexte={page.galeriePlaceholderTexte} lienTitre={page.galerieLienTitre} lienTexte={page.galerieLienTexte} /></div>
     </section>
   )}
 

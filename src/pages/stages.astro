@@ -60,7 +60,7 @@ const structuredData = aVenir.map((stage) => ({
     <h2 id="stages-a-venir" class="section-title mb-12 text-4xl sm:text-5xl">{page.listeTitre}</h2>
     {aVenir.length === 0 ? (
       <div class="card-scene p-10 text-center"><h3 class="text-2xl">{page.videTitre}</h3><p class="mt-3 whitespace-pre-line text-white/70">{page.videTexte}</p></div>
-    ) : <div class="grid gap-8">{aVenir.map((stage, i) => <StageCard stage={stage} index={i} labels={{ horaires: page.stageHorairesLabel, lieu: page.stageLieuLabel, intervenant: page.stageIntervenantLabel, tarif: page.stageTarifLabel, bouton: page.stageBouton, du: page.stageDuLabel, au: page.stageAuLabel, imageFallback: page.stageImageFallback }} />)}</div>}
+    ) : <div class="stage-card-grid">{aVenir.map((stage, i) => <StageCard stage={stage} index={i} labels={{ horaires: page.stageHorairesLabel, lieu: page.stageLieuLabel, intervenant: page.stageIntervenantLabel, tarif: page.stageTarifLabel, bouton: page.stageBouton, du: page.stageDuLabel, au: page.stageAuLabel, imageFallback: page.stageImageFallback }} />)}</div>}
   </section>
   <FlexibleBlocks blocs={page.blocsLibres} />
 </Layout>

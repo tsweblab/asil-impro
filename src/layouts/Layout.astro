@@ -75,6 +75,7 @@ const safeJsonLd = JSON.stringify(jsonLd).replaceAll('<', '\\u003c');
       logo={settings.logo}
       logoAlt={settings.logoAlt}
       siteNom={settings.siteNom}
+      telephone={settings.telephones[0]?.numero}
       labels={{ accueil: settings.navAccueil, programme: settings.navProgramme, stages: settings.navStages, ateliers: settings.navAteliers, contact: settings.navContact }}
       transition:persist="navbar"
     />

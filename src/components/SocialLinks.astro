@@ -1,4 +1,8 @@
 ---
+import { Image } from 'astro:assets';
+import facebookLogo from '../assets/facebook-logo-officiel.png';
+import instagramLogo from '../assets/instagram-logo-officiel.png';
+
 interface Props {
   facebook: string;
   instagram: string;
@@ -9,29 +13,39 @@ interface Props {
 const { facebook, instagram, siteNom = 'ASIL Impro', class: className = '' } = Astro.props;
 ---
 
-<div class:list={['flex items-center gap-3', className]}>
+<div class:list={['flex items-center gap-2', className]}>
   <a
     href={facebook}
     target="_blank"
     rel="noopener noreferrer"
     aria-label={`Facebook de ${siteNom}`}
-    class="grid size-9 place-items-center rounded-full border-2 border-white/60 text-white transition-all duration-300 hover:border-asil-red hover:bg-asil-red"
+    class="grid size-8 place-items-center rounded-full transition-opacity duration-200 hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-white"
   >
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-4" aria-hidden="true">
-      <path d="M13.5 21v-7h2.4l.4-3h-2.8V9.1c0-.9.3-1.5 1.6-1.5h1.3V4.9c-.3 0-1.1-.1-2-.1-2 0-3.4 1.2-3.4 3.5V11H8.5v3H11v7h2.5Z" />
-    </svg>
+    <Image
+      src={facebookLogo}
+      alt=""
+      width={28}
+      height={28}
+      densities={[1, 2, 3]}
+      format="png"
+      class="size-7 object-contain"
+    />
   </a>
   <a
     href={instagram}
     target="_blank"
     rel="noopener noreferrer"
     aria-label={`Instagram de ${siteNom}`}
-    class="grid size-9 place-items-center rounded-full border-2 border-white/60 text-white transition-all duration-300 hover:border-asil-red hover:bg-asil-red"
+    class="grid size-8 place-items-center rounded-full transition-opacity duration-200 hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-white"
   >
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="size-4" aria-hidden="true">
-      <rect x="3" y="3" width="18" height="18" rx="5" />
-      <circle cx="12" cy="12" r="4" />
-      <circle cx="17.2" cy="6.8" r="0.5" fill="currentColor" />
-    </svg>
+    <Image
+      src={instagramLogo}
+      alt=""
+      width={28}
+      height={28}
+      densities={[1, 2, 3]}
+      format="png"
+      class="size-7 object-contain"
+    />
   </a>
 </div>

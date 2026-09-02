@@ -1,5 +1,4 @@
 ---
-import ScaleIn from './motion/ScaleIn.astro';
 import type { Atelier } from '../lib/keystatic';
 import EntryExtras from './EntryExtras.astro';
 
@@ -12,7 +11,7 @@ interface Props {
 const { atelier, index = 0, labels = { lieu: 'Lieu :', tarif: 'Tarif annuel :' } } = Astro.props;
 ---
 
-<ScaleIn enhance={true} delay={index * 120} class="h-full">
+<div class="scroll-reveal scroll-reveal--atelier h-full" style={`--reveal-turn:${index % 2 === 0 ? '-1.2deg' : '1.2deg'};`}>
   <article class="card-scene card-hover flex h-full flex-col gap-4 p-7">
     {atelier.image && (
       <img
@@ -35,4 +34,4 @@ const { atelier, index = 0, labels = { lieu: 'Lieu :', tarif: 'Tarif annuel :' }
     )}
     <EntryExtras photos={atelier.galeriePhotos} blocs={atelier.blocsTexte} />
   </article>
-</ScaleIn>
+</div>

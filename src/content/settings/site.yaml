@@ -3,7 +3,9 @@ logo: /images/branding/logo-asil-blanc.png
 logoAlt: Logo ASIL Impro
 imagePartage: /images/branding/og-asil.jpg
 favicon: /images/branding/logo-asil_small.png
-telephones: []
+telephones:
+  - libelle: Contact
+    numero: 06 14 01 56 32
 email: asilimpro@gmail.com
 facebook: https://www.facebook.com/profile.php?id=100063601480001
 instagram: https://www.instagram.com/asil_impro/
@@ -11,7 +13,7 @@ navAccueil: Accueil
 navProgramme: Programme
 navStages: Stages
 navAteliers: Ateliers
-navContact: Contact
+navContact: Contactez-nous
 navMentions: Mentions légales
 footerDescription: Ateliers stéphanois d'improvisation loufoque — l'asso qui improvise à Saint-Étienne depuis 2002.
 footerLiensTitre: Liens rapides

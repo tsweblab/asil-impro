@@ -50,7 +50,7 @@ export async function getSettings() {
     navProgramme: settings?.navProgramme ?? 'Programme',
     navStages: settings?.navStages ?? 'Stages',
     navAteliers: settings?.navAteliers ?? 'Ateliers',
-    navContact: settings?.navContact ?? 'Contact',
+    navContact: settings?.navContact ?? 'Contactez-nous',
     navMentions: settings?.navMentions ?? 'Mentions légales',
     footerDescription: settings?.footerDescription ?? "Ateliers stéphanois d'improvisation loufoque — l'asso qui improvise à Saint-Étienne depuis 2002.",
     footerLiensTitre: settings?.footerLiensTitre ?? 'Liens rapides',
