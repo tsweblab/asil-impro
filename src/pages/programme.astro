@@ -112,56 +112,73 @@ const structuredData = evenements.map((event) => ({
 
 <script>
   const clamp = (value: number) => Math.min(1, Math.max(0, value));
-  const root = document.documentElement;
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const items = [...document.querySelectorAll<HTMLElement>('[data-programme-ticket]')];
-  let frame = 0;
+  let cleanupTicketGrid: (() => void) | undefined;
 
-  const resetTicket = (item: HTMLElement) => {
-    for (const property of ['--ticket-y', '--ticket-scale', '--ticket-opacity', '--ticket-brightness', '--ticket-saturate', '--ticket-tilt', '--ticket-turn']) {
-      item.style.removeProperty(property);
-    }
-  };
+  function initTicketGrid() {
+    cleanupTicketGrid?.();
 
-  const updateTicketGrid = () => {
-    frame = 0;
+    const root = document.documentElement;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const items = [...document.querySelectorAll<HTMLElement>('[data-programme-ticket]')];
+    const controller = new AbortController();
+    let frame = 0;
 
-    if (reduceMotion.matches) {
+    const resetTicket = (item: HTMLElement) => {
+      for (const property of ['--ticket-y', '--ticket-scale', '--ticket-opacity', '--ticket-brightness', '--ticket-saturate', '--ticket-tilt', '--ticket-turn']) {
+        item.style.removeProperty(property);
+      }
+    };
+
+    const updateTicketGrid = () => {
+      frame = 0;
+
+      if (reduceMotion.matches || items.length === 0) {
+        root.classList.remove('ticket-grid-motion');
+        items.forEach(resetTicket);
+        return;
+      }
+
+      root.classList.add('ticket-grid-motion');
+      const viewportHeight = window.innerHeight;
+      const entryStart = viewportHeight * 0.94;
+      const entryEnd = viewportHeight * 0.58;
+      const columns = window.innerWidth >= 1024 ? 3 : window.innerWidth >= 640 ? 2 : 1;
+
+      items.forEach((item) => {
+        const rect = item.getBoundingClientRect();
+        const order = Number(item.dataset.ticketOrder || 0);
+        const column = order % columns;
+        const stagger = column * Math.min(24, window.innerWidth * 0.018);
+        const entry = clamp((entryStart - rect.top - stagger) / Math.max(1, entryStart - entryEnd));
+        const rise = Math.min(92, viewportHeight * 0.11);
+        const direction = column % 2 === 0 ? -1 : 1;
+        item.style.setProperty('--ticket-y', `${(1 - entry) * rise}px`);
+        item.style.setProperty('--ticket-scale', `${0.94 + (entry * 0.06)}`);
+        item.style.setProperty('--ticket-opacity', `${0.16 + (entry * 0.84)}`);
+        item.style.setProperty('--ticket-brightness', `${0.72 + (entry * 0.28)}`);
+        item.style.setProperty('--ticket-saturate', `${0.76 + (entry * 0.24)}`);
+        item.style.setProperty('--ticket-tilt', `${(1 - entry) * 3.5}deg`);
+        item.style.setProperty('--ticket-turn', `${direction * (1 - entry) * 1.8}deg`);
+      });
+    };
+
+    const requestUpdate = () => {
+      if (!frame) frame = window.requestAnimationFrame(updateTicketGrid);
+    };
+
+    window.addEventListener('scroll', requestUpdate, { passive: true, signal: controller.signal });
+    window.addEventListener('resize', requestUpdate, { passive: true, signal: controller.signal });
+    reduceMotion.addEventListener('change', requestUpdate, { signal: controller.signal });
+
+    cleanupTicketGrid = () => {
+      controller.abort();
+      if (frame) window.cancelAnimationFrame(frame);
       root.classList.remove('ticket-grid-motion');
-      items.forEach(resetTicket);
-      return;
-    }
+    };
 
-    root.classList.add('ticket-grid-motion');
-    const viewportHeight = window.innerHeight;
-    const entryStart = viewportHeight * 0.94;
-    const entryEnd = viewportHeight * 0.58;
-    const columns = window.innerWidth >= 1024 ? 3 : window.innerWidth >= 640 ? 2 : 1;
+    requestUpdate();
+  }
 
-    items.forEach((item) => {
-      const rect = item.getBoundingClientRect();
-      const order = Number(item.dataset.ticketOrder || 0);
-      const column = order % columns;
-      const stagger = column * Math.min(24, window.innerWidth * 0.018);
-      const entry = clamp((entryStart - rect.top - stagger) / Math.max(1, entryStart - entryEnd));
-      const rise = Math.min(92, viewportHeight * 0.11);
-      const direction = column % 2 === 0 ? -1 : 1;
-      item.style.setProperty('--ticket-y', `${(1 - entry) * rise}px`);
-      item.style.setProperty('--ticket-scale', `${0.94 + (entry * 0.06)}`);
-      item.style.setProperty('--ticket-opacity', `${0.16 + (entry * 0.84)}`);
-      item.style.setProperty('--ticket-brightness', `${0.72 + (entry * 0.28)}`);
-      item.style.setProperty('--ticket-saturate', `${0.76 + (entry * 0.24)}`);
-      item.style.setProperty('--ticket-tilt', `${(1 - entry) * 3.5}deg`);
-      item.style.setProperty('--ticket-turn', `${direction * (1 - entry) * 1.8}deg`);
-    });
-  };
-
-  const requestUpdate = () => {
-    if (!frame) frame = window.requestAnimationFrame(updateTicketGrid);
-  };
-
-  window.addEventListener('scroll', requestUpdate, { passive: true });
-  window.addEventListener('resize', requestUpdate, { passive: true });
-  reduceMotion.addEventListener('change', requestUpdate);
-  requestUpdate();
+  initTicketGrid();
+  document.addEventListener('astro:page-load', initTicketGrid);
 </script>
