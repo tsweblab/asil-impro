@@ -30,7 +30,7 @@ const organization = {
     addressLocality: 'Saint-Étienne',
     addressCountry: 'FR',
   },
-  sameAs: [settings.facebook, settings.instagram].filter(Boolean),
+  sameAs: [settings.facebook, settings.instagram, settings.tiktok].filter(Boolean),
 };
 const jsonLd = [organization, ...(Array.isArray(structuredData) ? structuredData : structuredData ? [structuredData] : [])];
 const safeJsonLd = JSON.stringify(jsonLd).replaceAll('<', '\\u003c');
@@ -72,6 +72,7 @@ const safeJsonLd = JSON.stringify(jsonLd).replaceAll('<', '\\u003c');
     <Navbar
       facebook={settings.facebook}
       instagram={settings.instagram}
+      tiktok={settings.tiktok}
       logo={settings.logo}
       logoAlt={settings.logoAlt}
       siteNom={settings.siteNom}
@@ -85,6 +86,7 @@ const safeJsonLd = JSON.stringify(jsonLd).replaceAll('<', '\\u003c');
     <Footer
       facebook={settings.facebook}
       instagram={settings.instagram}
+      tiktok={settings.tiktok}
       logo={settings.logo}
       logoAlt={settings.logoAlt}
       email={settings.email}

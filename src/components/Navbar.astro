@@ -4,6 +4,7 @@ import SocialLinks from './SocialLinks.astro';
 interface Props {
   facebook: string;
   instagram: string;
+  tiktok: string;
   logo: string;
   logoAlt: string;
   siteNom: string;
@@ -11,7 +12,7 @@ interface Props {
   labels: { accueil: string; programme: string; stages: string; ateliers: string; contact: string };
 }
 
-const { facebook, instagram, logo, logoAlt, siteNom, telephone, labels } = Astro.props;
+const { facebook, instagram, tiktok, logo, logoAlt, siteNom, telephone, labels } = Astro.props;
 const telephoneHref = telephone ? telephone.replace(/[^\d+]/g, '') : '';
 
 const liens = [
@@ -47,7 +48,7 @@ const liens = [
     </nav>
 
     <div class="hidden items-center gap-3 lg:flex">
-      <SocialLinks facebook={facebook} instagram={instagram} siteNom={siteNom} />
+      <SocialLinks facebook={facebook} instagram={instagram} tiktok={tiktok} siteNom={siteNom} />
       {telephone && (
         <a href={`tel:${telephoneHref}`} class="nav-phone-pill" aria-label={`Appeler l’ASIL au ${telephone}`}>
           <span class="nav-phone-icon" aria-hidden="true">
@@ -111,7 +112,7 @@ const liens = [
       </div>
       <div class="mobile-menu-socials">
         <span class="mobile-menu-socials-label">Suivez-nous</span>
-        <SocialLinks facebook={facebook} instagram={instagram} siteNom={siteNom} class="justify-center" />
+        <SocialLinks facebook={facebook} instagram={instagram} tiktok={tiktok} siteNom={siteNom} class="justify-center" />
       </div>
     </div>
   </nav>

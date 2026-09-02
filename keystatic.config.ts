@@ -398,6 +398,10 @@ export default config({
           label: 'Compte Instagram',
           description: 'Adresse complète, ex : https://www.instagram.com/asil_impro/',
         }),
+        tiktok: fields.url({
+          label: 'Compte TikTok',
+          description: 'Adresse complète, ex : https://www.tiktok.com/@asil.impro',
+        }),
         navAccueil: fields.text({ label: 'Menu — Accueil', defaultValue: 'Accueil', validation: { isRequired: true } }),
         navProgramme: fields.text({ label: 'Menu — Programme', defaultValue: 'Programme', validation: { isRequired: true } }),
         navStages: fields.text({ label: 'Menu — Stages', defaultValue: 'Stages', validation: { isRequired: true } }),

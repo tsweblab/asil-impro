@@ -46,6 +46,7 @@ export async function getSettings() {
     email: settings?.email ?? 'admin@asil-impro.fr',
     facebook: settings?.facebook ?? 'https://www.facebook.com/profile.php?id=100063601480001',
     instagram: settings?.instagram ?? 'https://www.instagram.com/asil_impro/',
+    tiktok: settings?.tiktok ?? 'https://www.tiktok.com/@asil.impro',
     navAccueil: settings?.navAccueil ?? 'Accueil',
     navProgramme: settings?.navProgramme ?? 'Programme',
     navStages: settings?.navStages ?? 'Stages',

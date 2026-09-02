@@ -47,7 +47,7 @@ const page = {
           <li><span class="block text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-white/50">{page.emailTitre}</span><a href={`mailto:${settings.email}`} class="font-semibold text-white hover:text-asil-red">{settings.email}</a></li>
           {settings.telephones.length > 0 && <li><span class="block text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-white/50">{page.telephoneTitre}</span>{settings.telephones.map((t) => <p><a href={`tel:${t.numero.replace(/[\s.]/g, '')}`} class="font-semibold text-white hover:text-asil-red">{t.numero}</a>{t.libelle && <span class="text-white/60"> — {t.libelle}</span>}</p>)}</li>}
           <li><span class="block text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-white/50">{page.ateliersTitre}</span><p class="whitespace-pre-line text-white/80">{page.ateliersAdresse}</p></li>
-          <li><span class="mb-2 block text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-white/50">{page.reseauxTitre}</span><SocialLinks facebook={settings.facebook} instagram={settings.instagram} siteNom={settings.siteNom} /></li>
+          <li><span class="mb-2 block text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-white/50">{page.reseauxTitre}</span><SocialLinks facebook={settings.facebook} instagram={settings.instagram} tiktok={settings.tiktok} siteNom={settings.siteNom} /></li>
         </ul>
       </div>
     </aside>

@@ -2,15 +2,17 @@
 import { Image } from 'astro:assets';
 import facebookLogo from '../assets/facebook-logo-officiel.png';
 import instagramLogo from '../assets/instagram-logo-officiel.png';
+import tiktokLogo from '../assets/tiktok-logo-officiel.png';
 
 interface Props {
   facebook: string;
   instagram: string;
+  tiktok: string;
   siteNom?: string;
   class?: string;
 }
 
-const { facebook, instagram, siteNom = 'ASIL Impro', class: className = '' } = Astro.props;
+const { facebook, instagram, tiktok, siteNom = 'ASIL Impro', class: className = '' } = Astro.props;
 ---
 
 <div class:list={['flex items-center gap-2', className]}>
@@ -40,6 +42,23 @@ const { facebook, instagram, siteNom = 'ASIL Impro', class: className = '' } = A
   >
     <Image
       src={instagramLogo}
+      alt=""
+      width={28}
+      height={28}
+      densities={[1, 2, 3]}
+      format="png"
+      class="size-7 object-contain"
+    />
+  </a>
+  <a
+    href={tiktok}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label={`TikTok de ${siteNom}`}
+    class="grid size-8 place-items-center rounded-full transition-opacity duration-200 hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-white"
+  >
+    <Image
+      src={tiktokLogo}
       alt=""
       width={28}
       height={28}
