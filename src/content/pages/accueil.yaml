@@ -31,7 +31,7 @@ galerieLienTitre: Voir sur {reseau}
 galerieLienTexte: L'aperçu n'est pas disponible, mais la publication reste accessible.
 galeriePhotos:
   - actif: true
-    typeContenu: publication
+    typeContenu: photo
     imageFit: cover
     alt: Publication récente de l'ASIL sur Instagram
     legende: Retrouvez l'ASIL sur Instagram
