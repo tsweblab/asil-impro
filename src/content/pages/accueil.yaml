@@ -43,7 +43,8 @@ galeriePhotos:
     legende: Retrouvez l'ASIL sur Insta
     lien: https://www.instagram.com/p/Dc3qF5XCEiz/?img_index=1
   - actif: true
-    typeContenu: publication
+    typeContenu: photo
+    image: /images/galerie-accueil/galeriePhotos/2/image.PNG
     imageFit: cover
     alt: Emplacement pour une photo récente de l'ASIL
     legende: Photo récente n°3
