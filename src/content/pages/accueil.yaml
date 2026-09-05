@@ -37,7 +37,7 @@ galeriePhotos:
     legende: Retrouvez l'ASIL sur Instagram
     lien: https://www.instagram.com/asil_impro/p/Dc3qF5XCEiz/
   - actif: true
-    typeContenu: photo
+    typeContenu: publication
     imageFit: cover
     alt: Publication de Facebook
     legende: Retrouvez l'ASIL sur Facebook
