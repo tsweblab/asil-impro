@@ -7,13 +7,14 @@ titre: Les ateliers
 citation: « Qui vit sans folie n'est pas aussi sage qu'il le croit. »
 introduction: >-
   2h par semaine pour développer tous les aspects du théâtre d'improvisation :
-  l'écoute, la construction d'histoires, les personnages… et le plaisir de
-  jouer sans texte.
-photoAteliers: /images/site/page-ateliers.jpg
+  l'écoute, la construction d'histoires, les personnages… et le plaisir de jouer
+  sans texte.
+photoAteliers: /images/site/photoAteliers.jpg
+photoAteliersFit: auto
 photoAteliersAlt: Atelier d'improvisation de l'ASIL
 lieuTexte: >-
-  Les ateliers ont lieu à l'Amicale Laïque Michelet, 26 rue Coraly-Royet,
-  42100 Saint-Étienne.
+  Les ateliers ont lieu à l'Amicale Laïque Michelet, 26 rue Coraly-Royet, 42100
+  Saint-Étienne.
 boutonTexte: Demander une inscription
 boutonLien: /contact
 adultesTitre: Adultes
@@ -22,7 +23,9 @@ adultesIntroduction: >-
   sont bienvenus.
 atelierLieuLabel: 'Lieu :'
 atelierTarifLabel: 'Tarif annuel :'
-aucunAtelierTexte: Les prochains créneaux seront bientôt annoncés. Contactez-nous pour être informé·e.
+aucunAtelierTexte: >-
+  Les prochains créneaux seront bientôt annoncés. Contactez-nous pour être
+  informé·e.
 intervenantsSurtitre: Ils et elles vous accompagnent
 intervenantsTitre: Les intervenant·es
 blocsLibres: []
