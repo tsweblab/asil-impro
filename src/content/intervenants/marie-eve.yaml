@@ -5,6 +5,7 @@ biographie: >-
   laissant une grande part au ludique et accompagne vers un jeu généreux et
   heureux.
 image: /images/intervenants/marie-eve/image.jpg
+imageFit: auto
 imageAlt: Portrait de Marie-Eve
 ordre: 2
 actif: true
