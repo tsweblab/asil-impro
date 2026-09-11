@@ -7,5 +7,5 @@ biographie: >-
 image: /images/intervenants/marie-eve/image.jpg
 imageFit: auto
 imageAlt: Portrait de Marie-Eve
-ordre: 2
+ordre: 0
 actif: true
