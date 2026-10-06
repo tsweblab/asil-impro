@@ -11,7 +11,7 @@ evenementBouton: Réserver
 mois:
   - annee: 2026
     mois: '9'
-    actif: true
+    actif: false
   - annee: 2026
     mois: '10'
     actif: true
@@ -41,7 +41,7 @@ mois:
     actif: true
   - annee: 2027
     mois: '7'
-    actif: true
+    actif: false
 moisVideTitre: Aucun spectacle prévu pour le moment
 moisVideTexte: De nouvelles dates pourront être ajoutées prochainement.
 aucunEvenementTitre: La prochaine saison se prépare…
