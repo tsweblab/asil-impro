@@ -9,8 +9,8 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  // URL provisoire tant que le nom de domaine définitif n'est pas raccordé.
-  site: 'https://asil-impro.vercel.app',
+  // Domaine de production (sert aux URL canoniques, Open Graph et au sitemap).
+  site: 'https://asil-impro.fr',
   // Depuis Astro 5, le mode "hybrid" a fusionné avec "static" :
   // les pages sont pré-rendues, sauf celles marquées `prerender = false`
   // (routes Keystatic + API contact), servies en SSR via l'adapter Vercel.

@@ -1,6 +1,6 @@
 # ASIL Impro — Site web
 
-Refonte du site [asil-impro.fr](https://asil-impro.fr) pour l'ASIL (Ateliers stéphanois d'improvisation loufoque). Projet réalisé par [TS WEB Lab](https://tsweb.fr).
+Refonte du site [asil-impro.fr](https://asil-impro.fr) pour l'ASIL (Ateliers stéphanois d'improvisation loufoque).
 
 ## Stack
 
@@ -62,9 +62,9 @@ Variables d'environnement (voir `.env.example`) :
 
 1. Pousser le repo sur GitHub et l'importer dans Vercel (framework auto-détecté : Astro).
 2. Renseigner les variables d'environnement ci-dessus.
-3. Raccorder le futur domaine dans Vercel → Settings → Domains, puis remplacer l’URL provisoire dans `astro.config.mjs`.
+3. Le domaine `asil-impro.fr` est raccordé dans Vercel → Settings → Domains et déclaré dans `astro.config.mjs` (`site`).
 
-Tant que le domaine définitif n’est pas raccordé, le site demande aux moteurs de recherche de ne pas l’indexer (`robots.txt`, balises robots et en-tête Vercel).
+Le site est ouvert à l’indexation : `robots.txt` autorise les moteurs de recherche (sauf `/keystatic` et `/api/`) et pointe vers le sitemap.
 
 ## Notes techniques
 

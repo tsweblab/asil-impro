@@ -43,7 +43,6 @@ const safeJsonLd = JSON.stringify(jsonLd).replaceAll('<', '\\u003c');
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="robots" content="noindex, nofollow, noarchive" />
     <link rel="canonical" href={canonicalURL} />
     <link rel="icon" href={settings.favicon} />
     <link rel="sitemap" href="/sitemap-index.xml" />
@@ -95,8 +94,7 @@ const safeJsonLd = JSON.stringify(jsonLd).replaceAll('<', '\\u003c');
         accueil: settings.navAccueil, programme: settings.navProgramme, stages: settings.navStages,
         ateliers: settings.navAteliers, contact: settings.navContact, mentions: settings.navMentions, description: settings.footerDescription,
         liensTitre: settings.footerLiensTitre, contactTitre: settings.footerContactTitre,
-        copyright: settings.footerCopyright, credit: settings.footerCredit,
-        creditNom: settings.footerCreditNom, creditLien: settings.footerCreditLien, siteNom: settings.siteNom,
+        copyright: settings.footerCopyright, siteNom: settings.siteNom,
       }}
     />
   </body>
