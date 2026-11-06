@@ -8,6 +8,8 @@ introduction: >-
   Plus de 30 spectacles par saison à Saint-Étienne et dans sa région. Retrouvez
   toutes nos dates, mois par mois.
 evenementBouton: Réserver
+couleurTicketDefaut:
+  discriminant: or
 mois:
   - annee: 2026
     mois: '9'
