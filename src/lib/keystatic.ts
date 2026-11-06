@@ -1,5 +1,6 @@
 import { createReader } from '@keystatic/core/reader';
 import keystaticConfig from '../../keystatic.config';
+import { couleurTicket } from './ticketColors';
 
 // Reader API Keystatic : lit le contenu (fichiers YAML) au build.
 // Toutes les pages publiques étant pré-rendues, aucune lecture disque en prod.
@@ -148,6 +149,15 @@ export async function getHomePage() {
     ctaBoutonLien: page?.ctaBoutonLien ?? '/contact',
     blocsLibres: (page?.blocsLibres ?? []).filter((bloc) => bloc.actif !== false) as BlocLibre[],
   };
+}
+
+let couleurDefautCache: Promise<unknown> | undefined;
+
+/** Couleur finale du ticket d'un spectacle (choix du spectacle, sinon couleur par défaut de la page Programme). */
+export async function getCouleurTicket(evenement: Pick<Evenement, 'couleurTicket'>): Promise<string> {
+  couleurDefautCache ??= reader.singletons.programmePage.read().then((page) => page?.couleurTicketDefaut);
+  const defaut = (await couleurDefautCache) as Parameters<typeof couleurTicket>[1];
+  return couleurTicket(evenement.couleurTicket, defaut);
 }
 
 export async function getProgrammePage() {

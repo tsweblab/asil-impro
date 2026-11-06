@@ -1,4 +1,5 @@
 import { config, fields, collection, singleton } from '@keystatic/core';
+import { TICKET_COULEURS, TICKET_COULEUR_DEFAUT } from './src/lib/ticketColors';
 
 const moisOptions = [
   ['1', 'Janvier'], ['2', 'Février'], ['3', 'Mars'], ['4', 'Avril'],
@@ -89,6 +90,44 @@ const blocsTexte = (label = 'Blocs de texte supplémentaires') =>
     },
   );
 
+// Couleur des tickets : une liste de couleurs prêtes à l'emploi, ou un code
+// personnalisé. Le site fonce automatiquement une couleur trop claire pour que
+// le texte blanc du ticket reste lisible.
+const couleurTicket = ({ avecDefaut }: { avecDefaut: boolean }) => {
+  const options = [
+    ...(avecDefaut ? [{ label: '⚙️ Couleur par défaut (page Programme)', value: 'defaut' }] : []),
+    ...TICKET_COULEURS.map(({ label, value }) => ({ label, value })),
+    { label: '🎨 Couleur personnalisée…', value: 'perso' },
+  ];
+  const valeurs = Object.fromEntries(
+    options.map(({ value }) => [
+      value,
+      value === 'perso'
+        ? fields.text({
+            label: 'Code de la couleur personnalisée',
+            description: 'Format #RRGGBB, ex : #1d4fa8. Astuce : cherchez « color picker » sur Google pour trouver un code. Si la couleur est trop claire, le site la fonce automatiquement pour garder le texte lisible.',
+            defaultValue: '#bd1722',
+            validation: {
+              isRequired: true,
+              pattern: { regex: /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/, message: 'Code attendu : # suivi de 6 caractères (chiffres ou lettres A à F), ex : #1d4fa8' },
+            },
+          })
+        : fields.empty(),
+    ]),
+  );
+  return fields.conditional(
+    fields.select({
+      label: avecDefaut ? 'Couleur du ticket' : 'Couleur des tickets par défaut',
+      description: avecDefaut
+        ? 'Couleur de ce spectacle sur l\'accueil et le programme. « Par défaut » reprend la couleur choisie dans la page Programme.'
+        : 'Utilisée pour tous les spectacles réglés sur « Couleur par défaut ».',
+      options,
+      defaultValue: avecDefaut ? 'defaut' : TICKET_COULEUR_DEFAUT,
+    }),
+    valeurs,
+  );
+};
+
 const isLocalDevelopment = process.env.NODE_ENV === 'development';
 
 export default config({
@@ -160,6 +199,7 @@ export default config({
         }),
         imageFit: cadrageImage(),
         imageAlt: fields.text({ label: 'Description de la photo principale (accessibilité)' }),
+        couleurTicket: couleurTicket({ avecDefaut: true }),
         galeriePhotos: galeriePhotos('public/images/evenements', '/images/evenements/', 'Photos supplémentaires'),
         blocsTexte: blocsTexte(),
         actif: fields.checkbox({
@@ -534,6 +574,7 @@ export default config({
         titre: fields.text({ label: 'Grand titre', validation: { isRequired: true } }),
         introduction: fields.text({ label: 'Texte de présentation', multiline: true }),
         evenementBouton: fields.text({ label: 'Spectacles — Texte du bouton de réservation', defaultValue: 'Réserver' }),
+        couleurTicketDefaut: couleurTicket({ avecDefaut: false }),
         mois: fields.array(
           fields.object({
             annee: fields.integer({ label: 'Année', validation: { isRequired: true } }),
