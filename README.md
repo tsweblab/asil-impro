@@ -35,6 +35,7 @@ Tout le contenu éditable vit dans `src/content/` (fichiers YAML versionnés) :
 | Paramètres | `src/content/settings/site.yaml` | Navigation, pied de page, coordonnées, réseaux et photos principales |
 
 - Un événement coché **« Mettre en avant »** apparaît dans le carrousel de l'accueil.
+- Chaque spectacle a une **couleur de ticket** (liste de couleurs ou code personnalisé). « Couleur par défaut » reprend la couleur choisie dans la page Programme. Une couleur trop claire est foncée automatiquement pour garder le texte blanc lisible (`src/lib/ticketColors.ts`).
 - La galerie de l'accueil accepte des photos ajoutables, supprimables et réorganisables depuis Keystatic.
 - Chaque photo de contenu propose un choix de cadrage : remplir le cadre ou afficher l’image entière.
 - Les mois du Programme peuvent être ajoutés, masqués et réorganisés ; le site les trie automatiquement.

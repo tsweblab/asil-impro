@@ -1,5 +1,5 @@
 ---
-import { formatDateLongue, formatHeure, type Evenement } from '../lib/keystatic';
+import { formatDateLongue, formatHeure, getCouleurTicket, type Evenement } from '../lib/keystatic';
 import EntryExtras from './EntryExtras.astro';
 
 interface Props {
@@ -14,6 +14,7 @@ const heure = formatHeure(evenement.date!);
 const numeroBillet = new Date(evenement.date!).toISOString().replace(/\D/g, '').slice(2, 12);
 const rechercheMaps = [evenement.lieu, evenement.adresse].filter(Boolean).join(', ');
 const lienMaps = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(rechercheMaps)}`;
+const couleur = await getCouleurTicket(evenement);
 ---
 
 <article
@@ -21,6 +22,7 @@ const lienMaps = `https://www.google.com/maps/search/?api=1&query=${encodeURICom
     'event-ticket card-scene flex h-full flex-col gap-3 p-6',
     compact ? '' : 'sm:p-7',
   ]}
+  style={`--ticket-color: ${couleur};`}
 >
   <span class="ticket-perforations ticket-perforations--left" aria-hidden="true"></span>
   <span class="ticket-perforations ticket-perforations--right" aria-hidden="true"></span>

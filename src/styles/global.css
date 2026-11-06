@@ -112,20 +112,25 @@
     @apply transition-all duration-300 hover:-translate-y-1 hover:border-white hover:shadow-[0_20px_60px_-20px_rgba(227,6,19,0.35)];
   }
 
-  /* Billet de théâtre : papier rouge, double filet, talon et découpes latérales. */
+  /* Billet de théâtre : papier coloré, double filet, talon et découpes latérales.
+     La couleur vient de Keystatic (--ticket-color) ; les nuances en sont dérivées. */
   .event-ticket {
+    --ticket-color: #bd1722;
+    --ticket-mid: color-mix(in srgb, var(--ticket-color) 81%, #000);
+    --ticket-deep: color-mix(in srgb, var(--ticket-color) 62%, #000);
+    --ticket-ink: color-mix(in srgb, var(--ticket-color) 72%, #000);
     position: relative;
     isolation: isolate;
     overflow: hidden;
     border: 0;
     background:
-      linear-gradient(90deg, rgba(255, 255, 255, 0.07), transparent 2.5%, transparent 96%, rgba(45, 0, 4, 0.28)),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.07), transparent 2.5%, transparent 96%, color-mix(in srgb, var(--ticket-deep) 45%, transparent)),
       radial-gradient(ellipse at 16% 12%, rgba(255, 255, 255, 0.08), transparent 18%),
-      radial-gradient(circle at 50% 115%, rgba(255, 116, 116, 0.2), transparent 48%),
-      linear-gradient(135deg, #bd1722 0%, #99101a 48%, #760b13 100%);
+      radial-gradient(circle at 50% 115%, color-mix(in srgb, color-mix(in srgb, var(--ticket-color) 45%, #fff) 20%, transparent), transparent 48%),
+      linear-gradient(135deg, var(--ticket-color) 0%, var(--ticket-mid) 48%, var(--ticket-deep) 100%);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.18),
-      0 22px 48px -30px rgba(227, 6, 19, 0.72);
+      0 22px 48px -30px color-mix(in srgb, var(--ticket-color) 72%, transparent);
   }
 
   .event-ticket::before {
@@ -212,7 +217,7 @@
     gap: 0.8rem 1rem;
     padding: 0.9rem 1rem;
     border-radius: 0.75rem;
-    background: rgba(36, 2, 5, 0.34);
+    background: color-mix(in srgb, color-mix(in srgb, var(--ticket-color) 25%, #000) 34%, transparent);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.13);
     backdrop-filter: blur(6px);
     transition: transform 350ms cubic-bezier(0.22, 1, 0.36, 1), background-color 350ms ease;
@@ -236,7 +241,7 @@
     color: rgba(255, 255, 255, 0.62);
   }
 
-  .ticket-meta-label--dark { color: rgba(92, 5, 12, 0.68); }
+  .ticket-meta-label--dark { color: color-mix(in srgb, var(--ticket-ink) 68%, transparent); }
 
   .ticket-date-value {
     font-family: var(--font-sans);
@@ -255,7 +260,7 @@
     gap: 0.15rem;
     border-radius: 0.65rem;
     padding: 0.55rem 0.75rem;
-    color: var(--color-asil-red-dark);
+    color: var(--ticket-ink);
     background: #fff;
     box-shadow: 0 8px 24px -14px rgba(255, 255, 255, 0.9);
     text-align: center;
@@ -345,7 +350,12 @@
   }
 
   .event-ticket .btn-red {
-    @apply bg-white text-asil-red-dark hover:bg-white hover:text-asil-red;
+    @apply bg-white hover:bg-white;
+    color: var(--ticket-ink);
+  }
+
+  .event-ticket .btn-red:hover {
+    color: var(--ticket-color);
   }
 
   .stage-card-grid {
