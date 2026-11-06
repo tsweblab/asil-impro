@@ -416,9 +416,6 @@ export default config({
         footerLiensTitre: fields.text({ label: 'Pied de page — Titre des liens', defaultValue: 'Liens rapides' }),
         footerContactTitre: fields.text({ label: 'Pied de page — Titre du contact', defaultValue: 'Gardons le contact !' }),
         footerCopyright: fields.text({ label: 'Pied de page — Copyright', defaultValue: 'ASIL Impro — Tous droits réservés.' }),
-        footerCredit: fields.text({ label: 'Pied de page — Crédit', defaultValue: 'Site réalisé par' }),
-        footerCreditNom: fields.text({ label: 'Pied de page — Nom du créateur', defaultValue: 'TS WEB Lab' }),
-        footerCreditLien: fields.url({ label: 'Pied de page — Lien du créateur' }),
       },
     }),
     homePage: singleton({

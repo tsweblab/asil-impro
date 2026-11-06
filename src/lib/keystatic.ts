@@ -57,9 +57,6 @@ export async function getSettings() {
     footerLiensTitre: settings?.footerLiensTitre ?? 'Liens rapides',
     footerContactTitre: settings?.footerContactTitre ?? 'Gardons le contact !',
     footerCopyright: settings?.footerCopyright ?? 'ASIL Impro — Tous droits réservés.',
-    footerCredit: settings?.footerCredit ?? 'Site réalisé par',
-    footerCreditNom: settings?.footerCreditNom ?? 'TS WEB Lab',
-    footerCreditLien: settings?.footerCreditLien ?? 'https://tsweb.fr',
   };
 }
 

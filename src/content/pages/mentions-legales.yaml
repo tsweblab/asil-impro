@@ -8,10 +8,6 @@ sections:
       Association loi 1901
       Saint-Étienne, France
       Email : asilimpro@gmail.com
-  - titre: Conception et réalisation
-    texte: TS WEB Lab — micro-entreprise de création de sites web.
-    lienTexte: Visiter TS WEB Lab
-    lienUrl: https://tsweb.fr
   - titre: Hébergement
     texte: |-
       Vercel Inc.
