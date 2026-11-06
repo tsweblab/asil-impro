@@ -9,7 +9,7 @@ introduction: >-
   toutes nos dates, mois par mois.
 evenementBouton: Réserver
 couleurTicketDefaut:
-  discriminant: or
+  discriminant: violet
 mois:
   - annee: 2026
     mois: '9'
