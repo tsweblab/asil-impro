@@ -3,6 +3,9 @@ date: 2027-05-27T20:30:00.000Z
 lieu: La Taverne du Gobelin Farci
 adresse: 39 Rue du Onze Novembre, 42100 Saint-Étienne
 imageFit: cover
+couleurTicket:
+  discriminant: perso
+  value: '#AFF3CE'
 galeriePhotos: []
 blocsTexte: []
 actif: true
