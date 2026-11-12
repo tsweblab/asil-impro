@@ -4,6 +4,9 @@ lieu: La Bodega
 adresse: 27 rue du Onze Novembre, 42100 Saint-Etienne
 description: Prix Libre
 imageFit: cover
+couleurTicket:
+  discriminant: perso
+  value: '#9D1401'
 galeriePhotos: []
 blocsTexte: []
 actif: true
