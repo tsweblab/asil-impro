@@ -43,6 +43,12 @@ galeriePhotos:
     alt: Retouvez l'ASIL sur Facebook
     lien: >-
       https://www.instagram.com/p/DfH87zrIRJo/?utm_source=ig_web_copy_link&exln=NTc4MTIwNjQ2YQ==
+  - actif: true
+    typeContenu: publication
+    imageFit: cover
+    alt: Des réels !!
+    lien: >-
+      https://www.instagram.com/reel/DfnM8ufvnA3/?utm_source=ig_web_copy_link&dlrf=NTc4MTIwNjQ2YQ==
 rejoindreSurtitre: Les ateliers
 rejoindreTitre: Devenez improvisateur·rice
 rejoindreTexte: >-
