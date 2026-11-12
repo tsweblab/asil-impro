@@ -3,6 +3,9 @@ date: 2027-03-30T20:00:00.000Z
 lieu: Le Chok Théâtre
 adresse: 24 Rue Bernard Palissy, 42000 Saint-Étienne
 imageFit: cover
+couleurTicket:
+  discriminant: perso
+  value: '#BAEBFF'
 galeriePhotos: []
 blocsTexte: []
 actif: true
