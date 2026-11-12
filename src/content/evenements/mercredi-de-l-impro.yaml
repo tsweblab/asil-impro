@@ -6,7 +6,7 @@ description: Prix Libre
 imageFit: cover
 couleurTicket:
   discriminant: perso
-  value: '#FAE3DD'
+  value: '#9D1401'
 galeriePhotos: []
 blocsTexte: []
 actif: true
