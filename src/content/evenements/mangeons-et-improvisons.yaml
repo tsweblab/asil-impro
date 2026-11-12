@@ -5,6 +5,9 @@ adresse: 15 Rue Robert, 42000 Saint-Etienne
 lienReservation: https://cantine-la-tablee.fr/evenements/
 description: Prix Libre
 imageFit: cover
+couleurTicket:
+  discriminant: perso
+  value: '#F1CCFF'
 galeriePhotos: []
 blocsTexte: []
 actif: true
