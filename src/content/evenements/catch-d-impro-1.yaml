@@ -5,6 +5,9 @@ adresse: 48 rue Michelet, 42100 Saint-Etienne
 lienReservation: https://billetterie.lestroisducs.fr/event/775022-gaga-fight
 description: En collaboration avec la LISA
 imageFit: cover
+couleurTicket:
+  discriminant: perso
+  value: '#F6D77A'
 galeriePhotos: []
 blocsTexte: []
 actif: true
